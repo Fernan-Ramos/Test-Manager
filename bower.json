@@ -1,0 +1,28 @@
+{
+  "name": "TestManager",
+  "authors": [
+    "Fernan-Ramos <frs0012@alu.ubu.es>"
+  ],
+  "description": "Aplicación híbrida para preguntas tipo test en entornos móviles",
+  "main": "index.html",
+  "keywords": [
+    "TestManager",
+    "TestManager",
+    "app"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "font-awesome": "^4.7.0",
+    "angular": "^1.6.1",
+    "angular-ui-bootstrap": "^2.4.0"
+  }
+}
