@@ -35,51 +35,13 @@
              
              <ul class="nav navbar-nav navbar-right">
               <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-              <li><a id="loginIcon"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
             </ul>
-             
         </div>
         <!--navbar-collapse -->
       </div>
         <!-- container -->
   </nav>
 
-
-  <div id="loginModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Login</h4>
-                </div>
-                <div class="modal-body">
-                     <form id="reserve" class="form-horizontal" role="form">
-                        <div class="form-group">
-                             <div class="col-xs-12 col-sm-8">
-                                <label class="sr-only" for="email">Email address</label>
-                                <input type="email" class="form-control" id="email" placeholder="Email">
-                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-xs-12 col-sm-8">
-                                <label class="sr-only" for="password">Password</label>
-                                <input type="password" class="form-control" id="password" placeholder="Password">
-                            </div>
-                        </div>
-                    
-                        <div class="form-group">
-                            <div class="col-xs-12 col-sm-8">
-                            <button type="submit" class="btn btn-info btn-sm">Sign in</button>
-                            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
-                            </div>
-                        </div>
-                        
-                    </form>
-                </div>
-            </div>
-            </div>
-
-        </div>
   
   <header class="jumbotron">
       <!-- Main component for a primary marketing message or call to action -->
@@ -104,13 +66,15 @@
                 <p>bablablaa</p>
             </div>
             <div class="col-xs-12 col-sm-5">
-                <p style="padding:20px;"></p>
-                <img src="img/laptop.png" class="img-responsive">
+                <form>       
+                   <br>
+                   <br>
+                    <input type="text" class="form-control" name="Username" placeholder="Username" required>
+                    <br>
+                    <input type="password" class="form-control" name="Password" placeholder="Password" required>     		  
+                    <button type="submit" class="btn btn-lg btn-success btn-block">Login</button>  			
+                </form>	
             </div>
-           
-            
-
-            
           </div>
       </div>
   </header>
