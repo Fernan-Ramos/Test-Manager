@@ -29,7 +29,9 @@
   text-align: center;
 }
 
-
+.container-fluid{
+  --background-color:grey;
+}
 .navbar-default {
    background: #FFFFFF;
     
