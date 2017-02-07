@@ -15,7 +15,7 @@ angular.module('testManagerApp')
     }])
 
     .controller('MakerController', ['$scope', '$timeout', function ($scope, $timeout) {
-        var quests = [1, 2, 3, 4, 5, 6, 7];
+        $scope.quests = [1, 2, 3, 4, 5, 6, 7];
         $scope.selectedQuest;
         $scope.getSelectedQuest = function () {
             if ($scope.selectedQuest !== undefined) {
