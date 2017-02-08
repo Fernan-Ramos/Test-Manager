@@ -11,6 +11,7 @@ angular.module('testManagerApp')
                 title: 'Cuanto sabes de paises?',
                 image: 'img/libro.jpg',
                 text: 'blabalbla',
+                _id:0,
                 questions: [{
                         title: 'paises Test',
                         pregunta: 'blaa',
@@ -45,6 +46,7 @@ angular.module('testManagerApp')
                 title: 'Cuanto sabes sobre Java?',
                 image: 'img/libro.jpg',
                 text: 'blabalba',
+                _id:1,
                 questions: [{
                         title: 'Java Test',
                         pregunta: 'blaa',
@@ -80,6 +82,7 @@ angular.module('testManagerApp')
                 title: 'Cuanto sabes de Python? ',
                 image: 'img/libro.jpg',
                 text: 'blalalal',
+                _id:2,
                 questions: [{
                         title: 'Python Test',
                         pregunta: 'blaa',

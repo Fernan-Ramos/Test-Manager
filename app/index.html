@@ -1,103 +1,59 @@
 <html lang="en" ng-app="testManagerApp">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
     <title>Test Manager</title>
-       <!-- Bootstrap -->
-        <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
-        <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-        <link href="css/mystyles.css" rel="stylesheet">
-        <link href="css/bootstrap-social.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../bower_components/angular-material/angular-material.css" rel="stylesheet">
+    <link href="css/mystyles.css" rel="stylesheet">
+    <link href="css/bootstrap-social.css" rel="stylesheet">
 </head>
 
 <body>
-  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-     <div class="container">
-       <div class="navbar-header">
-                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                      <span class="sr-only">Toggle navigation</span>Menu <i class="fa fa-bars"></i>
-                  </button>
-                  <a class="navbar-brand" href="#page-top">TestManager</a>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>Menu <i class="fa fa-bars"></i>
+                    </button>
+                    <a class="navbar-brand" href="#page-top">TestManager</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#!/menu">Quizs</a>
+                    </li>
+                    <li>
+                        <a href="#!/maker">Quiz Maker</a>
+                    </li>
+                    <li>
+                        <a href="estadisticas.html">Stats</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+                </ul>
+            </div>
         </div>
-
-         <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                      <li>
-                          <a href="#about">Quizs</a>
-                      </li>
-                      <li>
-                          <a href="#services">Random Quiz</a>
-                      </li>
-                      <li>
-                          <a href="#portfolio">Stats</a>
-                      </li>
-                      
-              </ul>
-             
-             <ul class="nav navbar-nav navbar-right">
-              <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
-            </ul>
-             
+    </nav>
+    <header class="jumbotron">
+        <div class="container">
+            <div class="row row-header">
+                <div class="col-xs-12 col-sm-8">
+                    <h1 id="homeHeading">TestManager</h1>
+                    <hr>
+                    <p>Aplicación Híbrida para preguntas de tipo test</p>
+                </div>
+            </div>
         </div>
-        <!--navbar-collapse -->
-      </div>
-        <!-- container -->
-  </nav>
-
-  <header class="jumbotron">
-      <!-- Main component for a primary marketing message or call to action -->
-      <div class="container">
-          <div class="row row-header" ng-controller="carouselTest">
-              <!--<carousel interval="setInterval">
-                  <slide ng-repeat="slide in slides" active="slide.active">
-                      <img class="carousel-img" ng-src="{{slide.image}}">
-                      <div class="carousel-cont">
-                        <h2>{{slide.title}}</h2>
-                        <p>{{slide.text}}</p>
-                      </div>
-                  </slide>
-               
-              
-              </carousel>
-              
-              -->
-              
-              <div class="col-xs-12 col-sm-8">
-                <h1 id="homeHeading">TestManager</h1>
-                <hr>
-                <p>Aplicación Híbrida para preguntas de tipo test</p>
-              </div>
-            
-          </div>
-      </div>
-  </header>
-
-  <div class="container">
-    <div class="row row-content">
-        <div class="col-xs-12">
-            <p class="lead">Contenido</p>
-        </div>
-    </div>
-
-     <div class="row row-content">
-        <div class="col-xs-12">
-            <p class="lead">Contenido</p>
-        </div>
-    </div>
-
-    <div class="row row-content">
-        <div class="col-xs-12">
-          <p class="lead">Contenido</p>
-        </div>
-    </div>
-
-  </div>
-
-
-    <!-- Footer -->
+    </header>
+    <ng-view></ng-view>
     <footer class="text-center">
         <div class="footer-above">
             <div class="container">
@@ -124,13 +80,16 @@
             </div>
         </div>
     </footer>
-
-
-    
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="../bower_components/angular/angular.min.js"></script>
+    <script src="../bower_components/angular-aria/angular-aria.js"></script>
+    <script src="../bower_components/angular-animate/angular-animate.js"></script>
+    <script src="../bower_components/angular-material/angular-material.js"></script>
+    <script src="../bower_components/angular-route/angular-route.min.js"></script>
     <script src="scripts/app.js"></script>
-    <script src="../node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+    <script src="scripts/controllers.js"></script>
+    <script src="scripts/services.js"></script>
 </body>
+
 </html>

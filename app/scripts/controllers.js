@@ -7,10 +7,10 @@ angular.module('testManagerApp')
 
     }])
 
-    .controller('TestController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
+    .controller('TestController', ['$scope','$routeParams', 'menuFactory', function ($scope,$routeParams ,menuFactory) {
 
 
-        $scope.cuestionario = menuFactory.getCuestionario(2);
+        $scope.cuestionario = menuFactory.getCuestionario(parseInt($routeParams.id,10));
 
     }])
 
