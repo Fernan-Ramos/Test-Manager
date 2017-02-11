@@ -7,14 +7,34 @@ angular.module('testManagerApp')
 
     }])
 
-    .controller('TestController', ['$scope','$routeParams', 'menuFactory', function ($scope,$routeParams ,menuFactory) {
+    .controller('TestController', ['$scope', '$routeParams', 'menuFactory', function ($scope, $routeParams, menuFactory) {
 
 
-        $scope.cuestionario = menuFactory.getCuestionario(parseInt($routeParams.id,10));
+        $scope.cuestionario = menuFactory.getCuestionario(parseInt($routeParams.id, 10));
 
     }])
 
-    .controller('MakerController', ['$scope', '$timeout', function ($scope, $timeout) {
+    //Directiva para poder cargar una imagen
+    .directive("fileread", [function () {
+        return {
+            scope: {
+                fileread: "="
+            },
+            link: function (scope, element, attributes) {
+                element.bind("change", function (changeEvent) {
+                    var reader = new FileReader();
+                    reader.onload = function (loadEvent) {
+                        scope.$apply(function () {
+                            scope.fileread = loadEvent.target.result;
+                        });
+                    }
+                    reader.readAsDataURL(changeEvent.target.files[0]);
+                });
+            }
+        }
+    }])
+
+    .controller('MakerController', ['$scope', '$timeout', 'menuFactory', function ($scope, $timeout, menuFactory) {
         $scope.quests = [1, 2, 3, 4, 5, 6, 7];
         $scope.selectedQuest;
         $scope.getSelectedQuest = function () {
@@ -31,34 +51,50 @@ angular.module('testManagerApp')
             return new Array(num);
         };
 
+        $scope.cuest = {
+            title: "",
+            image: "img/libro.jpg",
+            text: "",
+            _id: 3,
+            questions: [{
+                title: 'Python Test',
+                pregunta: "",
+                image: "img/libro.jpg",
+                r1: "",
+                r2: "",
+                r3: "",
+                r4: "",
+                rcorrect: ""
+            }]
+        };
 
-        $scope.respuesta = null;
-        $scope.respuestas = null;
+        $scope.submitComment = function () {
 
-        $scope.loadRespuestas = function () {
+            console.log($scope.cuest);
+            // Step 3: Push your comment into the dish's comment array
+            $scope.cuestionarios.push($scope.cuest);
 
-            // Use timeout to simulate a 650ms request.
-            return $timeout(function () {
+            //Step 4: reset your form to pristine
+            $scope.makerForm.$setPristine();
 
-                $scope.respuestas = $scope.respuestas || [{
-                        id: 1,
-                        name: 'Respuesta 1'
-                    },
-                    {
-                        id: 2,
-                        name: 'Respuesta 2'
-                    },
-                    {
-                        id: 3,
-                        name: 'Respuesta 3'
-                    },
-                    {
-                        id: 4,
-                        name: 'Respuesta 4'
-                    },
-                ];
+            //Step 5: reset your JavaScript object that holds your comment
+            $scope.cuest = {
+                title: "",
+                image: "img/libro.jpg",
+                text: "",
+                _id: 3,
+                questions: [{
+                    title: 'Python Test',
+                    pregunta: "",
+                    image: "img/libro.jpg",
+                    r1: "",
+                    r2: "",
+                    r3: "",
+                    r4: "",
+                    rcorrect: ""
+                }]
+            };
 
-            }, 650);
         };
 
     }]);
