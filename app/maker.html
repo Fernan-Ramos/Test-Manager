@@ -1,11 +1,12 @@
 <div class="container" ng-controller="MenuController">
     <div class="row row-content" ng-controller="MakerController">
         <div class="col-xs-12">
-            <h3>Crea tu propio cuestionario</h3>
+            <h3>Crea tu propio cuestionario </h3>
             <hr>
         </div>
         <div class="col-xs-12 col-sm-9">
-            <form class="form-horizontal" role="form" name="makerForm" ng-submit="submitComment()" novalidate>
+            <form class="form-horizontal" role="form" name="makerForm" ng-submit="submitTest()" novalidate>
+                <label><input type="radio" ng-model="cuest._id" ng-value="{{getId()}}"> Cuestionario nº {{getId()}} </label>
                 <div class="form-group">
                     <label for="title" class="col-sm-2 control-label">Título</label>
                     <div class="col-sm-10">
@@ -41,7 +42,7 @@
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="question" name="question" placeholder="Escribe la pregunta" ng-model="cuest.questions[$index].pregunta"
                                     required>
-                                <!-- 
+                                    <!-- 
                                 <div class="form-group" ng-repeat="n in [1,2,3,4]">
                                     <hr>
                                     <label for="answer" class="col-sm-2 control-label">Respuesta {{n}}</label>
@@ -49,47 +50,47 @@
                                         <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index]." required>
                                     </div>
                                 </div> -->
-                                <div class="form-group">
-                                    <hr>
-                                    <label for="image" class="col-sm-2 control-label">Selecciona una imagen </label>
-                                    <div class="col-sm-10">
-                                        <input type="file" fileread="cuest.questions[$index].image"><br>
+                                    <div class="form-group">
                                         <hr>
+                                        <label for="image" class="col-sm-2 control-label">Selecciona una imagen </label>
+                                        <div class="col-sm-10">
+                                            <input type="file" fileread="cuest.questions[$index].image"><br>
+                                            <hr>
+                                        </div>
+                                        <label for="answer" class="col-sm-2 control-label">Respuesta 1</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r1"
+                                                required>
+                                                <hr>
+                                        </div>
+                                        <label for="answer" class="col-sm-2 control-label">Respuesta 2</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r2"
+                                                required>
+                                                <hr>
+                                        </div>
+                                        <label for="answer" class="col-sm-2 control-label">Respuesta 3</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r3"
+                                                required>
+                                                <hr>
+                                        </div>
+                                        <label for="answer" class="col-sm-2 control-label">Respuesta 4</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r4"
+                                                required>
+                                                <hr>
+                                        </div>
                                     </div>
-                                    <label for="answer" class="col-sm-2 control-label">Respuesta 1</label>
+                                    <label for="correct" class="col-sm-2 control-label">Respuesta Correcta </label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r1"
-                                            required>
-                                        <hr>
-                                    </div>
-                                    <label for="answer" class="col-sm-2 control-label">Respuesta 2</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r2"
-                                            required>
-                                        <hr>
-                                    </div>
-                                    <label for="answer" class="col-sm-2 control-label">Respuesta 3</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r3"
-                                            required>
-                                        <hr>
-                                    </div>
-                                    <label for="answer" class="col-sm-2 control-label">Respuesta 4</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r4"
-                                            required>
-                                        <hr>
-                                    </div>
-                                </div>
-                                <label for="correct" class="col-sm-2 control-label">Respuesta Correcta </label>
-                                <div class="col-sm-10">
-                                    <select class="form-control" ng-model="cuest.questions[$index].rcorrect" required>
+                                        <select class="form-control" ng-model="cuest.questions[$index].rcorrect" required>
                                     <option>{{cuest.questions[$index].r1}}</option>
                                     <option>{{cuest.questions[$index].r2}}</option>
                                     <option>{{cuest.questions[$index].r3}}</option>
                                     <option>{{cuest.questions[$index].r4}}</option>
                                 </select>
-                                </div>
+                                    </div>
                             </div>
                         </div>
                     </div>

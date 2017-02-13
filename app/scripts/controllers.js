@@ -34,7 +34,7 @@ angular.module('testManagerApp')
         }
     }])
 
-    .controller('MakerController', ['$scope', '$timeout', 'menuFactory', function ($scope, $timeout, menuFactory) {
+    .controller('MakerController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
         $scope.quests = [1, 2, 3, 4, 5, 6, 7];
         $scope.selectedQuest;
         $scope.getSelectedQuest = function () {
@@ -51,11 +51,25 @@ angular.module('testManagerApp')
             return new Array(num);
         };
 
+        //obtiene el indice del ultimo cuestionario creado
+        $scope.getId = function () {
+
+            //Si no hay ningún cuestionario creado , el _id es 0
+            if ($scope.cuestionarios.length == 0) {
+                return 0;
+            }
+            else {
+                return parseInt($scope.cuestionarios[$scope.cuestionarios.length - 1]._id, 10) + 1;
+            }
+
+            console.log($scope.cuestionarios[$scope.cuestionarios.length - 1]._id);
+        };
+
         $scope.cuest = {
             title: "",
             image: "img/libro.jpg",
             text: "",
-            _id: 3,
+            _id: "",
             questions: [{
                 title: 'Python Test',
                 pregunta: "",
@@ -68,21 +82,22 @@ angular.module('testManagerApp')
             }]
         };
 
-        $scope.submitComment = function () {
+        $scope.submitTest = function () {
 
             console.log($scope.cuest);
-            // Step 3: Push your comment into the dish's comment array
+            // Step 3: Poner el cuestionaro creado en array de cuestionarios
             $scope.cuestionarios.push($scope.cuest);
 
-            //Step 4: reset your form to pristine
+            //Step 4: resetear el formulario a  pristine
             $scope.makerForm.$setPristine();
 
-            //Step 5: reset your JavaScript object that holds your comment
+
+            //Step 5: reseat el objeto JavaScript una vez que el cuestionario ha sido creado
             $scope.cuest = {
                 title: "",
                 image: "img/libro.jpg",
                 text: "",
-                _id: 3,
+                _id: "",
                 questions: [{
                     title: 'Python Test',
                     pregunta: "",
