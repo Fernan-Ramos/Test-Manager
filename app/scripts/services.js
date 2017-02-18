@@ -11,40 +11,46 @@ angular.module('testManagerApp')
                 title: 'Cuanto sabes de paises?',
                 image: 'img/libro.jpg',
                 text: 'blabalbla',
-                _id:0,
+                _id: 0,
                 questions: [{
-                        title: 'paises Test',
-                        pregunta: 'blaa',
-                        image: 'img/mundo.jpg',
-                        r1: 'asi',
-                        r2: 'asao',
-                        r3: 'ja',
-                        r4: 'je'
-                    },
-                    {
-                        title: 'paises Test',
-                        pregunta: 'blaa',
-                        image: 'img/programar.jpg',
-                        r1: 'asi',
-                        r2: 'asao',
-                        r3: 'ja',
-                        r4: 'je'
-                    },
-                    {
-                        title: 'paises Test',
-                        pregunta: 'blaa',
-                        image: 'img/libro.jpg',
-                        r1: 'asi',
-                        r2: 'asao',
-                        r3: 'ja',
-                        r4: 'je'
+                    _id:0,
+                    title: 'paises Test',
+                    pregunta: 'blaa',
+                    image: 'img/mundo.jpg',
+                    r1: 'asi',
+                    r2: 'asao',
+                    r3: 'ja',
+                    r4: 'je',
+                    rcorrect: 'asi',
+                    contestada:false
+                },
+                {
+                    _id:1,
+                    title: 'paises Test',
+                    pregunta: 'blaa',
+                    image: 'img/programar.jpg',
+                    r1: 'asi',
+                    r2: 'asao',
+                    r3: 'ja',
+                    r4: 'je',
+                    rcorrect: 'asao',
+                    contestada:false
+                },
+                {
+                    _id:2,
+                    title: 'paises Test',
+                    pregunta: 'blaa',
+                    image: 'img/libro.jpg',
+                    r1: 'asi',
+                    r2: 'asao',
+                    r3: 'ja',
+                    r4: 'je',
+                    rcorrect: 'ja',
+                    contestada:false
 
-                    }
+                }
                 ]
             }
-
-            
-
 
         ];
 
@@ -58,5 +64,23 @@ angular.module('testManagerApp')
 
         return menufac;
 
+
+    })
+
+
+
+    .factory('testFactory', function () {
+
+        var testfac = {};
+
+        var tests = [
+
+        ];
+        
+        testfac.getAnswers = function () {
+            return tests;
+        };
+
+        return testfac;
 
     });
