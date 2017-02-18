@@ -30,7 +30,7 @@ angular.module('testManagerApp')
             $scope.testForm.$setPristine();
             $mdDialog.show({
                 controller: DialogController,
-                templateUrl: 'tabDialog.tmpl.html',
+                templateUrl: 'dialogCuestionario.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
                 clickOutsideToClose: false
