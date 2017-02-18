@@ -109,19 +109,6 @@ angular.module('testManagerApp')
             return new Array(num);
         };
 
-        //obtiene el indice del ultimo cuestionario creado
-        $scope.getId = function () {
-
-            //Si no hay ningún cuestionario creado , el _id es 0
-            if ($scope.cuestionarios.length == 0) {
-                return 0;
-            }
-            else {
-                return parseInt($scope.cuestionarios[$scope.cuestionarios.length - 1]._id, 10) + 1;
-            }
-
-            console.log($scope.cuestionarios[$scope.cuestionarios.length - 1]._id);
-        };
 
         $scope.cuest = {
             title: "",
