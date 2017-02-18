@@ -1,0 +1,53 @@
+<md-dialog aria-label="Mango (Fruit)">
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>{{tests[tests.length-1].title}}</h2>
+        <span flex></span>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="max-width:800px;max-height:810px; ">
+      <md-tabs md-dynamic-height md-border-bottom>
+        <md-tab label="one">
+           <md-content class="md-padding">
+            <h1 class="md-display-2">Respuestas correctas : {{correctas}} de {{tests[tests.length-1].questions.length}}</h1>
+        
+          </md-content>
+          
+          <md-content class="md-padding" ng-repeat="preg in tests[tests.length-1].questions  track by $index">
+            <h1 class="md-display-2">Pregunta {{$index+1}} : {{preg.pregunta}}</h1>
+            <h2 md-colors="{color: 'green', 'border-color': 'primary-500'}" ng-if="preg.r==preg.rcorrect" > Muy Bien! La Respuesta es correcta</h2>
+            <h2 md-colors="{color: 'red-A100', 'border-color': 'primary-600'}" ng-if="preg.r!=preg.rcorrect" > La Respuesta no es correcta </h2>
+            <p>Respuesta seleccionada : {{preg.r}}</p>
+            <p>Respuesta correcta : {{preg.rcorrect}}</p>
+        
+          </md-content>
+        </md-tab>
+        <md-tab label="two">
+          <md-content class="md-padding">
+            <h1 class="md-display-2">Tab Two</h1>
+          
+          </md-content>
+        </md-tab>
+        <md-tab label="three">
+          <md-content class="md-padding">
+            <h1 class="md-display-2">Tab Three</h1>
+          </md-content>
+        </md-tab>
+      </md-tabs>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button href="#!/menu" >
+        More on Wikipedia
+      </md-button>
+      <span flex></span>
+     <md-button  ng-href="#!/menu" ng-click="answer('not useful')" >
+        Repetir Cuestionario
+      </md-button>
+      <md-button ng-href="#!/menu" ng-click="answer('useful')" style="margin-right:20px;" >
+        Volver al Menú
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
