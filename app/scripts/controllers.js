@@ -42,14 +42,20 @@ angular.module('testManagerApp')
                 });
             function DialogController($scope, $mdDialog) {
                 $scope.correctas = 0;
+                $scope.incorrectas = 0;
                 $scope.tests = testFactory.getAnswers();
                 //Obtener el numero total de preguntas correctas
                 for(var i=0;i<$scope.tests[$scope.tests.length-1].questions.length;i++){
                     if($scope.tests[$scope.tests.length-1].questions[i].r ==  $scope.tests[$scope.tests.length-1].questions[i].rcorrect){
                         $scope.correctas++;
+                    }else{
+                        $scope.incorrectas++;
                     }
+
                 }
-                
+                $scope.labels = ["Correctas", "Incorrectas"];
+                $scope.data = [$scope.correctas, $scope.incorrectas];
+                $scope.colors = ['#5cb85c', '#d9534f'];
                 $scope.hide = function () {
                     $mdDialog.hide();
                 };
@@ -68,7 +74,7 @@ angular.module('testManagerApp')
         };
 
     
-
+   
 
     }])
 
