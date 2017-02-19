@@ -1,5 +1,5 @@
 'use strict';
-angular.module('testManagerApp', ['ngMaterial', 'ngRoute'])
+angular.module('testManagerApp', ['ngMaterial', 'ngRoute','chart.js'])
     .config(function ($routeProvider) {
         $routeProvider
             // route for the maker page
