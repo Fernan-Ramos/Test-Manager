@@ -55,7 +55,7 @@ angular.module('testManagerApp')
                 }
                 $scope.labels = ["Correctas", "Incorrectas"];
                 $scope.data = [$scope.correctas, $scope.incorrectas];
-                $scope.colors = ['#5cb85c', '#d9534f'];
+                $scope.colors = ['#D1E5B3', '#F08080'];
                 $scope.hide = function () {
                     $mdDialog.hide();
                 };
