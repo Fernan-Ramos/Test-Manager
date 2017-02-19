@@ -8,29 +8,25 @@
     </md-toolbar>
     <md-dialog-content style="max-width:800px;max-height:810px; ">
       <md-tabs md-dynamic-height md-border-bottom>
-        <md-tab label="sumario">
+        <md-tab label="resultados">
           <md-content class="md-padding">
-            <h5 class="md-display-1">Respuestas correctas : {{correctas}} de {{tests[tests.length-1].questions.length}}</h5>
+            <md-content class="md-padding">
+              <h5 class="md-display-1"><em>Respuestas correctas : {{correctas}} de {{tests[tests.length-1].questions.length}}</em></h5>
+            </md-content>
+            <canvas id="doughnut" class="chart chart-doughnut" chart-data="data" chart-labels="labels" chart-colors="colors">
+            </canvas>
           </md-content>
-
+        </md-tab>
+        <md-tab label="sumario">
           <md-content class="md-padding" ng-repeat="preg in tests[tests.length-1].questions  track by $index">
             <div ng-if="preg.r==preg.rcorrect" class="bs-callout bs-callout-success">
               <h4><em>Pregunta {{$index+1}} : {{preg.pregunta}}</em></h4>
               <p>Muy bien, <strong class="text-success">{{preg.rcorrect}}</strong> es la respuesta correcta</p>
             </div>
-
             <div ng-if="preg.r!=preg.rcorrect" class="bs-callout bs-callout-danger">
               <h4><em>Pregunta {{$index+1}} : {{preg.pregunta}}</em></h4>
-              <p>Vaya! <strong class="text-danger">{{preg.r}} </strong> no es la respuesta correcta. La respuesta corresta es
-                : <strong>{{preg.rcorrect}}</strong></p>
+              <p>Vaya! <strong class="text-danger">{{preg.r}} </strong> no es la respuesta correcta.
             </div>
-          </md-content>
-        </md-tab>
-        <md-tab label="estadisticas">
-          <md-content class="md-padding">
-            <h1 class="md-display-2">Tab Two</h1>
-             <canvas id="doughnut" class="chart chart-doughnut" chart-data="data" chart-labels="labels" chart-colors="colors">
-            </canvas>
           </md-content>
         </md-tab>
         <md-tab label="three">
@@ -40,10 +36,9 @@
         </md-tab>
       </md-tabs>
     </md-dialog-content>
-
     <md-dialog-actions layout="row">
       <span flex></span>
-      <md-button  ng-click="answer('not useful')">
+      <md-button ng-click="answer('not useful')">
         Repetir Cuestionario
       </md-button>
       <md-button ng-href="#!/menu" ng-click="answer('useful')" style="margin-right:20px;">
