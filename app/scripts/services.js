@@ -13,7 +13,7 @@ angular.module('testManagerApp')
                 text: 'blabalbla',
                 _id: 0,
                 questions: [{
-                    _id:0,
+                    _id: 0,
                     title: 'paises Test',
                     pregunta: 'blaa',
                     image: 'img/mundo.jpg',
@@ -22,10 +22,10 @@ angular.module('testManagerApp')
                     r3: 'ja',
                     r4: 'je',
                     rcorrect: 'asi',
-                    contestada:false
+                    contestada: false
                 },
                 {
-                    _id:1,
+                    _id: 1,
                     title: 'paises Test',
                     pregunta: 'blaa',
                     image: 'img/programar.jpg',
@@ -34,10 +34,10 @@ angular.module('testManagerApp')
                     r3: 'ja',
                     r4: 'je',
                     rcorrect: 'asao',
-                    contestada:false
+                    contestada: false
                 },
                 {
-                    _id:2,
+                    _id: 2,
                     title: 'paises Test',
                     pregunta: 'blaa',
                     image: 'img/libro.jpg',
@@ -46,7 +46,7 @@ angular.module('testManagerApp')
                     r3: 'ja',
                     r4: 'je',
                     rcorrect: 'ja',
-                    contestada:false
+                    contestada: false
 
                 }
                 ]
@@ -76,11 +76,38 @@ angular.module('testManagerApp')
         var tests = [
 
         ];
-        
+
         testfac.getAnswers = function () {
             return tests;
         };
 
         return testfac;
+
+    })
+
+
+    .factory('statsFactory', function () {
+
+        var statsfac = {};
+
+        var labels = [];
+        var series = [];
+        var data = [];
+
+        statsfac.getLabels = function () {
+            return labels;
+        };
+
+        statsfac.getSeries = function () {
+            return series;
+        };
+
+        statsfac.getData = function () {
+            return data;
+        };
+
+        return statsfac;
+
+
 
     });
