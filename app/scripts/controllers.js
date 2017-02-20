@@ -51,8 +51,9 @@ angular.module('testManagerApp')
                     }else{
                         $scope.incorrectas++;
                     }
-
                 }
+                $scope.tests[$scope.tests.length-1].correctas = $scope.correctas;
+                $scope.tests[$scope.tests.length-1].incorrectas = $scope.incorrectas;
                 $scope.labels = ["Correctas", "Incorrectas"];
                 $scope.data = [$scope.correctas, $scope.incorrectas];
                 $scope.colors = ['#D1E5B3', '#F08080'];
