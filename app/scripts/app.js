@@ -17,6 +17,10 @@ angular.module('testManagerApp', ['ngMaterial', 'ngRoute','chart.js'])
                 templateUrl: 'cuestionario.html',
                 controller: 'TestController'
             })
+            // route for the estadisticas page
+            .when('/estadisticas',{
+                templateUrl:'estadisticas.html',
+            })
             .otherwise('/maker');
 
     });
