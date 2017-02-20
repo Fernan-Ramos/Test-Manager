@@ -45,15 +45,15 @@ angular.module('testManagerApp')
                 $scope.incorrectas = 0;
                 $scope.tests = testFactory.getAnswers();
                 //Obtener el numero total de preguntas correctas
-                for(var i=0;i<$scope.tests[$scope.tests.length-1].questions.length;i++){
-                    if($scope.tests[$scope.tests.length-1].questions[i].r ==  $scope.tests[$scope.tests.length-1].questions[i].rcorrect){
+                for (var i = 0; i < $scope.tests[$scope.tests.length - 1].questions.length; i++) {
+                    if ($scope.tests[$scope.tests.length - 1].questions[i].r == $scope.tests[$scope.tests.length - 1].questions[i].rcorrect) {
                         $scope.correctas++;
-                    }else{
+                    } else {
                         $scope.incorrectas++;
                     }
                 }
-                $scope.tests[$scope.tests.length-1].correctas = $scope.correctas;
-                $scope.tests[$scope.tests.length-1].incorrectas = $scope.incorrectas;
+                $scope.tests[$scope.tests.length - 1].correctas = $scope.correctas;
+                $scope.tests[$scope.tests.length - 1].incorrectas = $scope.incorrectas;
                 $scope.labels = ["Correctas", "Incorrectas"];
                 $scope.data = [$scope.correctas, $scope.incorrectas];
                 $scope.colors = ['#D1E5B3', '#F08080'];
@@ -74,8 +74,8 @@ angular.module('testManagerApp')
 
         };
 
-    
-   
+
+
 
     }])
 
@@ -181,5 +181,74 @@ angular.module('testManagerApp')
             };
 
         };
+
+    }])
+
+    .controller('StatsController', ['$scope', 'testFactory', function ($scope, testFactory) {
+        $scope.tests = testFactory.getAnswers();
+        $scope.labels = [];
+        $scope.series = [];
+        $scope.data = [
+            
+        ];
+        $scope.onClick = function (points, evt) {
+            console.log(points, evt);
+        };
+        $scope.datasetOverride = [{
+            yAxisID: 'y-axis-1'
+        }, {
+            yAxisID: 'y-axis-2'
+        }];
+        $scope.options = {
+            scales: {
+                yAxes: [{
+                    id: 'y-axis-1',
+                    type: 'linear',
+                    display: true,
+                    position: 'left'
+                },
+                {
+                    id: 'y-axis-2',
+                    type: 'linear',
+                    display: true,
+                    position: 'right'
+                }
+                ]
+            }
+        };
+
+
+        //Si el conjunto de respuestas tiene alguna respuesta a algún cuestionario , se obtiene el titulo  del cuestionario , el nº de respuestas correctas y la fecha en la que se hizo.
+        if ($scope.tests.length != 0) {
+            $scope.title = $scope.tests[$scope.tests.length - 1].title;
+            $scope.respuestas = $scope.tests[$scope.tests.length - 1].correctas;
+            $scope.fecha = $scope.tests[$scope.tests.length - 1].date;
+            $scope.labels.push($scope.fecha);
+            $scope.series.push($scope.title);
+            $scope.data.push([$scope.respuestas]);
+        }
+
+        console.log($scope.labels);
+        console.log($scope.series);
+        console.log($scope.data);
+        /**
+         * 
+         * //Si el cuestionario ya está reflejado en las estadisticas 
+        if ($scope.series.includes($scope.title)) {
+            if ($scope.labels.includes($scope.fecha)) {
+
+            }
+        }
+         //Si no está reflejado en las estadisticas
+        else {
+            
+        }
+         */
+        
+       
+
+
+
+
 
     }]);
