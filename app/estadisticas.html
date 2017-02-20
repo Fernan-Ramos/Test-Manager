@@ -1,5 +1,5 @@
-<div class="container">
-    <div class="row row-content" ng-controller="DoughnutCtrl">
+<div class="container" ng-controller="StatsController">
+    <div class="row row-content" >
         <div class="col-sm-4">
             <h2>Estadisticas</h2>
         </div>
@@ -11,7 +11,7 @@
             </canvas>
         </div>
     </div>
-    <div class="row row-content" ng-controller="LineCtrl">
+    <div class="row row-content">
         <div class="col-xs-12">
             <canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options"
                 chart-dataset-override="datasetOverride" chart-click="onClick">
