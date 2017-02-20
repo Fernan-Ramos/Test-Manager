@@ -22,7 +22,7 @@ angular.module('testManagerApp')
         //console.log($scope.answer);
         //Guardo la respuesta correcta por pregunta(indice) y compruebo que la respuesta sea correcta o no
         $scope.submitAnswer = function (ev) {
-
+            $scope.answer.date = new Date().toISOString();
             $scope.tests.push($scope.answer);
             console.log("ANSWER", $scope.answer);
             console.log("CONJUNTO DE RESPUESTAS OTALES", $scope.tests);
