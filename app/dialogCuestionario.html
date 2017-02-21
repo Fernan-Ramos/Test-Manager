@@ -11,7 +11,7 @@
         <md-tab label="resultados">
           <md-content class="md-padding">
             <md-content class="md-padding">
-              <h5 class="md-display-1"><em>Respuestas correctas : {{correctas}} de {{tests[tests.length-1].questions.length}}</em></h5>
+              <h5 class="md-display-1"><em>Respuestas correctas : {{(correctas/tests[tests.length-1].questions.length)*100 | number:2}}%</em></h5>
             </md-content>
             <canvas id="doughnut" class="chart chart-doughnut" chart-data="data" chart-labels="labels" chart-colors="colors">
             </canvas>
@@ -29,19 +29,14 @@
             </div>
           </md-content>
         </md-tab>
-        <md-tab label="three">
-          <md-content class="md-padding">
-            <h1 class="md-display-2">Tab Three</h1>
-          </md-content>
-        </md-tab>
       </md-tabs>
     </md-dialog-content>
     <md-dialog-actions layout="row">
       <span flex></span>
-      <md-button ng-click="answer('not useful')">
-        Repetir Cuestionario
+      <md-button ng-href="#!/estadisticas" ng-click="answer()">
+        Estadisticas
       </md-button>
-      <md-button ng-href="#!/menu" ng-click="answer('useful')" style="margin-right:20px;">
+      <md-button ng-href="#!/menu" ng-click="answer()" style="margin-right:20px;">
         Volver al Menú
       </md-button>
     </md-dialog-actions>
