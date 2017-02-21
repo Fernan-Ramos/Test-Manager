@@ -8,26 +8,27 @@ angular.module('testManagerApp')
     }])
 
     .controller('TestController', ['$scope', '$filter','$routeParams', '$mdDialog', 'menuFactory', 'testFactory', function ($scope,$filter ,$routeParams, $mdDialog, menuFactory, testFactory) {
-
-
+        //Se obtiene el cuestionario 
         $scope.cuestionario = menuFactory.getCuestionario(parseInt($routeParams.id, 10));
+        //Se obtiene las respuestas guardadas
         $scope.tests = testFactory.getAnswers();
         console.log($scope.cuestionario);
+        //Se crea un objeto que contendra la respuestas
         $scope.answer = {};
         //Copio el array de cuestionarios en un nuevo array que contendrá las respuestas seleccionadas por el usuario
         angular.copy($scope.cuestionario, $scope.answer);
 
-        //console.log($scope.cuestionario);
         console.log($scope.cuestionario);
-        //console.log($scope.answer);
+        
         //Guardo la respuesta correcta por pregunta(indice) y compruebo que la respuesta sea correcta o no
         $scope.submitAnswer = function (ev) {
-            $scope.answer.date = $filter('date')(new Date(), 'fullDate');//new Date().toISOString();
+            //Se guarda la fecha en la que se realiza el cuestionario
+            $scope.answer.date = $filter('date')(new Date(), 'fullDate');
+            //Se guarda la respuesta en el array de respuestas
             $scope.tests.push($scope.answer);
-            console.log("ANSWER", $scope.answer);
-            console.log("CONJUNTO DE RESPUESTAS OTALES", $scope.tests);
             //Resetea el formulario a  pristine
             $scope.testForm.$setPristine();
+            //Muestra el dialogo con los resultados
             $mdDialog.show({
                 controller: DialogController,
                 templateUrl: 'dialogCuestionario.html',
@@ -40,7 +41,7 @@ angular.module('testManagerApp')
                 $scope.correctas = 0;
                 $scope.incorrectas = 0;
                 $scope.tests = testFactory.getAnswers();
-                //Obtener el numero total de preguntas correctas e incorrectas
+                //Se obtiene el numero total de preguntas correctas e incorrectas
                 for (var i = 0; i < $scope.tests[$scope.tests.length - 1].questions.length; i++) {
                     if ($scope.tests[$scope.tests.length - 1].questions[i].r == $scope.tests[$scope.tests.length - 1].questions[i].rcorrect) {
                         $scope.correctas++;
@@ -48,23 +49,22 @@ angular.module('testManagerApp')
                         $scope.incorrectas++;
                     }
                 }
+                //Se guarda las respuestas correctas 
                 $scope.tests[$scope.tests.length - 1].correctas = $scope.correctas;
+                //Se guarda las respuestas incorrectas 
                 $scope.tests[$scope.tests.length - 1].incorrectas = $scope.incorrectas;
+                //Atributos para el char
                 $scope.labels = ["Correctas", "Incorrectas"];
                 $scope.data = [$scope.correctas, $scope.incorrectas];
                 $scope.colors = ['#D1E5B3', '#F08080'];
-                
+                //Función que cierra el dialogo
                 $scope.answer = function (answer) {
                     $mdDialog.hide(answer);
                 };
             }
-
+            //Se resetea el objeto respuesta
             $scope.answer = {};
-
         };
-
-
-
 
     }])
 
