@@ -35,16 +35,12 @@ angular.module('testManagerApp')
                 targetEvent: ev,
                 clickOutsideToClose: false
             })
-                .then(function (answer) {
-                    $scope.status = 'You said the information was "' + answer + '".';
-                }, function () {
-                    $scope.status = 'You cancelled the dialog.';
-                });
+            
             function DialogController($scope, $mdDialog) {
                 $scope.correctas = 0;
                 $scope.incorrectas = 0;
                 $scope.tests = testFactory.getAnswers();
-                //Obtener el numero total de preguntas correctas
+                //Obtener el numero total de preguntas correctas e incorrectas
                 for (var i = 0; i < $scope.tests[$scope.tests.length - 1].questions.length; i++) {
                     if ($scope.tests[$scope.tests.length - 1].questions[i].r == $scope.tests[$scope.tests.length - 1].questions[i].rcorrect) {
                         $scope.correctas++;
@@ -57,14 +53,7 @@ angular.module('testManagerApp')
                 $scope.labels = ["Correctas", "Incorrectas"];
                 $scope.data = [$scope.correctas, $scope.incorrectas];
                 $scope.colors = ['#D1E5B3', '#F08080'];
-                $scope.hide = function () {
-                    $mdDialog.hide();
-                };
-
-                $scope.cancel = function () {
-                    $mdDialog.cancel();
-                };
-
+                
                 $scope.answer = function (answer) {
                     $mdDialog.hide(answer);
                 };
