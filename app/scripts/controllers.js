@@ -7,7 +7,7 @@ angular.module('testManagerApp')
 
     }])
 
-    .controller('TestController', ['$scope', '$filter','$routeParams', '$mdDialog', 'menuFactory', 'testFactory', function ($scope,$filter ,$routeParams, $mdDialog, menuFactory, testFactory) {
+    .controller('TestController', ['$scope', '$filter', '$routeParams', '$mdDialog', 'menuFactory', 'testFactory', function ($scope, $filter, $routeParams, $mdDialog, menuFactory, testFactory) {
         //Se obtiene el cuestionario 
         $scope.cuestionario = menuFactory.getCuestionario(parseInt($routeParams.id, 10));
         //Se obtiene las respuestas guardadas
@@ -19,7 +19,7 @@ angular.module('testManagerApp')
         angular.copy($scope.cuestionario, $scope.answer);
 
         console.log($scope.cuestionario);
-        
+
         //Guardo la respuesta correcta por pregunta(indice) y compruebo que la respuesta sea correcta o no
         $scope.submitAnswer = function (ev) {
             //Se guarda la fecha en la que se realiza el cuestionario
@@ -36,7 +36,7 @@ angular.module('testManagerApp')
                 targetEvent: ev,
                 clickOutsideToClose: false
             })
-            
+
             function DialogController($scope, $mdDialog) {
                 $scope.correctas = 0;
                 $scope.incorrectas = 0;
@@ -61,7 +61,33 @@ angular.module('testManagerApp')
                 $scope.answer = function (answer) {
                     $mdDialog.hide(answer);
                 };
+                $scope.labels1 = testFactory.getLabels();
+                $scope.series1 = testFactory.getSeries();
+                $scope.data1 = testFactory.getData();
+                //Si el conjunto de respuestas tiene alguna respuesta a algún cuestionario , se obtiene el titulo  del cuestionario , el nº de respuestas correctas y la fecha en la que se hizo.
+                if ($scope.tests.length != 0) {
+                    $scope.title = $scope.tests[$scope.tests.length - 1].title;
+                    $scope.respuestas = ($scope.tests[$scope.tests.length - 1].correctas / $scope.tests[$scope.tests.length - 1].questions.length) * 100;
+                    $scope.fecha = $scope.tests[$scope.tests.length - 1].date;
+
+                    //Si el cuestionario ya está reflejado en las estadisticas se añade el nuevo valor de respuestas al array de respuestas de dicho cuestionario
+                    if ($scope.series1.includes($scope.title)) {
+                        //obtener el indice del label para poder poner el nuevo valor
+                        var index = $scope.series1.indexOf($scope.title);
+                        console.log(index);
+                        $scope.data1[index].push($scope.respuestas);
+                        $scope.labels1.push($scope.fecha);
+                    }
+                    //Si no está reflejado en las estadisticas
+                    else {
+                        $scope.labels1.push($scope.fecha);
+                        $scope.series1.push($scope.title);
+                        $scope.data1.push([$scope.respuestas]);
+                    }
+                }
+
             }
+
             //Se resetea el objeto respuesta
             $scope.answer = {};
         };
@@ -173,12 +199,11 @@ angular.module('testManagerApp')
 
     }])
 
-    .controller('StatsController', ['$scope', 'testFactory', 'statsFactory', function ($scope, testFactory, statsFactory) {
+    .controller('StatsController', ['$scope', 'testFactory', function ($scope, testFactory) {
         $scope.tests = testFactory.getAnswers();
-        $scope.labels = statsFactory.getLabels();
-        $scope.series = statsFactory.getSeries();
-        $scope.data = statsFactory.getData();
-
+        $scope.labels = testFactory.getLabels();
+        $scope.series = testFactory.getSeries();
+        $scope.data = testFactory.getData();
         $scope.onClick = function (points, evt) {
             console.log(points, evt);
         };
@@ -202,40 +227,10 @@ angular.module('testManagerApp')
                     position: 'right'
                 }
                 ]
-            }
+            },
+            legend: { display: true }
         };
 
         $scope.options2 = { legend: { display: true } };
-        //Si el conjunto de respuestas tiene alguna respuesta a algún cuestionario , se obtiene el titulo  del cuestionario , el nº de respuestas correctas y la fecha en la que se hizo.
-        if ($scope.tests.length != 0) {
-            $scope.title = $scope.tests[$scope.tests.length - 1].title;
-            $scope.respuestas = $scope.tests[$scope.tests.length - 1].correctas;
-            $scope.fecha = $scope.tests[$scope.tests.length - 1].date;
-
-            //Si el cuestionario ya está reflejado en las estadisticas se añade el nuevo valor de respuestas al array de respuestas de dicho cuestionario
-            if ($scope.series.includes($scope.title)) {
-                //obtener el indice del label para poder poner el nuevo valor
-                var index = $scope.series.indexOf($scope.title);
-                console.log(index);
-                $scope.data[index].push($scope.respuestas);
-                $scope.labels.push($scope.fecha);
-            }
-            //Si no está reflejado en las estadisticas
-            else {
-                $scope.labels.push($scope.fecha);
-                $scope.series.push($scope.title);
-                $scope.data.push([$scope.respuestas]);
-            }
-
-
-        }
-
-
-
-
-
-        console.log($scope.labels);
-        console.log($scope.series);
-        console.log($scope.data);
 
     }]);
