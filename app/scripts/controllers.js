@@ -198,7 +198,7 @@ angular.module('testManagerApp')
         }, {
             yAxisID: 'y-axis-2'
         }];
-        $scope.options = {
+        $scope.options1 = {
             scales: {
                 yAxes: [{
                     id: 'y-axis-1',
@@ -216,7 +216,7 @@ angular.module('testManagerApp')
             }
         };
 
-
+        $scope.options2 = { legend: { display: true } };
         //Si el conjunto de respuestas tiene alguna respuesta a algún cuestionario , se obtiene el titulo  del cuestionario , el nº de respuestas correctas y la fecha en la que se hizo.
         if ($scope.tests.length != 0) {
             $scope.title = $scope.tests[$scope.tests.length - 1].title;
