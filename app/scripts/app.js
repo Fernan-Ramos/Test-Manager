@@ -22,6 +22,11 @@ angular.module('testManagerApp', ['ngMaterial', 'ngRoute','chart.js'])
                 templateUrl:'estadisticas.html',
                 controller:'StatsController'
             })
+
+            .when('/stats/:id',{
+                templateUrl:'estadisticasId.html',
+                controller:'StatsControllerDetails'
+            })
             .otherwise('/maker');
 
     });
