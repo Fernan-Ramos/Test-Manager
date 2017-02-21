@@ -73,42 +73,31 @@ angular.module('testManagerApp')
 
         var testfac = {};
 
-        var tests = [
-
-        ];
+        var tests = [];
+        var labels = [];
+        var series = [];
+        var data = [];
 
         testfac.getAnswers = function () {
             return tests;
         };
 
-        testfac.getAnswer = function(index) {
+        testfac.getAnswer = function (index) {
             return tests[index];
+        };
+
+        testfac.getLabels = function () {
+            return labels;
+        };
+
+        testfac.getSeries = function () {
+            return series;
+        };
+
+        testfac.getData = function () {
+            return data;
         };
 
         return testfac;
 
-    })
-
-
-    .factory('statsFactory', function () {
-
-        var statsfac = {};
-
-        var labels = [];
-        var series = [];
-        var data = [];
-
-        statsfac.getLabels = function () {
-            return labels;
-        };
-
-        statsfac.getSeries = function () {
-            return series;
-        };
-
-        statsfac.getData = function () {
-            return data;
-        };
-
-        return statsfac;
     });
