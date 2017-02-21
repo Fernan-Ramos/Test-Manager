@@ -111,7 +111,4 @@ angular.module('testManagerApp')
         };
 
         return statsfac;
-
-
-
     });

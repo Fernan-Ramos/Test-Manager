@@ -22,11 +22,6 @@ angular.module('testManagerApp', ['ngMaterial', 'ngRoute','chart.js'])
                 templateUrl:'estadisticas.html',
                 controller:'StatsController'
             })
-            // route for the estadisticasId page
-            .when('/stats/:id',{
-                templateUrl:'estadisticasId.html',
-                controller:'StatsControllerDetails'
-            })
             .otherwise('/maker');
 
     });
