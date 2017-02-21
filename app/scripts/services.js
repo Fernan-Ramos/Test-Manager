@@ -81,6 +81,10 @@ angular.module('testManagerApp')
             return tests;
         };
 
+        testfac.getAnswer = function(index) {
+            return tests[index];
+        };
+
         return testfac;
 
     })
