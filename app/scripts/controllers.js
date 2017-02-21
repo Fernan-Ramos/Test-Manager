@@ -248,5 +248,13 @@ angular.module('testManagerApp')
         console.log($scope.labels);
         console.log($scope.series);
         console.log($scope.data);
+        console.log($scope.tests);
 
-    }]);
+    }])
+
+     .controller('StatsControllerDetails', ['$scope','$routeParams' ,'testFactory',function ($scope,$routeParams ,testFactory) {
+         $scope.test = testFactory.getAnswer(parseInt($routeParams.id, 10));
+         
+         console.log($scope.test);
+
+     }]);
