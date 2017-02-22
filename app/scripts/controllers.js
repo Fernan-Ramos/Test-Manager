@@ -67,7 +67,7 @@ angular.module('testManagerApp')
                 //Si el conjunto de respuestas tiene alguna respuesta a algún cuestionario , se obtiene el titulo  del cuestionario , el nº de respuestas correctas y la fecha en la que se hizo.
                 if ($scope.tests.length != 0) {
                     $scope.title = $scope.tests[$scope.tests.length - 1].title;
-                    $scope.respuestas = ($scope.tests[$scope.tests.length - 1].correctas / $scope.tests[$scope.tests.length - 1].questions.length) * 100;
+                    $scope.respuestas = $filter('number')(($scope.tests[$scope.tests.length - 1].correctas / $scope.tests[$scope.tests.length - 1].questions.length) * 100, 2);
                     $scope.fecha = $scope.tests[$scope.tests.length - 1].date;
 
                     //Si el cuestionario ya está reflejado en las estadisticas se añade el nuevo valor de respuestas al array de respuestas de dicho cuestionario
