@@ -6,17 +6,12 @@
                 <div class="panel-body">
                     <p> Sort By: <input type="text" ng-model="filtText"></p>
                     <div ng-repeat="test in tests | orderBy:filtText" ng-class="{'bs-callout bs-callout-success':test.cal>70,'bs-callout bs-callout-warning': (test.cal>50 && test.cal<70),'bs-callout bs-callout-danger':test.cal<50}">
-                        <h3>{{test.title}}</h3>
+                        <h4>{{test.title}}</h4>
                         <p><strong><em>{{test.cal}}% correcto</em></strong></p>
                         <cite title="Source Title">{{test.date}}</cite>
                     </div>
                     
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div ng-if="tests.length==0" class="alert alert-warning" role="alert">
-                <a ng-href="#!/menu" class="alert-link">No has realizado ningún cuestionario aún!.</a>
             </div>
         </div>
         <div class="col-lg-6 col-sm-12">
