@@ -201,7 +201,7 @@ angular.module('testManagerApp')
 
     }])
 
-    .controller('StatsController', ['$scope', 'testFactory', function ($scope, testFactory) {
+    .controller('StatsController', ['$scope', '$mdDialog', 'testFactory', function ($scope, $mdDialog, testFactory) {
         $scope.tests = testFactory.getAnswers();
         $scope.labels = testFactory.getLabels();
         $scope.series = testFactory.getSeries();
@@ -234,5 +234,41 @@ angular.module('testManagerApp')
         };
 
         $scope.options2 = { legend: { display: true } };
+
+        //Dialogo que aparece cuando no hay cuestionarios completados
+        if ($scope.tests.length == 0) {
+            $mdDialog.show({
+                clickOutsideToClose: false,
+
+                scope: $scope,        // use parent scope in template
+                preserveScope: true,  // do not forget this if use parent scope
+
+                // Since GreetingController is instantiated with ControllerAs syntax
+                // AND we are passing the parent '$scope' to the dialog, we MUST
+                // use 'vm.<xxx>' in the template markup
+
+                template: '<md-dialog aria-label="List dialog">' +
+                '  <md-dialog-content>' +
+                '<md-content class="md-padding">' +
+                ' <h5 class="md-title">No hay estadisticas que mostrar</h5>' +
+                ' <p class="md-textContent">Todavía no has realizado ningún cuestionario</p>' +
+                '</md-content>      ' +
+                '  </md-dialog-content>' +
+                '  <md-dialog-actions>' +
+                '    <md-button ng-href="#!/menu" ng-click="closeDialog()" class="md-primary">' +
+                '      Menu' +
+                '    </md-button>' +
+                '  </md-dialog-actions>' +
+                '</md-dialog>',
+
+                controller: function DialogController($scope, $mdDialog) {
+                    $scope.closeDialog = function () {
+                        $mdDialog.hide();
+                    }
+                }
+            });
+        }
+
+
 
     }]);
