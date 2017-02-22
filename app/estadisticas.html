@@ -5,11 +5,12 @@
                 <div class="panel-heading">Cuestionarios realizados</div>
                 <div class="panel-body">
                     <p> Sort By: <input type="text" ng-model="filtText"></p>
-                    <blockquote ng-repeat="test in tests | orderBy:filtText">
-                        <p>{{test.title}}</p>
-                        <p><em>{{(test.correctas/test.questions.length)*100| number:2}}% correcto</em></p>
-                        <footer>Respuestas correctas{{test.correctas}} de {{test.questions.length}},<cite title="Source Title">{{test.date}}</cite></footer>
-                    </blockquote>
+                    <div ng-repeat="test in tests | orderBy:filtText" ng-class="{'bs-callout bs-callout-success':test.cal>70,'bs-callout bs-callout-warning': (test.cal>50 && test.cal<70),'bs-callout bs-callout-danger':test.cal<50}">
+                        <h3>{{test.title}}</h3>
+                        <p><strong><em>{{test.cal}}% correcto</em></strong></p>
+                        <cite title="Source Title">{{test.date}}</cite>
+                    </div>
+                    
                 </div>
             </div>
         </div>
