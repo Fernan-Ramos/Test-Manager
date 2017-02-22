@@ -53,6 +53,8 @@ angular.module('testManagerApp')
                 $scope.tests[$scope.tests.length - 1].correctas = $scope.correctas;
                 //Se guarda las respuestas incorrectas 
                 $scope.tests[$scope.tests.length - 1].incorrectas = $scope.incorrectas;
+                //Se guarda la calificación obtenida
+                $scope.tests[$scope.tests.length - 1].cal = $filter('number')(($scope.tests[$scope.tests.length - 1].correctas / $scope.tests[$scope.tests.length - 1].questions.length) * 100, 2);
                 //Atributos para el char
                 $scope.labels = ["Correctas", "Incorrectas"];
                 $scope.data = [$scope.correctas, $scope.incorrectas];
@@ -67,7 +69,7 @@ angular.module('testManagerApp')
                 //Si el conjunto de respuestas tiene alguna respuesta a algún cuestionario , se obtiene el titulo  del cuestionario , el nº de respuestas correctas y la fecha en la que se hizo.
                 if ($scope.tests.length != 0) {
                     $scope.title = $scope.tests[$scope.tests.length - 1].title;
-                    $scope.respuestas = $filter('number')(($scope.tests[$scope.tests.length - 1].correctas / $scope.tests[$scope.tests.length - 1].questions.length) * 100, 2);
+                    $scope.respuestas = $scope.tests[$scope.tests.length - 1].cal;
                     $scope.fecha = $scope.tests[$scope.tests.length - 1].date;
 
                     //Si el cuestionario ya está reflejado en las estadisticas se añade el nuevo valor de respuestas al array de respuestas de dicho cuestionario
