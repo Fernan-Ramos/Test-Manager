@@ -7,14 +7,14 @@ angular.module('testManagerApp')
 
 
         //Función que exporta un cuestionario a fichero en formato json
-        $scope.exportCuest = function (data, filename) {
+        $scope.exportCuest = function (cuest, filename) {
 
             filename = filename + '.json';
 
-            if (typeof data === 'object') {
-                data = JSON.stringify(data, undefined, 2);
+            if (typeof cuest === 'object') {
+                cuest = JSON.stringify(cuest, undefined, 2);
             }
-            var blob = new Blob([data], { type: 'text/json' });
+            var blob = new Blob([cuest], { type: 'text/json' });
 
             if (window.navigator && window.navigator.msSaveOrOpenBlob) {
                 window.navigator.msSaveOrOpenBlob(blob, filename);
