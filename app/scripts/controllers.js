@@ -1,7 +1,7 @@
 'use strict';
 angular.module('testManagerApp')
 
-    .controller('MenuController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
+    .controller('MenuController', ['$scope','$mdDialog' ,'menuFactory', function ($scope,$mdDialog ,menuFactory) {
 
         $scope.cuestionarios = menuFactory.getCuestionarios();
 
@@ -30,6 +30,48 @@ angular.module('testManagerApp')
                     0, 0, 0, 0, 0, false, false, false, false, 0, null);
                 a.dispatchEvent(e);
             }
+        };
+
+        //Función que permite borrar un cuestionario
+        $scope.removeCuest = function (cuest) {
+            $mdDialog.show({
+                clickOutsideToClose: true,
+                scope: $scope,        
+                preserveScope: true, 
+                template: '<md-dialog aria-label="List dialog">' +
+                '  <md-dialog-content>' +
+                '<md-content class="md-padding">' +
+                ' <h5 class="md-title">Estas seguro de eliminar este cuestionario</h5>' +
+                '</md-content>      ' +
+                '  </md-dialog-content>' +
+                '  <md-dialog-actions>' +
+                '    <md-button ng-href="#!/menu" ng-click="remove()" class="md-primary">' +
+                '      Eliminar' +
+                '    </md-button>' +
+                '    <md-button  ng-click="closeDialog()" class="md-primary">' +
+                '      Cancelar' +
+                '    </md-button>' +
+                '  </md-dialog-actions>' +
+                '</md-dialog>',
+
+                controller: function DialogController($scope, $mdDialog) {
+                    $scope.remove = function () {
+                        $mdDialog.hide();
+                        var index = $scope.cuestionarios.indexOf(cuest);
+                        if (index > -1) {
+                            $scope.cuestionarios.splice(index, 1);
+                        }
+                        //Actualizar los id de los cuestionarios
+                        for (var i = index; i < $scope.cuestionarios.length; i++) {
+                            $scope.cuestionarios[i]._id -= 1;
+                        }
+                    }
+                    $scope.closeDialog = function () {
+                        $mdDialog.hide();
+                    }
+                }
+            });
+
         };
 
     }])
