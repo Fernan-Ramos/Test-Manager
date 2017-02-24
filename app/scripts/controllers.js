@@ -373,11 +373,11 @@ angular.module('testManagerApp')
                 }
             });
         }
-
+        //Función que ordena los cuestionarios por titulo , por calificación o por fecha .
         $scope.filter = function (value) {
             switch (value) {
                 case 1:
-                   $scope.filtText = "title";
+                    $scope.filtText = "title";
                     break;
                 case 2:
                     $scope.filtText = "correctas";
@@ -386,7 +386,6 @@ angular.module('testManagerApp')
                     $scope.filtText = "date";
                     break;
             }
-          
         };
 
 
