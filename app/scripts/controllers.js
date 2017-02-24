@@ -123,7 +123,7 @@ angular.module('testManagerApp')
                 //Se guarda las respuestas incorrectas 
                 $scope.tests[$scope.tests.length - 1].incorrectas = $scope.incorrectas;
                 //Se guarda la calificación obtenida
-                $scope.tests[$scope.tests.length - 1].cal = $filter('number')(($scope.tests[$scope.tests.length - 1].correctas / $scope.tests[$scope.tests.length - 1].questions.length) * 100, 2);
+                $scope.tests[$scope.tests.length - 1].cal = ($scope.tests[$scope.tests.length - 1].correctas / $scope.tests[$scope.tests.length - 1].questions.length) * 100;
                 //Atributos para el char
                 $scope.labels = ["Correctas", "Incorrectas"];
                 $scope.data = [$scope.correctas, $scope.incorrectas];
@@ -283,6 +283,7 @@ angular.module('testManagerApp')
         $scope.labels = testFactory.getLabels();
         $scope.series = testFactory.getSeries();
         $scope.data = testFactory.getData();
+        console.log($scope.tests);
         $scope.onClick = function (points, evt) {
             console.log(points, evt);
         };
@@ -380,7 +381,7 @@ angular.module('testManagerApp')
                     $scope.filtText = "title";
                     break;
                 case 2:
-                    $scope.filtText = "-correctas";
+                    $scope.filtText = "-cal";
                     break;
                 case 3:
                     $scope.filtText = "date";
