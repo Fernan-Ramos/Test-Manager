@@ -286,7 +286,7 @@ angular.module('testManagerApp')
         $scope.onClick = function (points, evt) {
             console.log(points, evt);
         };
-        $scope.datasetOverride = [{
+        $scope.datasetOverride1 = [{
             yAxisID: 'y-axis-1'
         }, {
             yAxisID: 'y-axis-2'
@@ -320,7 +320,25 @@ angular.module('testManagerApp')
             legend: { display: true }
         };
 
-        $scope.options2 = { legend: { display: true } };
+        $scope.datasetOverride2 = [{
+            yAxisID: 'y-axis-1'
+        }
+        ];
+        $scope.options2 = {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        max: 100,
+                        min: 0,
+                        stepSize: 10
+                    },
+                    id: 'y-axis-1',
+                    type: 'linear',
+                    display: true,
+                    position: 'left'
+                }]
+            }, legend: { display: true }
+        };
 
         //Dialogo que aparece cuando no hay cuestionarios completados
         if ($scope.tests.length == 0) {
