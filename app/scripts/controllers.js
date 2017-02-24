@@ -380,7 +380,7 @@ angular.module('testManagerApp')
                     $scope.filtText = "title";
                     break;
                 case 2:
-                    $scope.filtText = "correctas";
+                    $scope.filtText = "-correctas";
                     break;
                 case 3:
                     $scope.filtText = "date";
