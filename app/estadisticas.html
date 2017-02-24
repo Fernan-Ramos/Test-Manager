@@ -18,7 +18,7 @@
             <div class="panel panel-default" ng-if="tests.length!=0">
                 <div class="panel-heading">Estadisticas por dia</div>
                 <div class="panel-body">
-                    <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options2">
+                    <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series" chart-dataset-override="datasetOverride2" chart-options="options2">
                     </canvas>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                 <div class="panel-heading">Estadisticas por semana</div>
                 <div class="panel-body">
                     <canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options1"
-                        chart-dataset-override="datasetOverride" chart-click="onClick">
+                        chart-dataset-override="datasetOverride1" chart-click="onClick">
                         </canvas>
                 </div>
             </div>
