@@ -374,6 +374,20 @@ angular.module('testManagerApp')
             });
         }
 
+        $scope.filter = function (value) {
+            switch (value) {
+                case 1:
+                   $scope.filtText = "title";
+                    break;
+                case 2:
+                    $scope.filtText = "correctas";
+                    break;
+                case 3:
+                    $scope.filtText = "date";
+                    break;
+            }
+          
+        };
 
 
     }]);
