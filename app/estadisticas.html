@@ -5,15 +5,19 @@
                 <div class="panel-heading">Cuestionarios realizados</div>
                 <div class="panel-body">
                     <p> Ordenar por: </p>
-                    <md-button   ng-click="filter(1)" ><md-icon class="fa fa-font fa-2x"></md-icon></md-button>
-                    <md-button   ng-click="filter(2)" ><md-icon class="fa fa-check-square-o fa-2x"></md-button>
-                    <md-button   ng-click="filter(3)" ><md-icon class="fa fa-calendar-o fa-2x"></md-button>
+                    <md-button ng-click="filter(1)">
+                        <md-icon class="fa fa-font fa-2x"></md-icon>
+                    </md-button>
+                    <md-button ng-click="filter(2)">
+                        <md-icon class="fa fa-check-square-o fa-2x"></md-button>
+                    <md-button ng-click="filter(3)">
+                        <md-icon class="fa fa-calendar-o fa-2x"></md-button>
                     <div ng-repeat="test in tests | orderBy:filtText" ng-class="{'bs-callout bs-callout-success':test.cal>70,'bs-callout bs-callout-warning': (test.cal>50 && test.cal<70),'bs-callout bs-callout-danger':test.cal<50}">
                         <h4>{{test.title}}</h4>
                         <p><strong><em>{{test.cal}}% correcto</em></strong></p>
                         <cite title="Source Title">{{test.date}}</cite>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -21,8 +25,9 @@
             <div class="panel panel-default" ng-if="tests.length!=0">
                 <div class="panel-heading">Estadisticas por dia</div>
                 <div class="panel-body">
-                    <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series" chart-dataset-override="datasetOverride2" chart-options="options2">
-                    </canvas>
+                    <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series" chart-dataset-override="datasetOverride2"
+                        chart-options="options2">
+                        </canvas>
                 </div>
             </div>
         </div>
