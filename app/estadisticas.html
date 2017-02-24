@@ -4,7 +4,10 @@
             <div class="panel panel-default" ng-if="tests.length!=0">
                 <div class="panel-heading">Cuestionarios realizados</div>
                 <div class="panel-body">
-                    <p> Sort By: <input type="text" ng-model="filtText"></p>
+                    <p> Ordenar por: </p>
+                    <md-button md-colors="{background: 'teal'}" class="md-raised md-accent" ng-click="filter(1)" >Titulo</md-button>
+                    <md-button md-colors="{background: 'teal'}" class="md-raised md-accent" ng-click="filter(2)" >Calificación</md-button>
+                    <md-button md-colors="{background: 'teal'}" class="md-raised md-accent" ng-click="filter(3)" >Fecha</md-button>
                     <div ng-repeat="test in tests | orderBy:filtText" ng-class="{'bs-callout bs-callout-success':test.cal>70,'bs-callout bs-callout-warning': (test.cal>50 && test.cal<70),'bs-callout bs-callout-danger':test.cal<50}">
                         <h4>{{test.title}}</h4>
                         <p><strong><em>{{test.cal}}% correcto</em></strong></p>
