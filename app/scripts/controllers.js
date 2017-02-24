@@ -1,7 +1,7 @@
 'use strict';
 angular.module('testManagerApp')
 
-    .controller('MenuController', ['$scope','$mdDialog' ,'menuFactory', function ($scope,$mdDialog ,menuFactory) {
+    .controller('MenuController', ['$scope', '$mdDialog', 'menuFactory', function ($scope, $mdDialog, menuFactory) {
 
         $scope.cuestionarios = menuFactory.getCuestionarios();
 
@@ -36,8 +36,8 @@ angular.module('testManagerApp')
         $scope.removeCuest = function (cuest) {
             $mdDialog.show({
                 clickOutsideToClose: true,
-                scope: $scope,        
-                preserveScope: true, 
+                scope: $scope,
+                preserveScope: true,
                 template: '<md-dialog aria-label="List dialog">' +
                 '  <md-dialog-content>' +
                 '<md-content class="md-padding">' +
@@ -143,17 +143,25 @@ angular.module('testManagerApp')
 
                     //Si el cuestionario ya está reflejado en las estadisticas se añade el nuevo valor de respuestas al array de respuestas de dicho cuestionario
                     if ($scope.series1.includes($scope.title)) {
-                        //obtener el indice del label para poder poner el nuevo valor
-                        var index = $scope.series1.indexOf($scope.title);
-                        console.log(index);
-                        $scope.data1[index].push($scope.respuestas);
-                        $scope.labels1.push($scope.fecha);
+                        //Si la fecha no eta incluida en la estadisticas, es decir es una nueva fecha, entonces se insertar los nuevos datos
+                        if (!$scope.labels1.includes($scope.fecha)) {
+                            //obtener el indice del label para poder poner el nuevo valor
+                            var index = $scope.series1.indexOf($scope.title);
+                            $scope.data1[index].push($scope.respuestas);
+                            $scope.labels1.push($scope.fecha);
+                        }
                     }
                     //Si no está reflejado en las estadisticas
                     else {
-                        $scope.labels1.push($scope.fecha);
-                        $scope.series1.push($scope.title);
-                        $scope.data1.push([$scope.respuestas]);
+                        if ($scope.labels1.includes($scope.fecha)) {
+                            $scope.series1.push($scope.title);
+                            $scope.data1.push([$scope.respuestas]);
+                        } else {
+                            $scope.labels1.push($scope.fecha);
+                            $scope.series1.push($scope.title);
+                            $scope.data1.push([$scope.respuestas]);
+                        }
+
                     }
                 }
 
@@ -286,12 +294,22 @@ angular.module('testManagerApp')
         $scope.options1 = {
             scales: {
                 yAxes: [{
+                    ticks: {
+                        max: 100,
+                        min: 0,
+                        stepSize: 10
+                    },
                     id: 'y-axis-1',
                     type: 'linear',
                     display: true,
                     position: 'left'
                 },
                 {
+                    ticks: {
+                        max: 100,
+                        min: 0,
+                        stepSize: 10
+                    },
                     id: 'y-axis-2',
                     type: 'linear',
                     display: true,
