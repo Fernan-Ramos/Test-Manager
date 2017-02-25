@@ -203,7 +203,11 @@ angular.module('testManagerApp')
     }])
 
     .controller('MakerController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
-        $scope.quests = [1, 2, 3, 4, 5, 6, 7];
+        $scope.quests =[];
+        for(var i=1;i<=100;i++){
+            $scope.quests.push(i);
+        }
+         
         $scope.selectedQuest;
         $scope.getSelectedQuest = function () {
             if ($scope.selectedQuest !== undefined) {
