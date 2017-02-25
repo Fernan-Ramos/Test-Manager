@@ -12,7 +12,7 @@
                         <md-icon class="fa fa-check-square-o fa-2x"></md-button>
                     <md-button ng-click="filter(3)">
                         <md-icon class="fa fa-calendar-o fa-2x"></md-button>
-                    <div ng-repeat="test in tests | orderBy:filtText" ng-class="{'bs-callout bs-callout-success':test.cal>70,'bs-callout bs-callout-warning': test.cal>50 && test.cal<70,'bs-callout bs-callout-danger':test.cal<50}">
+                    <div ng-repeat="test in tests | orderBy:filtText" ng-class="{'bs-callout bs-callout-success':test.cal>=70,'bs-callout bs-callout-warning': test.cal>=50 && test.cal<70,'bs-callout bs-callout-danger':test.cal<50}">
                         <h4>{{test.title}}</h4>
                         <p><strong><em>{{test.cal | number : 2}}% correcto</em></strong></p>
                         <cite title="Source Title">{{test.date}}</cite>
@@ -22,6 +22,11 @@
             </div>
         </div>
         <div class="col-lg-6 col-sm-12">
+
+        </div>
+    </div>
+    <div class="row row-content">
+        <div class="col-xs-12">
             <div class="panel panel-default" ng-if="tests.length!=0">
                 <div class="panel-heading">Estadisticas por dia</div>
                 <div class="panel-body">
@@ -35,17 +40,13 @@
     <div class="row row-content">
         <div class="col-xs-12">
             <div class="panel panel-default" ng-if="tests.length!=0">
-                <div class="panel-heading">Estadisticas por semana</div>
+                <div class="panel-heading">Estadisticas por dia</div>
                 <div class="panel-body">
                     <canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options1"
                         chart-dataset-override="datasetOverride1" chart-click="onClick">
                         </canvas>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row row-content">
-        <div class="col-xs-12">
         </div>
     </div>
 </div>
