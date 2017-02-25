@@ -92,7 +92,7 @@ angular.module('testManagerApp')
         //Guardo la respuesta correcta por pregunta(indice) y compruebo que la respuesta sea correcta o no
         $scope.submitAnswer = function (ev) {
             //Se guarda la fecha en la que se realiza el cuestionario
-            $scope.answer.date = $filter('date')(new Date(), 'fullDate');
+            $scope.answer.date = $filter('date')(new Date(), 'medium');
             //Se guarda la respuesta en el array de respuestas
             $scope.tests.push($scope.answer);
             //Resetea el formulario a  pristine
@@ -135,6 +135,7 @@ angular.module('testManagerApp')
                 $scope.labels1 = testFactory.getLabels();
                 $scope.series1 = testFactory.getSeries();
                 $scope.data1 = testFactory.getData();
+                var array = [null];
                 //Si el conjunto de respuestas tiene alguna respuesta a algún cuestionario , se obtiene el titulo  del cuestionario , el nº de respuestas correctas y la fecha en la que se hizo.
                 if ($scope.tests.length != 0) {
                     $scope.title = $scope.tests[$scope.tests.length - 1].title;
@@ -143,24 +144,32 @@ angular.module('testManagerApp')
 
                     //Si el cuestionario ya está reflejado en las estadisticas se añade el nuevo valor de respuestas al array de respuestas de dicho cuestionario
                     if ($scope.series1.includes($scope.title)) {
-                        //Si la fecha no eta incluida en la estadisticas, es decir es una nueva fecha, entonces se insertar los nuevos datos
-                        if (!$scope.labels1.includes($scope.fecha)) {
-                            //obtener el indice del label para poder poner el nuevo valor
-                            var index = $scope.series1.indexOf($scope.title);
-                            $scope.data1[index].push($scope.respuestas);
-                            $scope.labels1.push($scope.fecha);
+                        //obtener el indice del del titulo para poder poner el nuevo valor
+                        var index = $scope.series1.indexOf($scope.title);
+                        $scope.labels1.push($scope.fecha);
+                        //obtener el indice de la fecha para poner el resultado en el indice de la fecha correspondiente
+                        var indexFecha = $scope.labels1.indexOf($scope.fecha);
+                        //Rellenar el array de respuestas con valores nulos como fechas anteriores haya
+                        for (var i = 0; i < $scope.labels1.length; i++) {
+                            $scope.data1[index].push(null);
                         }
+                        $scope.data1[index].push(null);
+                        $scope.data1[index].splice(indexFecha, 1, $scope.respuestas);
+                        $scope.data1[index].push(null);
+
                     }
                     //Si no está reflejado en las estadisticas
                     else {
-                        if ($scope.labels1.includes($scope.fecha)) {
-                            $scope.series1.push($scope.title);
-                            $scope.data1.push([$scope.respuestas]);
-                        } else {
-                            $scope.labels1.push($scope.fecha);
-                            $scope.series1.push($scope.title);
-                            $scope.data1.push([$scope.respuestas]);
+                        $scope.labels1.push($scope.fecha);
+                        $scope.series1.push($scope.title);
+                        var index = $scope.labels1.indexOf($scope.fecha);
+                        //Rellenar el array de respuestas con valores nulos como fechas anteriores haya
+                        for (var i = 0; i < $scope.labels1.length; i++) {
+                            array.push(null);
                         }
+                        array.splice(index, 1, $scope.respuestas);
+                        $scope.data1.push(array);
+                        array.push(null);
 
                     }
                 }
@@ -283,7 +292,9 @@ angular.module('testManagerApp')
         $scope.labels = testFactory.getLabels();
         $scope.series = testFactory.getSeries();
         $scope.data = testFactory.getData();
-        console.log($scope.tests);
+        console.log($scope.labels);
+        console.log($scope.series);
+        console.log($scope.data);
         $scope.onClick = function (points, evt) {
             console.log(points, evt);
         };
