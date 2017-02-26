@@ -294,8 +294,6 @@ angular.module('testManagerApp')
             for (var i = 0; i < $scope.cuest.questions.length; i++) {
                 //Se establece un identificador por cada pregunta
                 $scope.cuest.questions[i]['_id'] = i;
-                //Se establece cada pregunta como no contestada
-                $scope.cuest.questions[i]['contestada'] = false;
                 //Cada pregunta tiene como titulo el mismo titulo del cuestionario
                 $scope.cuest.questions[i].title = $scope.cuest.title;
             }
