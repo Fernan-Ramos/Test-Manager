@@ -147,11 +147,11 @@ angular.module('testManagerApp')
                     //Si la longuitud del array de respuestas correctas corresponde con el numero de respuestas incluidas , la respuesta es correcta
                     if (incluida == $scope.tests[$scope.tests.length - 1].questions[i].rcorrect.length) {
                         $scope.correctas++;
-                        $scope.tests[$scope.tests.length - 1].questions[i].estado="correcta";
+                        $scope.tests[$scope.tests.length - 1].questions[i].estado = "correcta";
 
                     } else {
                         $scope.incorrectas++;
-                        $scope.tests[$scope.tests.length - 1].questions[i].estado="incorrecta";
+                        $scope.tests[$scope.tests.length - 1].questions[i].estado = "incorrecta";
                     }
                     incluida = 0;
                 }
@@ -294,6 +294,9 @@ angular.module('testManagerApp')
             for (var i = 0; i < $scope.cuest.questions.length; i++) {
                 //Se establece un identificador por cada pregunta
                 $scope.cuest.questions[i]['_id'] = i;
+                if (typeof $scope.cuest.questions[i].image === "undefined") {
+                    $scope.cuest.questions[i].image ="img/libro.jpg";
+                }
                 //Cada pregunta tiene como titulo el mismo titulo del cuestionario
                 $scope.cuest.questions[i].title = $scope.cuest.title;
             }
