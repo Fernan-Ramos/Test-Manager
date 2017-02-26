@@ -84,12 +84,21 @@
                                     </div>
                                     <label for="correct" class="col-sm-2 control-label">Respuesta Correcta </label>
                                     <div class="col-sm-10">
+                                        <!--
                                         <select class="form-control" ng-model="cuest.questions[$index].rcorrect" required>
-                                    <option>{{cuest.questions[$index].r1}}</option>
-                                    <option>{{cuest.questions[$index].r2}}</option>
-                                    <option>{{cuest.questions[$index].r3}}</option>
-                                    <option>{{cuest.questions[$index].r4}}</option>
-                                </select>
+                                        <option>{{cuest.questions[$index].r1}}</option>
+                                        <option>{{cuest.questions[$index].r2}}</option>
+                                        <option>{{cuest.questions[$index].r3}}</option>
+                                        <option>{{cuest.questions[$index].r4}}</option>
+                                        </select> -->
+                                        <md-select placeholder="Respuesta correcta" ng-model="cuest.questions[$index].rcorrect" multiple required>
+                                            <md-optgroup label="Correctas">
+                                                <md-option ng-value="cuest.questions[$index].r1">{{cuest.questions[$index].r1}}</md-option>
+                                                <md-option ng-value="cuest.questions[$index].r2">{{cuest.questions[$index].r2}}</md-option>
+                                                <md-option ng-value="cuest.questions[$index].r3">{{cuest.questions[$index].r3}}</md-option>
+                                                <md-option ng-value="cuest.questions[$index].r4">{{cuest.questions[$index].r4}}</md-option>
+                                            </md-optgroup>
+                                        </md-select>
                                     </div>
                             </div>
                         </div>
