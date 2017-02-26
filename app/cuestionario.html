@@ -21,27 +21,30 @@
                             </md-card-title-text>
                         </md-card-title>
                         <md-card-content>
-                            <!--
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            <md-checkbox class="md-primary"> {{preg.r1}}</md-checkbox>
-                        </li>
-                        <li class="list-group-item">
-                            <md-checkbox class="md-primary"> {{preg.r2}}</md-checkbox>
-                        </li>
-                        <li class="list-group-item">
-                            <md-checkbox class="md-primary"> {{preg.r3}}</md-checkbox>
-                        </li>
-                        <li class="list-group-item">
-                            <md-checkbox class="md-primary"> {{preg.r4}}</md-checkbox>
-                        </li>
-                    </ul> -->
-                            <md-radio-group ng-model="answer.questions[$index].r " required>
-                                <md-radio-button value="{{preg.r1}}" class="md-primary">{{preg.r1}}</md-radio-button>
-                                <md-radio-button value="{{preg.r2}}" class="md-primary">{{preg.r2}} </md-radio-button>
-                                <md-radio-button value="{{preg.r3}}" class="md-primary">{{preg.r3}}</md-radio-button>
-                                <md-radio-button value="{{preg.r4}}" class="md-primary">{{preg.r4}}</md-radio-button>
-                            </md-radio-group>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <md-checkbox class="md-primary" ng-checked="exists(preg.r1, selected[$index])" ng-click="toggle(preg.r1,selected[$index])">
+                                        {{preg.r1}}
+                                    </md-checkbox>
+                                </li>
+                                <li class="list-group-item">
+                                      <md-checkbox class="md-primary" ng-checked="exists(preg.r2, selected[$index])" ng-click="toggle(preg.r2, selected[$index])">
+                                        {{preg.r2}}
+                                    </md-checkbox>
+                                </li>
+                                <li class="list-group-item">
+                                      <md-checkbox class="md-primary" ng-checked="exists(preg.r3, selected[$index])" ng-click="toggle(preg.r3, selected[$index])">
+                                        {{preg.r3}}
+                                    </md-checkbox>
+                                </li>
+                                <li class="list-group-item">
+                                      <md-checkbox class="md-primary" ng-checked="exists(preg.r4, selected[$index])" ng-click="toggle(preg.r4, selected[$index])">
+                                        {{preg.r4}}
+                                    </md-checkbox>
+                                </li>
+                            </ul>
+                             <code style="display: block; padding: 8px;">{{selected | json}}</code>
+                          
                         </md-card-content>
                         <md-card-actions layout="row" layout-align="start center">
 
