@@ -147,8 +147,11 @@ angular.module('testManagerApp')
                     //Si la longuitud del array de respuestas correctas corresponde con el numero de respuestas incluidas , la respuesta es correcta
                     if (incluida == $scope.tests[$scope.tests.length - 1].questions[i].rcorrect.length) {
                         $scope.correctas++;
+                        $scope.tests[$scope.tests.length - 1].questions[i].estado="correcta";
+
                     } else {
                         $scope.incorrectas++;
+                        $scope.tests[$scope.tests.length - 1].questions[i].estado="incorrecta";
                     }
                     incluida = 0;
                 }
