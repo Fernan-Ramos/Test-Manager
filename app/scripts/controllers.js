@@ -89,11 +89,35 @@ angular.module('testManagerApp')
 
         console.log($scope.cuestionario);
 
-        //Guardo la respuesta correcta por pregunta(indice) y compruebo que la respuesta sea correcta o no
+        $scope.selected = [];
+        //Por cada pregunta del cuestionaro se guarda un array de respuestas
+        for (var i = 0; i < $scope.cuestionario.questions.length; i++) {
+            $scope.selected.push([]);
+        }
+        //Función que añade o elimina una respuesta al array de respuestas
+        $scope.toggle = function (item, list) {
+            var idx = list.indexOf(item);
+            if (idx > -1) {
+                list.splice(idx, 1);
+            }
+            else {
+                list.push(item);
+            }
+        };
+        //Función que comprueba si el elemento existe en el array de respuestas
+        $scope.exists = function (item, list) {
+            return list.indexOf(item) > -1;
+        };
+
+
         $scope.submitAnswer = function (ev) {
             //Se guarda la fecha en la que se realiza el cuestionario
             $scope.answer.date = $filter('date')(new Date(), 'medium');
-            //Se guarda la respuesta en el array de respuestas
+            //Se guarda el array de respuestas contestadas en cada pregunta.
+            for (var i = 0; i < $scope.selected.length; i++) {
+                $scope.answer.questions[i].r = $scope.selected[i];
+            }
+            //Se guarda la respuesta al cuestionario en el array de respuestas a cuestionarios
             $scope.tests.push($scope.answer);
             //Resetea el formulario a  pristine
             $scope.testForm.$setPristine();
@@ -203,11 +227,11 @@ angular.module('testManagerApp')
     }])
 
     .controller('MakerController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
-        $scope.quests =[];
-        for(var i=1;i<=100;i++){
+        $scope.quests = [];
+        for (var i = 1; i <= 100; i++) {
             $scope.quests.push(i);
         }
-         
+
         $scope.selectedQuest;
         $scope.getSelectedQuest = function () {
             if ($scope.selectedQuest !== undefined) {
