@@ -19,11 +19,11 @@
         </md-tab>
         <md-tab label="sumario">
           <md-content class="md-padding" ng-repeat="preg in tests[tests.length-1].questions  track by $index">
-            <div ng-if="preg.r==preg.rcorrect" class="bs-callout bs-callout-success">
+            <div ng-if="preg.estado=='correcta'" class="bs-callout bs-callout-success">
               <h4><em>Pregunta {{$index+1}} : {{preg.pregunta}}</em></h4>
               <p>Muy bien, <strong class="text-success">{{preg.rcorrect}}</strong> es la respuesta correcta</p>
             </div>
-            <div ng-if="preg.r!=preg.rcorrect" class="bs-callout bs-callout-danger">
+            <div ng-if="preg.estado=='incorrecta'" class="bs-callout bs-callout-danger">
               <h4><em>Pregunta {{$index+1}} : {{preg.pregunta}}</em></h4>
               <p>Vaya! <strong class="text-danger">{{preg.r}} </strong> no es la respuesta correcta.
             </div>
