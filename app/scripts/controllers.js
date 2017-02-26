@@ -134,13 +134,23 @@ angular.module('testManagerApp')
                 $scope.correctas = 0;
                 $scope.incorrectas = 0;
                 $scope.tests = testFactory.getAnswers();
-                //Se obtiene el numero total de preguntas correctas e incorrectas
+                console.log($scope.tests);
+                var incluida = 0;
+                //Se recorre el array de preguntas 
                 for (var i = 0; i < $scope.tests[$scope.tests.length - 1].questions.length; i++) {
-                    if ($scope.tests[$scope.tests.length - 1].questions[i].r == $scope.tests[$scope.tests.length - 1].questions[i].rcorrect) {
+                    //Se recorre el array de respuestas dadas y se comprueba que cada elemento de dicho array esté en el array de respuestas correctas
+                    for (var j = 0; j < $scope.tests[$scope.tests.length - 1].questions[i].r.length; j++) {
+                        if ($scope.tests[$scope.tests.length - 1].questions[i].rcorrect.includes($scope.tests[$scope.tests.length - 1].questions[i].r[j])) {
+                            incluida++;
+                        }
+                    }
+                    //Si la longuitud del array de respuestas correctas corresponde con el numero de respuestas incluidas , la respuesta es correcta
+                    if (incluida == $scope.tests[$scope.tests.length - 1].questions[i].rcorrect.length) {
                         $scope.correctas++;
                     } else {
                         $scope.incorrectas++;
                     }
+                    incluida = 0;
                 }
                 //Se guarda las respuestas correctas 
                 $scope.tests[$scope.tests.length - 1].correctas = $scope.correctas;
