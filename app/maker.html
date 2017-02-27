@@ -22,27 +22,25 @@
                 </div>
                 <div class="form-group">
                     <label for="questions" class="col-sm-2 control-label">Nº de preguntas</label>
-                    <div class="md-padding" ng-cloak>
-                        <div>
-                            <div layout="row">
-                                <md-input-container>
-                                    <label>Preguntas</label>
-                                    <md-select ng-model="selectedQuest" md-selected-text="getSelectedQuest()">
-                                        <md-optgroup label="Nº de preguntas">
-                                            <md-option ng-value="quest" ng-repeat="quest in quests">
-                                                {{quest}} preguntas
-                                            </md-option>
-                                        </md-optgroup>
-                                    </md-select>
-                                </md-input-container>
-                            </div>
-                        </div>
-                        <div class="form-group" ng-repeat="n in getNumber(number) track by $index">
-                            <label for="question" class="col-sm-2 control-label">Pregunta {{$index+1}}</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="question" name="question" placeholder="Escribe la pregunta" ng-model="cuest.questions[$index].pregunta"
-                                    required>
-                                    <!-- 
+                    <div class="col-sm-10">
+                        <md-input-container>
+                            <label>Preguntas</label>
+                            <md-select ng-model="selectedQuest" md-selected-text="getSelectedQuest()">
+                                <md-optgroup label="Nº de preguntas">
+                                    <md-option ng-value="quest" ng-repeat="quest in quests">
+                                        {{quest}} preguntas
+                                    </md-option>
+                                </md-optgroup>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                </div>
+                <div class="form-group" ng-repeat="n in getNumber(number) track by $index">
+                    <label for="question" class="col-sm-2 control-label">Pregunta {{$index+1}}</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="question" name="question" placeholder="Escribe la pregunta" ng-model="cuest.questions[$index].pregunta"
+                            required>
+                            <!-- 
                                 <div class="form-group" ng-repeat="n in [1,2,3,4]">
                                     <hr>
                                     <label for="answer" class="col-sm-2 control-label">Respuesta {{n}}</label>
@@ -50,58 +48,56 @@
                                         <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index]." required>
                                     </div>
                                 </div> -->
-                                    <div class="form-group">
+                            <div class="form-group">
+                                <hr>
+                                <label for="image" class="col-sm-2 control-label">Selecciona una imagen </label>
+                                <div class="col-sm-10">
+                                    <input type="file" fileread="cuest.questions[$index].image"><br>
+                                    <hr>
+                                </div>
+                                <label for="answer" class="col-sm-2 control-label">Respuesta 1</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r1"
+                                        required>
                                         <hr>
-                                        <label for="image" class="col-sm-2 control-label">Selecciona una imagen </label>
-                                        <div class="col-sm-10">
-                                            <input type="file" fileread="cuest.questions[$index].image"><br>
-                                            <hr>
-                                        </div>
-                                        <label for="answer" class="col-sm-2 control-label">Respuesta 1</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r1"
-                                                required>
-                                                <hr>
-                                        </div>
-                                        <label for="answer" class="col-sm-2 control-label">Respuesta 2</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r2"
-                                                required>
-                                                <hr>
-                                        </div>
-                                        <label for="answer" class="col-sm-2 control-label">Respuesta 3</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r3"
-                                                required>
-                                                <hr>
-                                        </div>
-                                        <label for="answer" class="col-sm-2 control-label">Respuesta 4</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r4"
-                                                required>
-                                                <hr>
-                                        </div>
-                                    </div>
-                                    <label for="correct" class="col-sm-2 control-label">Respuesta Correcta </label>
-                                    <div class="col-sm-10">
-                                        <!--
+                                </div>
+                                <label for="answer" class="col-sm-2 control-label">Respuesta 2</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r2"
+                                        required>
+                                        <hr>
+                                </div>
+                                <label for="answer" class="col-sm-2 control-label">Respuesta 3</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r3"
+                                        required>
+                                        <hr>
+                                </div>
+                                <label for="answer" class="col-sm-2 control-label">Respuesta 4</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r4"
+                                        required>
+                                        <hr>
+                                </div>
+                            </div>
+                            <label for="correct" class="col-sm-2 control-label">Respuesta Correcta </label>
+                            <div class="col-sm-10">
+                                <!--
                                         <select class="form-control" ng-model="cuest.questions[$index].rcorrect" required>
                                         <option>{{cuest.questions[$index].r1}}</option>
                                         <option>{{cuest.questions[$index].r2}}</option>
                                         <option>{{cuest.questions[$index].r3}}</option>
                                         <option>{{cuest.questions[$index].r4}}</option>
                                         </select> -->
-                                        <md-select placeholder="Respuesta correcta" ng-model="cuest.questions[$index].rcorrect" multiple required>
-                                            <md-optgroup label="Correctas">
-                                                <md-option ng-value="cuest.questions[$index].r1">{{cuest.questions[$index].r1}}</md-option>
-                                                <md-option ng-value="cuest.questions[$index].r2">{{cuest.questions[$index].r2}}</md-option>
-                                                <md-option ng-value="cuest.questions[$index].r3">{{cuest.questions[$index].r3}}</md-option>
-                                                <md-option ng-value="cuest.questions[$index].r4">{{cuest.questions[$index].r4}}</md-option>
-                                            </md-optgroup>
-                                        </md-select>
-                                    </div>
+                                <md-select placeholder="Respuesta correcta" ng-model="cuest.questions[$index].rcorrect" multiple required>
+                                    <md-optgroup label="Correctas">
+                                        <md-option ng-value="cuest.questions[$index].r1">{{cuest.questions[$index].r1}}</md-option>
+                                        <md-option ng-value="cuest.questions[$index].r2">{{cuest.questions[$index].r2}}</md-option>
+                                        <md-option ng-value="cuest.questions[$index].r3">{{cuest.questions[$index].r3}}</md-option>
+                                        <md-option ng-value="cuest.questions[$index].r4">{{cuest.questions[$index].r4}}</md-option>
+                                    </md-optgroup>
+                                </md-select>
                             </div>
-                        </div>
                     </div>
                 </div>
                 <div class="form-group">
