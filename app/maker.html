@@ -154,9 +154,19 @@
                             </div>
                         </md-content>
                     </md-tab>
-                    <md-tab label="two">
+                    <md-tab label="Importar">
                         <md-content class="md-padding">
-                            
+                            <div class="col-xs-12">
+                                <h3>Importa un cuestionario</h3>
+                                <hr>
+                            </div>
+                            <div class="col-xs-6">
+                                <p><em>el archivo debe estar en formato .json</em></p>
+                                <input id="inputCuest" type="file" class="file" data-show-preview="false" fileread="fichero.fic">
+                            </div>
+                            <div class="col-xs-6">
+                                <md-button md-colors="{background: 'teal'}" ng-href="#!/menu" ng-click="hola()" class="md-raised md-accent">Importar</md-button>
+                            </div>
                         </md-content>
                     </md-tab>
                 </md-tabs>
