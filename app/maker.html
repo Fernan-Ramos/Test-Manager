@@ -1,46 +1,51 @@
 <div class="container" ng-controller="MenuController">
     <div class="row row-content" ng-controller="MakerController">
-        <div class="col-xs-12">
-            <h3>Crea tu propio cuestionario </h3>
-            <hr>
-        </div>
-        <div class="col-xs-12 col-sm-9">
-            <form class="form-horizontal" role="form" name="makerForm" ng-submit="submitTest()" novalidate>
-                <!--<label><input type="radio" ng-model="cuest._id" ng-value="{{getId()}}"> Cuestionario nº {{getId()}} </label> -->
-                <div class="form-group">
-                    <label for="title" class="col-sm-2 control-label">Título</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="title" name="title" placeholder="Escribe un Título" ng-model="cuest.title" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="description" class="col-sm-2 control-label">Descripción</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="description" name="description" placeholder="Describelo" ng-model="cuest.text"
-                            required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="questions" class="col-sm-2 control-label">Nº de preguntas</label>
-                    <div class="col-sm-10">
-                        <md-input-container>
-                            <label>Preguntas</label>
-                            <md-select ng-model="selectedQuest" md-selected-text="getSelectedQuest()">
-                                <md-optgroup label="Nº de preguntas">
-                                    <md-option ng-value="quest" ng-repeat="quest in quests">
-                                        {{quest}} preguntas
-                                    </md-option>
-                                </md-optgroup>
-                            </md-select>
-                        </md-input-container>
-                    </div>
-                </div>
-                <div class="form-group" ng-repeat="n in getNumber(number) track by $index">
-                    <label for="question" class="col-sm-2 control-label">Pregunta {{$index+1}}</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="question" name="question" placeholder="Escribe la pregunta" ng-model="cuest.questions[$index].pregunta"
-                            required>
-                            <!-- 
+        <div ng-cloak>
+            <md-content>
+                <md-tabs md-dynamic-height md-border-bottom>
+                    <md-tab label="Crear">
+                        <md-content class="md-padding">
+                            <div class="col-xs-12">
+                                <h3>Crea tu propio cuestionario </h3>
+                                <hr>
+                            </div>
+                            <div class="col-xs-12 col-sm-9">
+                                <form class="form-horizontal" role="form" name="makerForm" ng-submit="submitTest()" novalidate>
+                                    <!--<label><input type="radio" ng-model="cuest._id" ng-value="{{getId()}}"> Cuestionario nº {{getId()}} </label> -->
+                                    <div class="form-group">
+                                        <label for="title" class="col-sm-2 control-label">Título</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="title" name="title" placeholder="Escribe un Título" ng-model="cuest.title" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description" class="col-sm-2 control-label">Descripción</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="description" name="description" placeholder="Describelo" ng-model="cuest.text"
+                                                required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="questions" class="col-sm-2 control-label">Nº de preguntas</label>
+                                        <div class="col-sm-10">
+                                            <md-input-container>
+                                                <label>Preguntas</label>
+                                                <md-select ng-model="selectedQuest" md-selected-text="getSelectedQuest()">
+                                                    <md-optgroup label="Nº de preguntas">
+                                                        <md-option ng-value="quest" ng-repeat="quest in quests">
+                                                            {{quest}} preguntas
+                                                        </md-option>
+                                                    </md-optgroup>
+                                                </md-select>
+                                            </md-input-container>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-repeat="n in getNumber(number) track by $index">
+                                        <label for="question" class="col-sm-2 control-label">Pregunta {{$index+1}}</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="question" name="question" placeholder="Escribe la pregunta" ng-model="cuest.questions[$index].pregunta"
+                                                required>
+                                                <!-- 
                                 <div class="form-group" ng-repeat="n in [1,2,3,4]">
                                     <hr>
                                     <label for="answer" class="col-sm-2 control-label">Respuesta {{n}}</label>
@@ -48,104 +53,115 @@
                                         <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index]." required>
                                     </div>
                                 </div> -->
-                            <div class="form-group">
-                                <hr>
-                                <label for="image" class="col-sm-2 control-label">Selecciona una imagen </label>
-                                <div class="col-sm-10">
-                                    <input type="file" fileread="cuest.questions[$index].image"><br>
-                                    <hr>
-                                </div>
-                                <label for="answer" class="col-sm-2 control-label">Respuesta 1</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r1"
-                                        required>
-                                        <hr>
-                                </div>
-                                <label for="answer" class="col-sm-2 control-label">Respuesta 2</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r2"
-                                        required>
-                                        <hr>
-                                </div>
-                                <label for="answer" class="col-sm-2 control-label">Respuesta 3</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r3"
-                                        required>
-                                        <hr>
-                                </div>
-                                <label for="answer" class="col-sm-2 control-label">Respuesta 4</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r4"
-                                        required>
-                                        <hr>
-                                </div>
-                            </div>
-                            <label for="correct" class="col-sm-2 control-label">Respuesta Correcta </label>
-                            <div class="col-sm-10">
-                                <!--
+                                                <div class="form-group">
+                                                    <hr>
+                                                    <label for="image" class="col-sm-2 control-label">Selecciona una imagen </label>
+                                                    <div class="col-sm-10">
+                                                        <input type="file" fileread="cuest.questions[$index].image"><br>
+                                                        <hr>
+                                                    </div>
+                                                    <label for="answer" class="col-sm-2 control-label">Respuesta 1</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r1"
+                                                            required>
+                                                            <hr>
+                                                    </div>
+                                                    <label for="answer" class="col-sm-2 control-label">Respuesta 2</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r2"
+                                                            required>
+                                                            <hr>
+                                                    </div>
+                                                    <label for="answer" class="col-sm-2 control-label">Respuesta 3</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r3"
+                                                            required>
+                                                            <hr>
+                                                    </div>
+                                                    <label for="answer" class="col-sm-2 control-label">Respuesta 4</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r4"
+                                                            required>
+                                                            <hr>
+                                                    </div>
+                                                </div>
+                                                <label for="correct" class="col-sm-2 control-label">Respuesta Correcta </label>
+                                                <div class="col-sm-10">
+                                                    <!--
                                         <select class="form-control" ng-model="cuest.questions[$index].rcorrect" required>
                                         <option>{{cuest.questions[$index].r1}}</option>
                                         <option>{{cuest.questions[$index].r2}}</option>
                                         <option>{{cuest.questions[$index].r3}}</option>
                                         <option>{{cuest.questions[$index].r4}}</option>
                                         </select> -->
-                                <md-select placeholder="Respuesta correcta" ng-model="cuest.questions[$index].rcorrect" multiple required>
-                                    <md-optgroup label="Correctas">
-                                        <md-option ng-value="cuest.questions[$index].r1">{{cuest.questions[$index].r1}}</md-option>
-                                        <md-option ng-value="cuest.questions[$index].r2">{{cuest.questions[$index].r2}}</md-option>
-                                        <md-option ng-value="cuest.questions[$index].r3">{{cuest.questions[$index].r3}}</md-option>
-                                        <md-option ng-value="cuest.questions[$index].r4">{{cuest.questions[$index].r4}}</md-option>
-                                    </md-optgroup>
-                                </md-select>
+                                                    <md-select placeholder="Respuesta correcta" ng-model="cuest.questions[$index].rcorrect" multiple required>
+                                                        <md-optgroup label="Correctas">
+                                                            <md-option ng-value="cuest.questions[$index].r1">{{cuest.questions[$index].r1}}</md-option>
+                                                            <md-option ng-value="cuest.questions[$index].r2">{{cuest.questions[$index].r2}}</md-option>
+                                                            <md-option ng-value="cuest.questions[$index].r3">{{cuest.questions[$index].r3}}</md-option>
+                                                            <md-option ng-value="cuest.questions[$index].r4">{{cuest.questions[$index].r4}}</md-option>
+                                                        </md-optgroup>
+                                                    </md-select>
+                                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button type="submit" class="btn btn-primary" ng-disabled="makerForm.$invalid">Listo</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-primary" ng-disabled="makerForm.$invalid">Listo</button>
-                    </div>
-                </div>
-            </form>
+                            <div class="col-xs-12 col-sm-3">
+                                <h3>Así queda¡</h3>
+                                <md-card ng-repeat="n in getNumber(number) track by $index">
+                                    <md-card-header>
+                                        <md-card-avatar>
+                                            <img class="md-user-avatar" src="img/libro.jpg">
+                                        </md-card-avatar>
+                                        <md-card-header-text>
+                                            <span class="md-title">Temario</span>
+                                            <span class="md-subhead">Pregunta 1</span>
+                                        </md-card-header-text>
+                                    </md-card-header>
+                                    <img class="md-card-image" ng-src="{{cuest.questions[$index].image}}" alt="">
+                                    <md-card-title>
+                                        <md-card-title-text>
+                                            <span class="md-headline">{{cuest.questions[$index].pregunta}}</span>
+                                            <span class="md-subhead">Selecciona una respuesta</span>
+                                        </md-card-title-text>
+                                    </md-card-title>
+                                    <md-card-content>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">
+                                                <md-checkbox class="md-primary">{{cuest.questions[$index].r1}}</md-checkbox>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <md-checkbox class="md-primary">{{cuest.questions[$index].r2}}</md-checkbox>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <md-checkbox class="md-primary">{{cuest.questions[$index].r3}}</md-checkbox>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <md-checkbox class="md-primary">{{cuest.questions[$index].r4}}</md-checkbox>
+                                            </li>
+                                        </ul>
+                                    </md-card-content>
+                                    <md-card-actions layout="row" layout-align="start center">
+                                        <md-button md-colors="{background: 'teal'}" class="md-raised md-accent">Listo !</md-button>
+                                    </md-card-actions>
+                                </md-card>
+                            </div>
+                        </md-content>
+                    </md-tab>
+                    <md-tab label="two">
+                        <md-content class="md-padding">
+                            
+                        </md-content>
+                    </md-tab>
+                </md-tabs>
+            </md-content>
         </div>
-        <div class="col-xs-12 col-sm-3">
-            <h3>Así queda¡</h3>
-            <md-card ng-repeat="n in getNumber(number) track by $index">
-                <md-card-header>
-                    <md-card-avatar>
-                        <img class="md-user-avatar" src="img/libro.jpg">
-                    </md-card-avatar>
-                    <md-card-header-text>
-                        <span class="md-title">Temario</span>
-                        <span class="md-subhead">Pregunta 1</span>
-                    </md-card-header-text>
-                </md-card-header>
-                <img class="md-card-image" ng-src="{{cuest.questions[$index].image}}" alt="">
-                <md-card-title>
-                    <md-card-title-text>
-                        <span class="md-headline">{{cuest.questions[$index].pregunta}}</span>
-                        <span class="md-subhead">Selecciona una respuesta</span>
-                    </md-card-title-text>
-                </md-card-title>
-                <md-card-content>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            <md-checkbox class="md-primary">{{cuest.questions[$index].r1}}</md-checkbox>
-                        </li>
-                        <li class="list-group-item">
-                            <md-checkbox class="md-primary">{{cuest.questions[$index].r2}}</md-checkbox>
-                        </li>
-                        <li class="list-group-item">
-                            <md-checkbox class="md-primary">{{cuest.questions[$index].r3}}</md-checkbox>
-                        </li>
-                        <li class="list-group-item">
-                            <md-checkbox class="md-primary">{{cuest.questions[$index].r4}}</md-checkbox>
-                        </li>
-                    </ul>
-                </md-card-content>
-                <md-card-actions layout="row" layout-align="start center">
-                    <md-button md-colors="{background: 'teal'}" class="md-raised md-accent">Listo !</md-button>
-                </md-card-actions>
-            </md-card>
-        </div>
+
     </div>
 </div>
