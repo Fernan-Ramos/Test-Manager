@@ -327,6 +327,15 @@ angular.module('testManagerApp')
 
         };
 
+        $scope.fichero = {};
+        //Función que importa un cuestionario desde un fichero en formato .json
+        $scope.import = function () {
+            $.getJSON($scope.fichero.fic, function (data) {
+                console.log(data);
+                 $scope.cuestionarios.push(data);
+            });
+        };
+
     }])
 
     .controller('StatsController', ['$scope', '$mdDialog', 'testFactory', function ($scope, $mdDialog, testFactory) {
