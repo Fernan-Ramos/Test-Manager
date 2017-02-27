@@ -240,6 +240,7 @@ angular.module('testManagerApp')
     }])
 
     .controller('MakerController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
+        $scope.cuestionarios = menuFactory.getCuestionarios();
         $scope.quests = [];
         for (var i = 1; i <= 100; i++) {
             $scope.quests.push(i);
@@ -295,7 +296,7 @@ angular.module('testManagerApp')
                 //Se establece un identificador por cada pregunta
                 $scope.cuest.questions[i]['_id'] = i;
                 if (typeof $scope.cuest.questions[i].image === "undefined") {
-                    $scope.cuest.questions[i].image ="img/libro.jpg";
+                    $scope.cuest.questions[i].image = "img/libro.jpg";
                 }
                 //Cada pregunta tiene como titulo el mismo titulo del cuestionario
                 $scope.cuest.questions[i].title = $scope.cuest.title;
@@ -332,7 +333,15 @@ angular.module('testManagerApp')
         $scope.import = function () {
             $.getJSON($scope.fichero.fic, function (data) {
                 console.log(data);
-                 $scope.cuestionarios.push(data);
+                //Si no hay cuestionarios creados el cuestionario creado se establece con identificador 0
+                if ($scope.cuestionarios.length == 0) {
+                    data['_id'] = 0;
+                }
+                //Si hay cuestionarios creados se obtiene el identificador del cuestionario más antiguo y se le suma una unidad 
+                else {
+                    data['_id'] = parseInt($scope.cuestionarios[$scope.cuestionarios.length - 1]._id, 10) + 1;
+                }
+                $scope.cuestionarios.push(data);
             });
         };
 
