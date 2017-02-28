@@ -76,9 +76,9 @@ angular.module('testManagerApp')
 
     }])
 
-    .controller('TestController', ['$scope', '$filter', '$routeParams', '$mdDialog', 'menuFactory', 'testFactory', function ($scope, $filter, $routeParams, $mdDialog, menuFactory, testFactory) {
+    .controller('TestController', ['$scope', '$filter', '$stateParams', '$mdDialog', 'menuFactory', 'testFactory', function ($scope, $filter, $stateParams, $mdDialog, menuFactory, testFactory) {
         //Se obtiene el cuestionario 
-        $scope.cuestionario = menuFactory.getCuestionario(parseInt($routeParams.id, 10));
+        $scope.cuestionario = menuFactory.getCuestionario(parseInt($stateParams.id, 10));
         //Se obtiene las respuestas guardadas
         $scope.tests = testFactory.getAnswers();
         console.log($scope.cuestionario);
