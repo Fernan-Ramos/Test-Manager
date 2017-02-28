@@ -45,7 +45,7 @@ angular.module('testManagerApp')
                 '</md-content>      ' +
                 '  </md-dialog-content>' +
                 '  <md-dialog-actions>' +
-                '    <md-button ng-href="#!/menu" ng-click="remove()" class="md-primary">' +
+                '    <md-button ui-sref="app" ng-click="remove()" class="md-primary">' +
                 '      Eliminar' +
                 '    </md-button>' +
                 '    <md-button  ng-click="closeDialog()" class="md-primary">' +
@@ -435,7 +435,7 @@ angular.module('testManagerApp')
                 '</md-content>      ' +
                 '  </md-dialog-content>' +
                 '  <md-dialog-actions>' +
-                '    <md-button ng-href="#!/menu" ng-click="closeDialog()" class="md-primary">' +
+                '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
                 '      Menu' +
                 '    </md-button>' +
                 '  </md-dialog-actions>' +
