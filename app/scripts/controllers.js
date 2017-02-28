@@ -341,6 +341,9 @@ angular.module('testManagerApp')
                 else {
                     data['_id'] = parseInt($scope.cuestionarios[$scope.cuestionarios.length - 1]._id, 10) + 1;
                 }
+                //Se genera un valor aleatorio para el atributo hashKey 
+                data.$$hashKey="object:"+Math.random(100);
+                //Se guarda el nuevo cuestionario en el array de cuestionarios
                 $scope.cuestionarios.push(data);
             });
         };
