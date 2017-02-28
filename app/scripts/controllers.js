@@ -124,7 +124,7 @@ angular.module('testManagerApp')
             //Muestra el dialogo con los resultados
             $mdDialog.show({
                 controller: DialogController,
-                templateUrl: 'dialogCuestionario.html',
+                templateUrl: 'views/dialogCuestionario.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
                 clickOutsideToClose: false
