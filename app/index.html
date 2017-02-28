@@ -15,71 +15,9 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-                    aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>Menu <i class="fa fa-bars"></i>
-                    </button>
-                    <a class="navbar-brand" href="#page-top">TestManager</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="#!/menu">Quizs</a>
-                    </li>
-                    <li>
-                        <a href="#!/maker">Quiz Maker</a>
-                    </li>
-                    <li>
-                        <a href="#!/estadisticas">Stats</a>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <header class="jumbotron">
-        <div class="container">
-            <div class="row row-header">
-                <div class="col-xs-12 col-sm-8">
-                    <h1 id="homeHeading">TestManager</h1>
-                    <hr>
-                    <p>Aplicación Híbrida para preguntas de tipo test</p>
-                </div>
-            </div>
-        </div>
-    </header>
+
     <ng-view></ng-view>
-    <footer class="text-center">
-        <div class="footer-above">
-            <div class="container">
-                <div class="row">
-                    <div class="footer-col col-md-4">
-                        <h3>Contenido</h3>
-                    </div>
-                    <div class="footer-col col-md-4">
-                        <h3>Contenido</h3>
-                    </div>
-                    <div class="footer-col col-md-4">
-                        <h3>Contenido</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="footer-below">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        Copyright &copy; Test Manager 2017
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="../bower_components/angular/angular.min.js"></script>
