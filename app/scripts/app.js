@@ -1,27 +1,60 @@
 'use strict';
-angular.module('testManagerApp', ['ngMaterial', 'ngRoute','chart.js'])
-    .config(function ($routeProvider) {
-        $routeProvider
-            // route for the maker page
-            .when('/maker', {
-                templateUrl: 'maker.html',
-                controller: 'MakerController'
+angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js'])
+    .config(function ($stateProvider, $urlRouterProvider) {
+        $stateProvider
+
+            //ruta para la pagina menu
+            .state('app', {
+                url: '/',
+                views: {
+                    'header': {
+                        templateUrl: 'views/header.html',
+                    },
+                    'content': {
+                        templateUrl: 'views/menu.html',
+                        controller: 'MenuController'
+                    },
+                    'footer': {
+                        templateUrl: 'views/footer.html',
+                    }
+                }
+
             })
-            // route for the menu page
-            .when('/menu', {
-                templateUrl: 'menu.html',
-                controller: 'MenuController'
+
+            //ruta par la pagina cuestionario
+            .state('app.cuestionario', {
+                url: 'menu/:id',
+                views: {
+                    'content@': {
+                        templateUrl: 'views/cuestionario.html',
+                        controller: 'TestController'
+                    }
+                }
             })
-            // route for the cuestionario page
-            .when('/menu/:id', {
-                templateUrl: 'cuestionario.html',
-                controller: 'TestController'
+
+            //ruta par la pagina maker
+            .state('app.maker', {
+                url: 'maker',
+                views: {
+                    'content@': {
+                        templateUrl: 'views/maker.html',
+                        controller: 'MakerController'
+                    }
+                }
             })
-            // route for the estadisticas page
-            .when('/estadisticas',{
-                templateUrl:'estadisticas.html',
-                controller:'StatsController'
-            })
-            .otherwise('/maker');
+
+            //ruta par la pagina estadisticas
+            .state('app.estadisticas', {
+                url: 'estadisticas',
+                views: {
+                    'content@': {
+                        templateUrl: 'views/estadisticas.html',
+                        controller: 'StatsController'
+                    }
+                }
+            });
+
+
+        $urlRouterProvider.otherwise('/');
 
     });
