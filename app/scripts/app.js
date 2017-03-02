@@ -1,5 +1,5 @@
 'use strict';
-angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js'])
+angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngResource'])
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
 
