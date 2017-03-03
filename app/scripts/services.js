@@ -21,7 +21,7 @@ angular.module('testManagerApp')
                     r2: 'asao',
                     r3: 'ja',
                     r4: 'je',
-                    rcorrect: 'asi',
+                    rcorrect: ['asi'],
                     contestada: false
                 },
                 {
@@ -33,7 +33,7 @@ angular.module('testManagerApp')
                     r2: 'asao',
                     r3: 'ja',
                     r4: 'je',
-                    rcorrect: 'asao',
+                    rcorrect: ['asao'],
                     contestada: false
                 },
                 {
@@ -45,7 +45,7 @@ angular.module('testManagerApp')
                     r2: 'asao',
                     r3: 'ja',
                     r4: 'je',
-                    rcorrect: 'ja',
+                    rcorrect: ['ja'],
                     contestada: false
 
                 }
