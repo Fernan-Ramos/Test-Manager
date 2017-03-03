@@ -130,56 +130,22 @@ angular.module('testManagerApp')
                 clickOutsideToClose: false
             })
 
-            //Función que compara array
-            Array.prototype.equals = function (array) {
-                // if the other array is a falsy value, return
-                if (!array)
-                    return false;
-
-                // compare lengths - can save a lot of time 
-                if (this.length != array.length)
-                    return false;
-
-                for (var i = 0, l = this.length; i < l; i++) {
-                    // Check if we have nested arrays
-                    if (this[i] instanceof Array && array[i] instanceof Array) {
-                        // recurse into the nested arrays
-                        if (!this[i].equals(array[i]))
-                            return false;
-                    }
-                    else if (this[i] != array[i]) {
-                        // Warning - two different object instances will never be equal: {x:20} != {x:20}
-                        return false;
-                    }
-                }
-                return true;
-            }
 
             function DialogController($scope, $mdDialog) {
                 $scope.correctas = 0;
                 $scope.incorrectas = 0;
                 $scope.tests = testFactory.getAnswers();
-                console.log($scope.tests);
                 var incluida = 0;
                 //Se recorre el array de preguntas 
                 for (var i = 0; i < $scope.tests[$scope.tests.length - 1].questions.length; i++) {
                     //Se recorre el array de respuestas dadas y se comprueba que cada elemento de dicho array esté en el array de respuestas correctas
                     for (var j = 0; j < $scope.tests[$scope.tests.length - 1].questions[i].r.length; j++) {
-                        //Si es de una sola respuesta
-                        if ($scope.tests[$scope.tests.length - 1].questions[i].rcorrect.length == 1) {
-                            if ($scope.tests[$scope.tests.length - 1].questions[i].rcorrect.equals($scope.tests[$scope.tests.length - 1].questions[i].r)) {
-                                incluida++;
-                            }
-                        }
-                        //Si es respuesta múltiple
-                        else {
-                            if ($scope.tests[$scope.tests.length - 1].questions[i].rcorrect.includes($scope.tests[$scope.tests.length - 1].questions[i].r[j])) {
-                                incluida++;
-                            }
+                        if ($scope.tests[$scope.tests.length - 1].questions[i].rcorrect.includes($scope.tests[$scope.tests.length - 1].questions[i].r[j])) {
+                            incluida++;
                         }
                     }
-                    //Si la longuitud del array de respuestas correctas corresponde con el numero de respuestas incluidas , la respuesta es correcta
-                    if (incluida == $scope.tests[$scope.tests.length - 1].questions[i].rcorrect.length) {
+                    //Si la longuitud del array de respuestas correctas corresponde con el numero de respuestas incluidas y es igual la longuitud del array de respuestas dada, la respuesta es correcta
+                    if (incluida == $scope.tests[$scope.tests.length - 1].questions[i].rcorrect.length && $scope.tests[$scope.tests.length - 1].questions[i].r.length == $scope.tests[$scope.tests.length - 1].questions[i].rcorrect.length) {
                         $scope.correctas++;
                         $scope.tests[$scope.tests.length - 1].questions[i].estado = "correcta";
 
@@ -259,7 +225,7 @@ angular.module('testManagerApp')
             scope: {
                 fileread: "="
             },
-            link: function (scope, element, attributes) {
+            link: function (scope, element) {
                 element.bind("change", function (changeEvent) {
                     var reader = new FileReader();
                     reader.onload = function (loadEvent) {
