@@ -130,6 +130,31 @@ angular.module('testManagerApp')
                 clickOutsideToClose: false
             })
 
+            //Función que compara array
+            Array.prototype.equals = function (array) {
+                // if the other array is a falsy value, return
+                if (!array)
+                    return false;
+
+                // compare lengths - can save a lot of time 
+                if (this.length != array.length)
+                    return false;
+
+                for (var i = 0, l = this.length; i < l; i++) {
+                    // Check if we have nested arrays
+                    if (this[i] instanceof Array && array[i] instanceof Array) {
+                        // recurse into the nested arrays
+                        if (!this[i].equals(array[i]))
+                            return false;
+                    }
+                    else if (this[i] != array[i]) {
+                        // Warning - two different object instances will never be equal: {x:20} != {x:20}
+                        return false;
+                    }
+                }
+                return true;
+            }
+
             function DialogController($scope, $mdDialog) {
                 $scope.correctas = 0;
                 $scope.incorrectas = 0;
@@ -140,8 +165,17 @@ angular.module('testManagerApp')
                 for (var i = 0; i < $scope.tests[$scope.tests.length - 1].questions.length; i++) {
                     //Se recorre el array de respuestas dadas y se comprueba que cada elemento de dicho array esté en el array de respuestas correctas
                     for (var j = 0; j < $scope.tests[$scope.tests.length - 1].questions[i].r.length; j++) {
-                        if ($scope.tests[$scope.tests.length - 1].questions[i].rcorrect.includes($scope.tests[$scope.tests.length - 1].questions[i].r[j])) {
-                            incluida++;
+                        //Si es de una sola respuesta
+                        if ($scope.tests[$scope.tests.length - 1].questions[i].rcorrect.length == 1) {
+                            if ($scope.tests[$scope.tests.length - 1].questions[i].rcorrect.equals($scope.tests[$scope.tests.length - 1].questions[i].r)) {
+                                incluida++;
+                            }
+                        }
+                        //Si es respuesta múltiple
+                        else {
+                            if ($scope.tests[$scope.tests.length - 1].questions[i].rcorrect.includes($scope.tests[$scope.tests.length - 1].questions[i].r[j])) {
+                                incluida++;
+                            }
                         }
                     }
                     //Si la longuitud del array de respuestas correctas corresponde con el numero de respuestas incluidas , la respuesta es correcta
@@ -342,7 +376,7 @@ angular.module('testManagerApp')
                     data['_id'] = parseInt($scope.cuestionarios[$scope.cuestionarios.length - 1]._id, 10) + 1;
                 }
                 //Se genera un valor aleatorio para el atributo hashKey 
-                data.$$hashKey="object:"+Math.random(100);
+                data.$$hashKey = "object:" + Math.random(100);
                 //Se guarda el nuevo cuestionario en el array de cuestionarios
                 $scope.cuestionarios.push(data);
             });
