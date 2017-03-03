@@ -81,13 +81,10 @@ angular.module('testManagerApp')
         $scope.cuestionario = menuFactory.getCuestionario(parseInt($stateParams.id, 10));
         //Se obtiene las respuestas guardadas
         $scope.tests = testFactory.getAnswers();
-        console.log($scope.cuestionario);
         //Se crea un objeto que contendra la respuestas
         $scope.answer = {};
         //Copio el array de cuestionarios en un nuevo array que contendrá las respuestas seleccionadas por el usuario
         angular.copy($scope.cuestionario, $scope.answer);
-
-        console.log($scope.cuestionario);
 
         $scope.selected = [];
         //Por cada pregunta del cuestionaro se guarda un array de respuestas
@@ -187,7 +184,7 @@ angular.module('testManagerApp')
                         //obtener el indice de la fecha para poner el resultado en el indice de la fecha correspondiente
                         var indexFecha = $scope.labels1.indexOf($scope.fecha);
                         //Rellenar el array de respuestas con valores nulos como fechas anteriores haya
-                        for (var i = 0; i < $scope.labels1.length; i++) {
+                        for (var j = 0; j < $scope.labels1.length; j++) {
                             $scope.data1[index].push(null);
                         }
                         $scope.data1[index].push(null);
@@ -199,12 +196,12 @@ angular.module('testManagerApp')
                     else {
                         $scope.labels1.push($scope.fecha);
                         $scope.series1.push($scope.title);
-                        var index = $scope.labels1.indexOf($scope.fecha);
+                        var indexLabel = $scope.labels1.indexOf($scope.fecha);
                         //Rellenar el array de respuestas con valores nulos como fechas anteriores haya
-                        for (var i = 0; i < $scope.labels1.length; i++) {
+                        for (var z = 0; z < $scope.labels1.length; z++) {
                             array.push(null);
                         }
-                        array.splice(index, 1, $scope.respuestas);
+                        array.splice(indexLabel, 1, $scope.respuestas);
                         $scope.data1.push(array);
                         array.push(null);
 
@@ -281,8 +278,6 @@ angular.module('testManagerApp')
 
 
         $scope.submitTest = function () {
-
-            console.log($scope.cuest);
             //Si no hay cuestionarios creados el cuestionario creado se establece con identificador 0
             if ($scope.cuestionarios.length == 0) {
                 $scope.cuest['_id'] = 0;
@@ -332,7 +327,6 @@ angular.module('testManagerApp')
         //Función que importa un cuestionario desde un fichero en formato .json
         $scope.import = function () {
             $.getJSON($scope.fichero.fic, function (data) {
-                console.log(data);
                 //Si no hay cuestionarios creados el cuestionario creado se establece con identificador 0
                 if ($scope.cuestionarios.length == 0) {
                     data['_id'] = 0;
@@ -355,9 +349,6 @@ angular.module('testManagerApp')
         $scope.labels = testFactory.getLabels();
         $scope.series = testFactory.getSeries();
         $scope.data = testFactory.getData();
-        console.log($scope.labels);
-        console.log($scope.series);
-        console.log($scope.data);
         $scope.onClick = function (points, evt) {
             console.log(points, evt);
         };
@@ -459,6 +450,8 @@ angular.module('testManagerApp')
                     break;
                 case 3:
                     $scope.filtText = "date";
+                    break;
+                default:
                     break;
             }
         };
