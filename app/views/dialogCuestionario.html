@@ -1,18 +1,18 @@
-<md-dialog aria-label="Mango (Fruit)">
-  <form>
+<div ng-cloak>
+  <md-dialog aria-label="Respuestas" style="max-width:1800px;max-height:810px; ">
     <md-toolbar>
       <div class="md-toolbar-tools" md-colors="{background: 'teal'}">
         <h2>{{tests[tests.length-1].title}}</h2>
         <span flex></span>
       </div>
     </md-toolbar>
-    <md-dialog-content style="max-width:800px;max-height:810px; ">
+    <md-dialog-content>
       <md-tabs md-dynamic-height md-border-bottom>
         <md-tab label="resultados">
           <md-content class="md-padding">
-            <md-content class="md-padding">
-              <h5 class="md-display-1"><em>Respuestas correctas : {{(correctas/tests[tests.length-1].questions.length)*100 | number:2}}%</em></h5>
-            </md-content>
+            <h5 class="md-display-1"><em>Respuestas correctas : {{(correctas/tests[tests.length-1].questions.length)*100 | number:2}}%</em></h5>
+          </md-content>
+          <md-content class="md-padding">
             <canvas id="doughnut" class="chart chart-doughnut" chart-data="data" chart-labels="labels" chart-colors="colors">
             </canvas>
           </md-content>
@@ -37,8 +37,8 @@
         Estadisticas
       </md-button>
       <md-button ng-href="#!/menu" ng-click="answer()" style="margin-right:20px;">
-        Volver al Menú
+        Menú
       </md-button>
     </md-dialog-actions>
-  </form>
-</md-dialog>
+  </md-dialog>
+</div>
