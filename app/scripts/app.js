@@ -21,7 +21,7 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
 
             })
 
-            //ruta par la pagina cuestionario
+            //ruta para la pagina cuestionario
             .state('app.cuestionario', {
                 url: 'menu/:id',
                 views: {
@@ -32,7 +32,7 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
                 }
             })
 
-            //ruta par la pagina maker
+            //ruta para la pagina maker
             .state('app.maker', {
                 url: 'maker',
                 views: {
@@ -43,7 +43,19 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
                 }
             })
 
-            //ruta par la pagina estadisticas
+             //ruta para la pagina estadisticas individuales
+            .state('app.estadisticasInd', {
+                url: 'stats/:id',
+                views: {
+                    'content@': {
+                        templateUrl: 'views/estadisticasInd.html',
+                        controller: 'StatsControllerDetails'
+                    }
+                }
+            })
+
+
+            //ruta para la pagina estadisticas
             .state('app.estadisticas', {
                 url: 'estadisticas',
                 views: {
