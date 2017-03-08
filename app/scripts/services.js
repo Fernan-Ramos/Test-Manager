@@ -74,6 +74,7 @@ angular.module('testManagerApp')
         var testfac = {};
 
         var tests = [];
+        var stats = [];
         var labels = [];
         var series = [];
         var data = [];
@@ -82,8 +83,12 @@ angular.module('testManagerApp')
             return tests;
         };
 
-        testfac.getAnswer = function (index) {
-            return tests[index];
+        testfac.getStats = function () {
+            return stats;
+        };
+
+        testfac.getStat = function (index) {
+            return stats[index];
         };
 
         testfac.getLabels = function () {
