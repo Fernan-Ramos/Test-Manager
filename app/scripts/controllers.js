@@ -166,15 +166,45 @@ angular.module('testManagerApp')
                 $scope.answer = function (answer) {
                     $mdDialog.hide(answer);
                 };
+
+                $scope.stats = testFactory.getStats();
                 $scope.labels1 = testFactory.getLabels();
                 $scope.series1 = testFactory.getSeries();
                 $scope.data1 = testFactory.getData();
                 var array = [null];
-                //Si el conjunto de respuestas tiene alguna respuesta a algún cuestionario , se obtiene el titulo  del cuestionario , el nº de respuestas correctas y la fecha en la que se hizo.
+                //Si el conjunto de respuestas tiene alguna respuesta a algún cuestionario , se obtiene el titulo  del cuestionario , el nº de respuestas correctas ,la fecha en la que se hizo y el id.
                 if ($scope.tests.length != 0) {
                     $scope.title = $scope.tests[$scope.tests.length - 1].title;
                     $scope.respuestas = $scope.tests[$scope.tests.length - 1].cal;
                     $scope.fecha = $scope.tests[$scope.tests.length - 1].date;
+                    $scope.id = $scope.tests[$scope.tests.length - 1]._id;
+
+                    //Objeto que contiene las estadisticas de cada cuestionario
+                    $scope.stat = {
+                        _id: "",
+                        stats: {
+                            labels: [],
+                            series: [],
+                            data: [],
+                        }
+                    };
+
+                    //Filtra cada objeto estadisticas por id
+                    var result = $scope.stats.filter(function (obj) {
+                        return obj._id == $scope.id;
+                    });
+
+                    //Si no esta el cuestionario reflejado se guarda la fecha , el titulo y el resultado || Si si que esta reflejado solamente se guarda la fecha y el resultado
+                    if (result.length == 0) {
+                        $scope.stat._id = $scope.id;
+                        $scope.stat.stats.labels = [$scope.fecha];
+                        $scope.stat.stats.series = [$scope.title];
+                        $scope.stat.stats.data = [[$scope.respuestas]];
+                        $scope.stats.push($scope.stat);
+                    } else {
+                        result[0].stats.labels.push($scope.fecha);
+                        result[0].stats.data[0].push($scope.respuestas);
+                    }
 
                     //Si el cuestionario ya está reflejado en las estadisticas se añade el nuevo valor de respuestas al array de respuestas de dicho cuestionario
                     if ($scope.series1.includes($scope.title)) {
@@ -344,6 +374,74 @@ angular.module('testManagerApp')
 
     }])
 
+    .controller('StatsControllerDetails', ['$scope', '$stateParams', '$mdDialog', 'testFactory', function ($scope, $stateParams, $mdDialog, testFactory) {
+        $scope.stats = testFactory.getStat(parseInt($stateParams.id, 10));
+
+        $scope.datasetOverride1 = [{
+            yAxisID: 'y-axis-1'
+        }, {
+            yAxisID: 'y-axis-2'
+        }];
+        $scope.options1 = {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        max: 100,
+                        min: 0,
+                        stepSize: 10
+                    },
+                    id: 'y-axis-1',
+                    type: 'linear',
+                    display: true,
+                    position: 'left'
+                },
+                {
+                    ticks: {
+                        max: 100,
+                        min: 0,
+                        stepSize: 10
+                    },
+                    id: 'y-axis-2',
+                    type: 'linear',
+                    display: true,
+                    position: 'right'
+                }
+                ]
+            },
+            legend: { display: true }
+        };
+
+        //Dialogo que aparece cuando no hay cuestionarios completados
+        if (typeof $scope.stats === "undefined") {
+            $mdDialog.show({
+                clickOutsideToClose: false,
+
+                scope: $scope,
+                preserveScope: true,
+                template: '<md-dialog aria-label="List dialog">' +
+                '  <md-dialog-content>' +
+                '<md-content class="md-padding">' +
+                ' <h5 class="md-title">No hay estadisticas que mostrar</h5>' +
+                ' <p class="md-textContent">Todavía no has realizado ningún cuestionario</p>' +
+                '</md-content>      ' +
+                '  </md-dialog-content>' +
+                '  <md-dialog-actions>' +
+                '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
+                '      Menu' +
+                '    </md-button>' +
+                '  </md-dialog-actions>' +
+                '</md-dialog>',
+
+                controller: function DialogController($scope, $mdDialog) {
+                    $scope.closeDialog = function () {
+                        $mdDialog.hide();
+                    }
+                }
+            });
+        }
+
+
+    }])
     .controller('StatsController', ['$scope', '$mdDialog', 'testFactory', function ($scope, $mdDialog, testFactory) {
         $scope.tests = testFactory.getAnswers();
         $scope.labels = testFactory.getLabels();
