@@ -3,14 +3,23 @@ angular.module('testManagerApp')
 
     .controller('MenuController', ['$scope', '$mdDialog', 'menuFactory', function ($scope, $mdDialog, menuFactory) {
 
-        $scope.cuestionarios = menuFactory.getCuestionarios();
+        $scope.showMenu = false;
+        $scope.message = "Loading ...";
+        $scope.cuestionarios = menuFactory.getCuestionarios().query(
+            function (response) {
+                $scope.cuestionarios = response;
+                $scope.showMenu = true;
+            },
+            function (response) {
+                $scope.message = "Error: " + response.status + " " + response.statusText;
+            });
 
 
         //Función que exporta un cuestionario a fichero en formato json
         $scope.exportCuest = function (cuest, filename) {
 
             filename = filename + '.json';
-
+            cuest.id = "";
             if (typeof cuest === 'object') {
                 cuest = JSON.stringify(cuest, undefined, 2);
             }
@@ -61,11 +70,9 @@ angular.module('testManagerApp')
                         if (index > -1) {
                             $scope.cuestionarios.splice(index, 1);
                         }
-                        //Actualizar los id de los cuestionarios
-                        for (var i = index; i < $scope.cuestionarios.length; i++) {
-                            $scope.cuestionarios[i]._id -= 1;
-                        }
+                        menuFactory.getCuestionarios().remove(cuest);
                     }
+
                     $scope.closeDialog = function () {
                         $mdDialog.hide();
                     }
@@ -78,33 +85,44 @@ angular.module('testManagerApp')
 
     .controller('TestController', ['$scope', '$filter', '$stateParams', '$mdDialog', 'menuFactory', 'testFactory', function ($scope, $filter, $stateParams, $mdDialog, menuFactory, testFactory) {
         //Se obtiene el cuestionario 
-        $scope.cuestionario = menuFactory.getCuestionario(parseInt($stateParams.id, 10));
-        //Se obtiene las respuestas guardadas
-        $scope.tests = testFactory.getAnswers();
-        //Se crea un objeto que contendra la respuestas
-        $scope.answer = {};
-        //Copio el array de cuestionarios en un nuevo array que contendrá las respuestas seleccionadas por el usuario
-        angular.copy($scope.cuestionario, $scope.answer);
 
-        $scope.selected = [];
-        //Por cada pregunta del cuestionaro se guarda un array de respuestas
-        for (var i = 0; i < $scope.cuestionario.questions.length; i++) {
-            $scope.selected.push([]);
-        }
-        //Función que añade o elimina una respuesta al array de respuestas
-        $scope.toggle = function (item, list) {
-            var idx = list.indexOf(item);
-            if (idx > -1) {
-                list.splice(idx, 1);
-            }
-            else {
-                list.push(item);
-            }
-        };
-        //Función que comprueba si el elemento existe en el array de respuestas
-        $scope.exists = function (item, list) {
-            return list.indexOf(item) > -1;
-        };
+        $scope.cuestionario =
+            menuFactory.getCuestionarios().get({ id: parseInt($stateParams.id, 10) })
+                .$promise.then(
+                function (response) {
+                    $scope.showDish = true;
+                    $scope.cuestionario = response;
+                    //Se crea un objeto que contendra la respuestas
+                    $scope.answer = {};
+                    //Copio el array de cuestionarios en un nuevo array que contendrá las respuestas seleccionadas por el usuario
+                    angular.copy($scope.cuestionario, $scope.answer);
+                    $scope.answer.id = "";
+                    $scope.selected = [];
+                    //Por cada pregunta del cuestionaro se guarda un array de respuestas
+                    for (var i = 0; i < $scope.cuestionario.questions.length; i++) {
+                        $scope.selected.push([]);
+                    }
+                    //Función que añade o elimina una respuesta al array de respuestas
+                    $scope.toggle = function (item, list) {
+                        var idx = list.indexOf(item);
+                        if (idx > -1) {
+                            list.splice(idx, 1);
+                        }
+                        else {
+                            list.push(item);
+                        }
+                    };
+                    //Función que comprueba si el elemento existe en el array de respuestas
+                    $scope.exists = function (item, list) {
+                        return list.indexOf(item) > -1;
+                    };
+                },
+                function (response) {
+                    $scope.message = "Error: " + response.status + " " + response.statusText;
+                }
+                );
+
+        //Se obtiene las respuestas guardadas
 
 
         $scope.submitAnswer = function (ev) {
@@ -114,131 +132,155 @@ angular.module('testManagerApp')
             for (var i = 0; i < $scope.selected.length; i++) {
                 $scope.answer.questions[i].r = $scope.selected[i];
             }
+            $scope.correctas = 0;
+            $scope.incorrectas = 0;
+            var incluida = 0;
+            //Se recorre el array de preguntas 
+            for (var i = 0; i < $scope.answer.questions.length; i++) {
+                //Se recorre el array de respuestas dadas y se comprueba que cada elemento de dicho array esté en el array de respuestas correctas
+                for (var j = 0; j < $scope.answer.questions[i].r.length; j++) {
+                    if ($scope.answer.questions[i].rcorrect.includes($scope.answer.questions[i].r[j])) {
+                        incluida++;
+                    }
+                }
+                //Si la longuitud del array de respuestas correctas corresponde con el numero de respuestas incluidas y es igual la longuitud del array de respuestas dada, la respuesta es correcta
+                if (incluida == $scope.answer.questions[i].rcorrect.length && $scope.answer.questions[i].r.length == $scope.answer.questions[i].rcorrect.length) {
+                    $scope.correctas++;
+                    $scope.answer.questions[i].estado = 1;
+
+                } else {
+                    $scope.incorrectas++;
+                    $scope.answer.questions[i].estado = 0;
+                }
+                incluida = 0;
+            }
+
+            //Se guarda las respuestas correctas 
+            $scope.answer.correctas = $scope.correctas;
+            //Se guarda las respuestas incorrectas 
+            $scope.answer.incorrectas = $scope.incorrectas;
+            //Se guarda la calificación obtenida
+            $scope.answer.cal = ($scope.answer.correctas / $scope.answer.questions.length) * 100;
             //Se guarda la respuesta al cuestionario en el array de respuestas a cuestionarios
-            $scope.tests.push($scope.answer);
+            $scope.tests = [];
+            testFactory.getAnswers().save($scope.answer).$promise.then(
+                function (response) {
+                    $scope.tests = response;
+                    $scope.showDish = true;
+                    console.log($scope.tests);
+                    $mdDialog.show({
+                        clickOutsideToClose: false,
+                        scope: $scope,
+                        preserveScope: true,
+                        template:
+                        '<div ng-cloak>' +
+                        '<md-dialog aria-label="Respuestas">' +
+                        '<md-toolbar>' +
+                        '<div class="md-toolbar-tools" >' +
+                        '<h2>{{tests.title}}</h2>' +
+                        '<span flex></span>' +
+                        '</div>' +
+                        ' </md-toolbar>' +
+                        '  <md-dialog-content>' +
+                        '<md-tabs md-dynamic-height md-border-bottom>' +
+                        '<md-tab label="resultados">' +
+                        '<md-content class="md-padding">' +
+                        '<h5 class="md-display-1"><em>Respuestas correctas : {{(tests.correctas/tests.questions.length)*100 | number:2}}%</em></h5>' +
+                        '</md-content>' +
+                        '<md-content class="md-padding">' +
+                        '<canvas id="doughnut" class="chart chart-doughnut" chart-data="data" chart-labels="labels" chart-colors="colors">' +
+                        '</md-content>' +
+                        '</md-tab>' +
+                        '<md-tab label="sumario">' +
+                        ' <md-content class="md-padding" ng-repeat="preg in tests.questions  track by $index">' +
+                        '<div ng-if="preg.estado==1" class="bs-callout bs-callout-success">' +
+                        '<h4><em>Pregunta {{$index+1}} : {{preg.pregunta}}</em></h4>' +
+                        '<p>Muy bien, <strong class="text-success">{{preg.rcorrect}}</strong> es la respuesta correcta</p>' +
+                        '</div>' +
+                        '<div ng-if="preg.estado==0" class="bs-callout bs-callout-danger">' +
+                        '<h4><em>Pregunta {{$index+1}} : {{preg.pregunta}}</em></h4>' +
+                        '<p>Vaya! <strong class="text-danger">{{preg.r}} </strong> no es la respuesta correcta.' +
+                        ' </div>' +
+                        '</md-content>' +
+                        '</md-tab>' +
+                        '</md-tabs>' +
+                        '  </md-dialog-content>' +
+                        '  <md-dialog-actions>' +
+                        '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
+                        '      Menu' +
+                        '    </md-button>' +
+                        '    <md-button ui-sref="app.estadisticas" ng-click="closeDialog()" class="md-primary">' +
+                        '      Estadisticas' +
+                        '    </md-button>' +
+                        '  </md-dialog-actions>' +
+                        '</md-dialog>' +
+                        '</div>',
+                        controller: function DialogController($scope, $mdDialog) {
+                            //Atributos para el char
+                            $scope.labels = ["Correctas", "Incorrectas"];
+                            $scope.data = [$scope.tests.correctas, $scope.tests.incorrectas];
+                            $scope.colors = ['#D1E5B3', '#F08080'];
+                            $scope.closeDialog = function () {
+                                $mdDialog.hide();
+                            }
+                        }
+                    });
+                    //Función que cierra el dialogo
+                    //Si el conjunto de respuestas tiene alguna respuesta a algún cuestionario , se obtiene el titulo  del cuestionario , el nº de respuestas correctas y la fecha en la que se hizo.
+                    if ($scope.tests.length != 0) {
+                        $scope.title = $scope.tests.title;
+                        $scope.respuestas = $scope.tests.cal;
+                        $scope.fecha = $scope.tests.date;
+                        $scope.id = $scope.tests.id;
+                        testFactory.getStats().query(
+                            function (response) {
+                                $scope.stats = response;
+                                $scope.showMenu = true;
+                                //Objeto que contiene las estadisticas de cada cuestionario
+                                $scope.stat = {
+                                    id: "",
+                                    title: "",
+                                    stats: {
+                                        labels: [],
+                                        series: [],
+                                        data: [],
+                                    }
+                                };
+                                //Filtra cada objeto estadisticas por titulo 
+                                var result = $scope.stats.filter(function (obj) {
+                                    return obj.title == $scope.title;
+                                });
+
+                                //Si no está el cuestionario reflejado se guarda la fecha , el titulo y el resultado || Si si que esta reflejado solamente se guarda la fecha y el resultado
+                                if (result.length == 0) {
+                                    //$scope.stat.id = $scope.id;
+                                    $scope.stat.title = $scope.title;
+                                    $scope.stat.stats.labels = [$scope.fecha];
+                                    $scope.stat.stats.series = [$scope.title];
+                                    $scope.stat.stats.data = [[$scope.respuestas]];
+
+                                    $scope.stats.push($scope.stat);
+                                    testFactory.getStats().save($scope.stat);
+                                } else {
+                                    result[0].stats.labels.push($scope.fecha);
+                                    $scope.id = result[0].id;
+                                    result[0].stats.data[0].push($scope.respuestas);
+                                    //Se actualiza el valor de las estasticas en el servidor
+                                    testFactory.getStats().update({ id: $scope.id }, result[0]);
+                                }
+                            },
+                            function (response) {
+                                $scope.message = "Error: " + response.status + " " + response.statusText;
+                            });
+                    }
+                },
+                function (response) {
+                    $scope.message = "Error: " + response.status + " " + response.statusText;
+                }
+            );
+
             //Resetea el formulario a  pristine
             $scope.testForm.$setPristine();
-            //Muestra el dialogo con los resultados
-            $mdDialog.show({
-                controller: DialogController,
-                templateUrl: 'views/dialogCuestionario.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                clickOutsideToClose: false
-            })
-
-
-            function DialogController($scope, $mdDialog) {
-                $scope.correctas = 0;
-                $scope.incorrectas = 0;
-                $scope.tests = testFactory.getAnswers();
-                var incluida = 0;
-                //Se recorre el array de preguntas 
-                for (var i = 0; i < $scope.tests[$scope.tests.length - 1].questions.length; i++) {
-                    //Se recorre el array de respuestas dadas y se comprueba que cada elemento de dicho array esté en el array de respuestas correctas
-                    for (var j = 0; j < $scope.tests[$scope.tests.length - 1].questions[i].r.length; j++) {
-                        if ($scope.tests[$scope.tests.length - 1].questions[i].rcorrect.includes($scope.tests[$scope.tests.length - 1].questions[i].r[j])) {
-                            incluida++;
-                        }
-                    }
-                    //Si la longuitud del array de respuestas correctas corresponde con el numero de respuestas incluidas y es igual la longuitud del array de respuestas dada, la respuesta es correcta
-                    if (incluida == $scope.tests[$scope.tests.length - 1].questions[i].rcorrect.length && $scope.tests[$scope.tests.length - 1].questions[i].r.length == $scope.tests[$scope.tests.length - 1].questions[i].rcorrect.length) {
-                        $scope.correctas++;
-                        $scope.tests[$scope.tests.length - 1].questions[i].estado = "correcta";
-
-                    } else {
-                        $scope.incorrectas++;
-                        $scope.tests[$scope.tests.length - 1].questions[i].estado = "incorrecta";
-                    }
-                    incluida = 0;
-                }
-                //Se guarda las respuestas correctas 
-                $scope.tests[$scope.tests.length - 1].correctas = $scope.correctas;
-                //Se guarda las respuestas incorrectas 
-                $scope.tests[$scope.tests.length - 1].incorrectas = $scope.incorrectas;
-                //Se guarda la calificación obtenida
-                $scope.tests[$scope.tests.length - 1].cal = ($scope.tests[$scope.tests.length - 1].correctas / $scope.tests[$scope.tests.length - 1].questions.length) * 100;
-                //Atributos para el char
-                $scope.labels = ["Correctas", "Incorrectas"];
-                $scope.data = [$scope.correctas, $scope.incorrectas];
-                $scope.colors = ['#D1E5B3', '#F08080'];
-                //Función que cierra el dialogo
-                $scope.answer = function (answer) {
-                    $mdDialog.hide(answer);
-                };
-
-                $scope.stats = testFactory.getStats();
-                $scope.labels1 = testFactory.getLabels();
-                $scope.series1 = testFactory.getSeries();
-                $scope.data1 = testFactory.getData();
-                var array = [null];
-                //Si el conjunto de respuestas tiene alguna respuesta a algún cuestionario , se obtiene el titulo  del cuestionario , el nº de respuestas correctas ,la fecha en la que se hizo y el id.
-                if ($scope.tests.length != 0) {
-                    $scope.title = $scope.tests[$scope.tests.length - 1].title;
-                    $scope.respuestas = $scope.tests[$scope.tests.length - 1].cal;
-                    $scope.fecha = $scope.tests[$scope.tests.length - 1].date;
-                    $scope.id = $scope.tests[$scope.tests.length - 1]._id;
-
-                    //Objeto que contiene las estadisticas de cada cuestionario
-                    $scope.stat = {
-                        _id: "",
-                        stats: {
-                            labels: [],
-                            series: [],
-                            data: [],
-                        }
-                    };
-
-                    //Filtra cada objeto estadisticas por id
-                    var result = $scope.stats.filter(function (obj) {
-                        return obj._id == $scope.id;
-                    });
-
-                    //Si no esta el cuestionario reflejado se guarda la fecha , el titulo y el resultado || Si si que esta reflejado solamente se guarda la fecha y el resultado
-                    if (result.length == 0) {
-                        $scope.stat._id = $scope.id;
-                        $scope.stat.stats.labels = [$scope.fecha];
-                        $scope.stat.stats.series = [$scope.title];
-                        $scope.stat.stats.data = [[$scope.respuestas]];
-                        $scope.stats.push($scope.stat);
-                    } else {
-                        result[0].stats.labels.push($scope.fecha);
-                        result[0].stats.data[0].push($scope.respuestas);
-                    }
-
-                    //Si el cuestionario ya está reflejado en las estadisticas se añade el nuevo valor de respuestas al array de respuestas de dicho cuestionario
-                    if ($scope.series1.includes($scope.title)) {
-                        //obtener el indice del del titulo para poder poner el nuevo valor
-                        var index = $scope.series1.indexOf($scope.title);
-                        $scope.labels1.push($scope.fecha);
-                        //obtener el indice de la fecha para poner el resultado en el indice de la fecha correspondiente
-                        var indexFecha = $scope.labels1.indexOf($scope.fecha);
-                        //Rellenar el array de respuestas con valores nulos como fechas anteriores haya
-                        for (var j = 0; j < $scope.labels1.length; j++) {
-                            $scope.data1[index].push(null);
-                        }
-                        $scope.data1[index].push(null);
-                        $scope.data1[index].splice(indexFecha, 1, $scope.respuestas);
-                        $scope.data1[index].push(null);
-
-                    }
-                    //Si no está reflejado en las estadisticas
-                    else {
-                        $scope.labels1.push($scope.fecha);
-                        $scope.series1.push($scope.title);
-                        var indexLabel = $scope.labels1.indexOf($scope.fecha);
-                        //Rellenar el array de respuestas con valores nulos como fechas anteriores haya
-                        for (var z = 0; z < $scope.labels1.length; z++) {
-                            array.push(null);
-                        }
-                        array.splice(indexLabel, 1, $scope.respuestas);
-                        $scope.data1.push(array);
-                        array.push(null);
-
-                    }
-                }
-
-            }
 
             //Se resetea el objeto respuesta
             $scope.answer = {};
@@ -267,7 +309,17 @@ angular.module('testManagerApp')
     }])
 
     .controller('MakerController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
-        $scope.cuestionarios = menuFactory.getCuestionarios();
+
+
+        $scope.cuestionarios = menuFactory.getCuestionarios().query(
+            function (response) {
+                $scope.cuestionarios = response;
+                $scope.showMenu = true;
+            },
+            function (response) {
+                $scope.message = "Error: " + response.status + " " + response.statusText;
+            });
+
         $scope.quests = [];
         for (var i = 1; i <= 100; i++) {
             $scope.quests.push(i);
@@ -293,7 +345,6 @@ angular.module('testManagerApp')
             title: "",
             image: "img/libro.jpg",
             text: "",
-            _id: "",
             questions: [{
                 title: "",
                 pregunta: "",
@@ -308,18 +359,10 @@ angular.module('testManagerApp')
 
 
         $scope.submitTest = function () {
-            //Si no hay cuestionarios creados el cuestionario creado se establece con identificador 0
-            if ($scope.cuestionarios.length == 0) {
-                $scope.cuest['_id'] = 0;
-            }
-            //Si hay cuestionarios creados se obtiene el identificador del cuestionario más antiguo y se le suma una unidad 
-            else {
-                $scope.cuest['_id'] = parseInt($scope.cuestionarios[$scope.cuestionarios.length - 1]._id, 10) + 1;
-            }
 
             for (var i = 0; i < $scope.cuest.questions.length; i++) {
                 //Se establece un identificador por cada pregunta
-                $scope.cuest.questions[i]['_id'] = i;
+                //$scope.cuest.questions[i]['id'] = i;
                 if (typeof $scope.cuest.questions[i].image === "undefined") {
                     $scope.cuest.questions[i].image = "img/libro.jpg";
                 }
@@ -328,7 +371,8 @@ angular.module('testManagerApp')
             }
 
             //Poner el cuestionaro creado en array de cuestionarios
-            $scope.cuestionarios.push($scope.cuest);
+            menuFactory.getCuestionarios().save($scope.cuest);
+            //$scope.cuestionarios.push($scope.cuest);
 
             //Resetea el formulario a  pristine
             $scope.makerForm.$setPristine();
@@ -338,7 +382,6 @@ angular.module('testManagerApp')
                 title: "",
                 image: "img/libro.jpg",
                 text: "",
-                _id: "",
                 questions: [{
                     title: "",
                     pregunta: "",
@@ -358,24 +401,30 @@ angular.module('testManagerApp')
         $scope.import = function () {
             $.getJSON($scope.fichero.fic, function (data) {
                 //Si no hay cuestionarios creados el cuestionario creado se establece con identificador 0
-                if ($scope.cuestionarios.length == 0) {
-                    data['_id'] = 0;
-                }
-                //Si hay cuestionarios creados se obtiene el identificador del cuestionario más antiguo y se le suma una unidad 
-                else {
-                    data['_id'] = parseInt($scope.cuestionarios[$scope.cuestionarios.length - 1]._id, 10) + 1;
-                }
+
                 //Se genera un valor aleatorio para el atributo hashKey 
-                data.$$hashKey = "object:" + Math.random(100);
+                //data.$$hashKey = "object:" + Math.random(100);
                 //Se guarda el nuevo cuestionario en el array de cuestionarios
                 $scope.cuestionarios.push(data);
+                menuFactory.getCuestionarios().save(data);
             });
         };
 
     }])
 
     .controller('StatsControllerDetails', ['$scope', '$stateParams', '$mdDialog', 'testFactory', function ($scope, $stateParams, $mdDialog, testFactory) {
-        $scope.stats = testFactory.getStat(parseInt($stateParams.id, 10));
+
+        $scope.stats =
+            testFactory.getStats().get({ id: parseInt($stateParams.id, 10) })
+                .$promise.then(
+                function (response) {
+                    $scope.stats = response;
+                    $scope.showDish = true;
+                },
+                function (response) {
+                    $scope.message = "Error: " + response.status + " " + response.statusText;
+                }
+                );
 
         $scope.datasetOverride1 = [{
             yAxisID: 'y-axis-1'
@@ -443,100 +492,49 @@ angular.module('testManagerApp')
 
     }])
     .controller('StatsController', ['$scope', '$mdDialog', 'testFactory', function ($scope, $mdDialog, testFactory) {
-        $scope.tests = testFactory.getAnswers();
-        $scope.labels = testFactory.getLabels();
-        $scope.series = testFactory.getSeries();
-        $scope.data = testFactory.getData();
-        $scope.onClick = function (points, evt) {
-            console.log(points, evt);
-        };
-        $scope.datasetOverride1 = [{
-            yAxisID: 'y-axis-1'
-        }, {
-            yAxisID: 'y-axis-2'
-        }];
-        $scope.options1 = {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        max: 100,
-                        min: 0,
-                        stepSize: 10
-                    },
-                    id: 'y-axis-1',
-                    type: 'linear',
-                    display: true,
-                    position: 'left'
-                },
-                {
-                    ticks: {
-                        max: 100,
-                        min: 0,
-                        stepSize: 10
-                    },
-                    id: 'y-axis-2',
-                    type: 'linear',
-                    display: true,
-                    position: 'right'
+        $scope.tests = [];
+        testFactory.getAnswers().query(
+            function (response) {
+                $scope.tests = response;
+                $scope.showMenu = true;
+                //Dialogo que aparece cuando no hay cuestionarios completados
+                if ($scope.tests.length == 0) {
+                    $mdDialog.show({
+                        clickOutsideToClose: false,
+
+                        scope: $scope,        // use parent scope in template
+                        preserveScope: true,  // do not forget this if use parent scope
+
+                        // Since GreetingController is instantiated with ControllerAs syntax
+                        // AND we are passing the parent '$scope' to the dialog, we MUST
+                        // use 'vm.<xxx>' in the template markup
+
+                        template: '<md-dialog aria-label="List dialog">' +
+                        '  <md-dialog-content>' +
+                        '<md-content class="md-padding">' +
+                        ' <h5 class="md-title">No hay estadisticas que mostrar</h5>' +
+                        ' <p class="md-textContent">Todavía no has realizado ningún cuestionario</p>' +
+                        '</md-content>      ' +
+                        '  </md-dialog-content>' +
+                        '  <md-dialog-actions>' +
+                        '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
+                        '      Menu' +
+                        '    </md-button>' +
+                        '  </md-dialog-actions>' +
+                        '</md-dialog>',
+
+                        controller: function DialogController($scope, $mdDialog) {
+                            $scope.closeDialog = function () {
+                                $mdDialog.hide();
+                            }
+                        }
+                    });
                 }
-                ]
             },
-            legend: { display: true }
-        };
-
-        $scope.datasetOverride2 = [{
-            yAxisID: 'y-axis-1'
-        }
-        ];
-        $scope.options2 = {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        max: 100,
-                        min: 0,
-                        stepSize: 10
-                    },
-                    id: 'y-axis-1',
-                    type: 'linear',
-                    display: true,
-                    position: 'left'
-                }]
-            }, legend: { display: true }
-        };
-
-        //Dialogo que aparece cuando no hay cuestionarios completados
-        if ($scope.tests.length == 0) {
-            $mdDialog.show({
-                clickOutsideToClose: false,
-
-                scope: $scope,        // use parent scope in template
-                preserveScope: true,  // do not forget this if use parent scope
-
-                // Since GreetingController is instantiated with ControllerAs syntax
-                // AND we are passing the parent '$scope' to the dialog, we MUST
-                // use 'vm.<xxx>' in the template markup
-
-                template: '<md-dialog aria-label="List dialog">' +
-                '  <md-dialog-content>' +
-                '<md-content class="md-padding">' +
-                ' <h5 class="md-title">No hay estadisticas que mostrar</h5>' +
-                ' <p class="md-textContent">Todavía no has realizado ningún cuestionario</p>' +
-                '</md-content>      ' +
-                '  </md-dialog-content>' +
-                '  <md-dialog-actions>' +
-                '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
-                '      Menu' +
-                '    </md-button>' +
-                '  </md-dialog-actions>' +
-                '</md-dialog>',
-
-                controller: function DialogController($scope, $mdDialog) {
-                    $scope.closeDialog = function () {
-                        $mdDialog.hide();
-                    }
-                }
+            function (response) {
+                $scope.message = "Error: " + response.status + " " + response.statusText;
             });
-        }
+
         //Función que ordena los cuestionarios por titulo , por calificación o por fecha .
         $scope.filter = function (value) {
             switch (value) {
