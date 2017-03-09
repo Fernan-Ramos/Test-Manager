@@ -4,7 +4,7 @@
       "title": "Cuanto sabes de paises?",
       "image": "img/libro.jpg",
       "text": "blabalbla",
-      "id": 0,
+      "id": 1,
       "questions": [
         {
           "id": 0,
@@ -49,7 +49,5 @@
     }
   ],
   "tests": [],
-  "labels": [],
-  "series": [],
-  "data": []
+  "stats":[]
 }
