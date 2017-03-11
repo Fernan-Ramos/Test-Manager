@@ -133,7 +133,9 @@ angular.module('testManagerApp')
             }
             $scope.correctas = 0;
             $scope.incorrectas = 0;
+            $scope.parcial = 0;
             var incluida = 0;
+            var parciales = 0;
             //Se recorre el array de preguntas 
             for (var i = 0; i < $scope.answer.questions.length; i++) {
                 //Se recorre el array de respuestas dadas y se comprueba que cada elemento de dicho array esté en el array de respuestas correctas
@@ -149,19 +151,33 @@ angular.module('testManagerApp')
                     $scope.answer.questions[i].estado = 1;
 
                 } else {
-                    $scope.incorrectas++;
-                    //Determina que la respuesta es incorrecta
-                    $scope.answer.questions[i].estado = 0;
+                    //Si no hay ninguna respuesta correcta 
+                    if (incluida == 0) {
+                        $scope.incorrectas++;
+                        //Determina que la respuesta es incorrecta
+                        $scope.answer.questions[i].estado = 0;
+                    }
+                    //Si hay alguna respuesta correcta  
+                    else {
+                        //Se calcula la calificación parcial
+                        $scope.answer.questions[i].estado = (incluida / $scope.answer.questions[i].r.length) / $scope.answer.questions.length;
+                        parciales = parciales + $scope.answer.questions[i].estado;
+                        //Determina que la respuesta es parcialmente correcta
+                        $scope.parcial++;
+                    }
                 }
                 incluida = 0;
+
             }
 
             //Se guarda las respuestas correctas 
             $scope.answer.correctas = $scope.correctas;
             //Se guarda las respuestas incorrectas 
             $scope.answer.incorrectas = $scope.incorrectas;
+            //Se guarda las respuestas parcialmente correctas
+            $scope.answer.parcial = $scope.parcial;
             //Se guarda la calificación obtenida
-            $scope.answer.cal = ($scope.answer.correctas / $scope.answer.questions.length) * 100;
+            $scope.answer.cal = (($scope.answer.correctas / $scope.answer.questions.length) + parciales) * 100;
 
             $scope.cuestionario.tests.push($scope.answer);
             //Se guarda la respuesta al cuestionario en el array de respuestas a cuestionarios
@@ -184,7 +200,7 @@ angular.module('testManagerApp')
                 '<md-tabs md-dynamic-height md-border-bottom>' +
                 '<md-tab label="resultados">' +
                 '<md-content class="md-padding">' +
-                '<h5 class="md-display-1"><em>Respuestas correctas : {{(cuestionario.tests[cuestionario.tests.length-1].correctas/cuestionario.tests[cuestionario.tests.length-1].questions.length)*100 | number:2}}%</em></h5>' +
+                '<h5 class="md-display-1"><em>Respuestas correctas : {{cuestionario.tests[cuestionario.tests.length-1].cal | number:2}}%</em></h5>' +
                 '</md-content>' +
                 '<md-content class="md-padding">' +
                 '<canvas id="doughnut" class="chart chart-doughnut" chart-data="data" chart-labels="labels" chart-colors="colors">' +
@@ -199,6 +215,10 @@ angular.module('testManagerApp')
                 '<div ng-if="preg.estado==0" class="bs-callout bs-callout-danger">' +
                 '<h4><em>Pregunta {{$index+1}} : {{preg.pregunta}}</em></h4>' +
                 '<p>Vaya! <strong class="text-danger">{{preg.r}} </strong> no es la respuesta correcta.' +
+                ' </div>' +
+                '<div ng-if="preg.estado>0 && preg.estado<1 " class="bs-callout bs-callout-warning">' +
+                '<h4><em>Pregunta {{$index+1}} : {{preg.pregunta}}</em></h4>' +
+                '<p>La respuesta <strong class="text-warning">{{preg.r}} </strong> es correcta parcialmente.' +
                 ' </div>' +
                 '</md-content>' +
                 '</md-tab>' +
@@ -216,9 +236,9 @@ angular.module('testManagerApp')
                 '</div>',
                 controller: function DialogController($scope, $mdDialog) {
                     //Atributos para el char
-                    $scope.labels = ["Correctas", "Incorrectas"];
-                    $scope.data = [$scope.cuestionario.tests[$scope.cuestionario.tests.length - 1].correctas, $scope.cuestionario.tests[$scope.cuestionario.tests.length - 1].incorrectas];
-                    $scope.colors = ['#D1E5B3', '#F08080'];
+                    $scope.labels = ["Correctas", "Incorrectas", "Parcial"];
+                    $scope.data = [$scope.cuestionario.tests[$scope.cuestionario.tests.length - 1].correctas, $scope.cuestionario.tests[$scope.cuestionario.tests.length - 1].incorrectas, $scope.cuestionario.tests[$scope.cuestionario.tests.length - 1].parcial];
+                    $scope.colors = ['#D1E5B3', '#F08080', '#f7d3a0'];
                     //Función que cierra el dialogo
                     $scope.closeDialog = function () {
                         $mdDialog.hide();
