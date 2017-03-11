@@ -7,7 +7,6 @@
       "id": 1,
       "questions": [
         {
-          "id": 0,
           "title": "paises Test",
           "pregunta": "blaa",
           "image": "img/mundo.jpg",
@@ -20,7 +19,6 @@
           ]
         },
         {
-          "id": 1,
           "title": "paises Test",
           "pregunta": "blaa",
           "image": "img/programar.jpg",
@@ -33,7 +31,6 @@
           ]
         },
         {
-          "id": 2,
           "title": "paises Test",
           "pregunta": "blaa",
           "image": "img/libro.jpg",
