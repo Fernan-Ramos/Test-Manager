@@ -166,7 +166,7 @@ angular.module('testManagerApp')
             $scope.cuestionario.tests.push($scope.answer);
             //Se guarda la respuesta al cuestionario en el array de respuestas a cuestionarios
             menuFactory.getCuestionarios().update({ id: $scope.cuestionario.id }, $scope.cuestionario);
-            
+
             $mdDialog.show({
                 clickOutsideToClose: false,
                 scope: $scope,
@@ -176,7 +176,7 @@ angular.module('testManagerApp')
                 '<md-dialog aria-label="Respuestas">' +
                 '<md-toolbar>' +
                 '<div class="md-toolbar-tools" >' +
-                '<h2>{{tests.title}}</h2>' +
+                '<h2>{{cuestionario.title}}</h2>' +
                 '<span flex></span>' +
                 '</div>' +
                 ' </md-toolbar>' +
@@ -219,13 +219,13 @@ angular.module('testManagerApp')
                     $scope.labels = ["Correctas", "Incorrectas"];
                     $scope.data = [$scope.cuestionario.tests[$scope.cuestionario.tests.length - 1].correctas, $scope.cuestionario.tests[$scope.cuestionario.tests.length - 1].incorrectas];
                     $scope.colors = ['#D1E5B3', '#F08080'];
-                     //Función que cierra el dialogo
+                    //Función que cierra el dialogo
                     $scope.closeDialog = function () {
                         $mdDialog.hide();
                     }
                 }
             });
-           
+
             //Si el conjunto de respuestas tiene alguna respuesta a algún cuestionario , se obtiene el titulo  del cuestionario , el nº de respuestas correctas y la fecha en la que se hizo.
             //Se obtiene el titulo , la calificación y la fecha de cuestionario
             $scope.title = $scope.cuestionario.title;
@@ -288,7 +288,7 @@ angular.module('testManagerApp')
         }
     }])
 
-    .controller('MakerController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
+    .controller('MakerController', ['$scope', '$mdDialog', 'menuFactory', function ($scope, $mdDialog, menuFactory) {
 
         $scope.cuestionarios = menuFactory.getCuestionarios().query(
             function (response) {
@@ -381,14 +381,42 @@ angular.module('testManagerApp')
         $scope.fichero = {};
         //Función que importa un cuestionario desde un fichero en formato .json
         $scope.import = function () {
+
             $.getJSON($scope.fichero.fic, function (data) {
                 //Se resetea las respuestas y las estadisticas 
-                data.tests=[]
-                data.stats=[]
+                data.tests = []
+                data.stats = []
                 $scope.cuestionarios.push(data);
                 //Se guarda el nuevo cuestionario en el array de cuestionarios
                 menuFactory.getCuestionarios().save(data);
-            });
+            })
+                //Si el archivo no es un archivo de tipo json
+                .fail(function () {
+                    $mdDialog.show({
+                        clickOutsideToClose: true,
+                        scope: $scope,
+                        preserveScope: true,
+                        template: '<md-dialog aria-label="File invalid">' +
+                        '  <md-dialog-content>' +
+                        '<md-content class="md-padding">' +
+                        ' <h5 class="md-title">Archivo no válido</h5>' +
+                        ' <p class="md-textContent">Debes seleccionar un archivo en formato json</p>' +
+                        '</md-content>      ' +
+                        '  </md-dialog-content>' +
+                        '  <md-dialog-actions>' +
+                        '    <md-button ng-click="closeDialog()" class="md-primary">' +
+                        '      Cerrar' +
+                        '    </md-button>' +
+                        '  </md-dialog-actions>' +
+                        '</md-dialog>',
+
+                        controller: function DialogController($scope, $mdDialog) {
+                            $scope.closeDialog = function () {
+                                $mdDialog.hide();
+                            }
+                        }
+                    });
+                })
         };
 
     }])
