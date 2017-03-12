@@ -574,6 +574,41 @@ angular.module('testManagerApp')
                 }
                 );
 
+        //Atributos para chart
+        $scope.datasetOverride2 = [{
+            yAxisID: 'y-axis-1'
+        }, {
+            yAxisID: 'y-axis-2'
+        }];
+        $scope.options2 = {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        max: 100,
+                        min: 0,
+                        stepSize: 10
+                    },
+                    id: 'y-axis-1',
+                    type: 'linear',
+                    display: true,
+                    position: 'left'
+                },
+                {
+                    ticks: {
+                        max: 100,
+                        min: 0,
+                        stepSize: 10
+                    },
+                    id: 'y-axis-2',
+                    type: 'linear',
+                    display: true,
+                    position: 'right'
+                }
+                ]
+            },
+            legend: { display: true }
+        };
+
         //Función que ordena los cuestionarios por titulo , por calificación o por fecha .
         $scope.filter = function (value) {
             switch (value) {
