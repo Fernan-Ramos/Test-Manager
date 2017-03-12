@@ -40,7 +40,7 @@
                     <div role="tabpanel" class="panel-collapse collapse" id="{{cuest.id}}">
                         <div class="panel-body" ng-repeat="stat in cuest.stats">
                             <canvas id="line" class="chart chart-line" chart-data="stat.stats.data" chart-labels="stat.stats.labels" chart-series="stat.stats.series"
-                                chart-dataset-override="datasetOverride2" chart-options="options2">
+                                chart-colors="stat.stats.colors" chart-dataset-override="datasetOverride2" chart-options="options2">
                             </canvas>
                         </div>
                     </div>

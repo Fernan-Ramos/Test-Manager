@@ -251,6 +251,8 @@ angular.module('testManagerApp')
             $scope.title = $scope.cuestionario.title;
             $scope.respuestas = $scope.cuestionario.tests[$scope.cuestionario.tests.length - 1].cal;
             $scope.fecha = $scope.cuestionario.tests[$scope.cuestionario.tests.length - 1].date;
+            //colores para chart
+            var colors = ['#D1E5B3', '#F08080', '#f7d3a0','#efe6a0','#a0efc7','#a9c6f2','#b7a8f1','#dba7f0','#efa6b9'];
             //Objeto que contiene las estadisticas de cada cuestionario
             $scope.stat = {
                 title: "",
@@ -267,11 +269,11 @@ angular.module('testManagerApp')
 
             //Si no está el cuestionario reflejado se guarda la fecha , el titulo y el resultado || Si si que esta reflejado solamente se guarda la fecha y el resultado
             if (result.length == 0) {
-                //$scope.stat.id = $scope.id;
                 $scope.stat.title = $scope.title;
                 $scope.stat.stats.labels = [$scope.fecha];
                 $scope.stat.stats.series = [$scope.title];
                 $scope.stat.stats.data = [[$scope.respuestas]];
+                $scope.stat.stats.colors=[colors[Math.floor(Math.random()*colors.length)]];
                 $scope.cuestionario.stats.push($scope.stat);
                 menuFactory.getCuestionarios().update({ id: $scope.cuestionario.id }, $scope.cuestionario);
             } else {
