@@ -19,7 +19,10 @@ angular.module('testManagerApp')
         $scope.exportCuest = function (cuest, filename) {
 
             filename = filename + '.json';
+            //Se resetea el atributo id , las respuestas y las estadisticas 
             cuest.id = "";
+            cuest.tests=[];
+            cuest.stats=[]
             if (typeof cuest === 'object') {
                 cuest = JSON.stringify(cuest, undefined, 2);
             }
