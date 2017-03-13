@@ -84,6 +84,7 @@ angular.module('testManagerApp')
     }])
 
     .controller('TestController', ['$scope', '$filter', '$stateParams', '$mdDialog', 'menuFactory', 'testFactory', function ($scope, $filter, $stateParams, $mdDialog, menuFactory, testFactory) {
+        $scope.form = {};
         $scope.showCuestionario = false;
         $scope.message = "Loading ...";
         //Se obtiene el cuestionario 
@@ -283,7 +284,7 @@ angular.module('testManagerApp')
             }
 
             //Resetea el formulario a  pristine
-            $scope.testForm.$setPristine();
+            $scope.form.testForm.$setPristine();
 
             //Se resetea el objeto respuesta
             $scope.answer = {};
@@ -312,6 +313,7 @@ angular.module('testManagerApp')
     }])
 
     .controller('MakerController', ['$scope', '$mdDialog', 'menuFactory', function ($scope, $mdDialog, menuFactory) {
+        $scope.form = {};
         $scope.showMaker = false;
         $scope.message = "Loading ...";
         $scope.cuestionarios = menuFactory.getCuestionarios().query(
@@ -379,7 +381,7 @@ angular.module('testManagerApp')
             //$scope.cuestionarios.push($scope.cuest);
 
             //Resetea el formulario a  pristine
-            $scope.makerForm.$setPristine();
+            $scope.form.makerForm.$setPristine();
 
             //Resetea el objeto JavaScript una vez que el cuestionario ha sido creado
             $scope.cuest = {
@@ -546,34 +548,7 @@ angular.module('testManagerApp')
                 function (response) {
                     $scope.cuestionario = response;
                     $scope.showStat = true;
-                    console.log($scope.cuestionario)
-                    //Dialogo que aparece cuando no hay cuestionarios completados
-                    if ($scope.cuestionario[0].tests.length == 0) {
-                        $mdDialog.show({
-                            clickOutsideToClose: false,
-                            scope: $scope,
-                            preserveScope: true,
-                            template: '<md-dialog aria-label="List dialog">' +
-                            '  <md-dialog-content>' +
-                            '<md-content class="md-padding">' +
-                            ' <h5 class="md-title">No hay estadisticas que mostrar</h5>' +
-                            ' <p class="md-textContent">Todavía no has realizado ningún cuestionario</p>' +
-                            '</md-content>      ' +
-                            '  </md-dialog-content>' +
-                            '  <md-dialog-actions>' +
-                            '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
-                            '      Menu' +
-                            '    </md-button>' +
-                            '  </md-dialog-actions>' +
-                            '</md-dialog>',
-
-                            controller: function DialogController($scope, $mdDialog) {
-                                $scope.closeDialog = function () {
-                                    $mdDialog.hide();
-                                }
-                            }
-                        });
-                    }
+                    
                 },
                 function (response) {
                     $scope.message = "Error: " + response.status + " " + response.statusText;

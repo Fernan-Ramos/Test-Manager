@@ -13,12 +13,12 @@
                                 <hr>
                             </div>
                             <div class="col-xs-12 col-sm-9">
-                                <form class="form-horizontal" role="form" name="makerForm" ng-submit="submitTest()" novalidate>
-                                    <div class="form-group" ng-class="{ 'has-error' : makerForm.title.$error.required && !makerForm.title.$pristine }">
+                                <form class="form-horizontal" role="form" name="form.makerForm" ng-submit="submitTest()" novalidate>
+                                    <div class="form-group" ng-class="{ 'has-error' : form.makerForm.title.$error.required && !form.makerForm.title.$pristine }">
                                         <label for="title" class="col-sm-2 control-label">Título</label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" id="title" name="title" placeholder="Escribe un Título" ng-model="cuest.title" required>
-                                            <span ng-show="makerForm.title.$error.required && !makerForm.title.$pristine" class="help-block">El titulo es necesario</span>
+                                            <span ng-show="form.makerForm.title.$error.required && !form.makerForm.title.$pristine" class="help-block">El titulo es necesario</span>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -44,10 +44,10 @@
                                     </div>
                                     <div class="form-group" ng-repeat="n in getNumber(number) track by $index">
                                         <label for="question" class="col-sm-2 control-label">Pregunta {{$index+1}}</label>
-                                        <div class="col-sm-10" ng-class="{ 'has-error' : makerForm.question{{$index+1}}.$error.required && !makerForm.question{{$index+1}}.$pristine }">
+                                        <div class="col-sm-10" ng-class="{ 'has-error' : form.makerForm.question{{$index+1}}.$error.required && !form.makerForm.question{{$index+1}}.$pristine }">
                                             <input type="text" class="form-control" id="question{{$index+1}}" name="question{{$index+1}}" placeholder="Escribe la pregunta"
                                                 ng-model="cuest.questions[$index].pregunta" required>
-                                            <span ng-show="makerForm.question{{$index+1}}.$error.required && !makerForm.question{{$index+1}}.$pristine" class="help-block">La pregunta es necesaria</span>
+                                            <span ng-show="form.makerForm.question{{$index+1}}.$error.required && !form.makerForm.question{{$index+1}}.$pristine" class="help-block">La pregunta es necesaria</span>
                                             <!-- 
                                 <div class="form-group" ng-repeat="n in [1,2,3,4]">
                                     <hr>
@@ -110,7 +110,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-sm-offset-2 col-sm-10">
-                                            <md-button type="submit" class="md-raised md-primary" ng-disabled="makerForm.$invalid">Crear</md-button>
+                                            <md-button type="submit" class="md-raised md-primary" ng-disabled="form.makerForm.$invalid">Crear</md-button>
                                         </div>
                                     </div>
                                 </form>
