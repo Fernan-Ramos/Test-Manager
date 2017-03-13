@@ -84,13 +84,14 @@ angular.module('testManagerApp')
     }])
 
     .controller('TestController', ['$scope', '$filter', '$stateParams', '$mdDialog', 'menuFactory', 'testFactory', function ($scope, $filter, $stateParams, $mdDialog, menuFactory, testFactory) {
+        $scope.showCuestionario = false;
+        $scope.message = "Loading ...";
         //Se obtiene el cuestionario 
-
         $scope.cuestionario =
             menuFactory.getCuestionarios().get({ id: parseInt($stateParams.id, 10) })
                 .$promise.then(
                 function (response) {
-                    $scope.showDish = true;
+                    $scope.showCuestionario = true;
                     $scope.cuestionario = response;
                     //Se crea un objeto que contendra la respuestas
                     $scope.answer = {};
@@ -252,7 +253,7 @@ angular.module('testManagerApp')
             $scope.respuestas = $scope.cuestionario.tests[$scope.cuestionario.tests.length - 1].cal;
             $scope.fecha = $scope.cuestionario.tests[$scope.cuestionario.tests.length - 1].date;
             //colores para chart
-            var colors = ['#D1E5B3', '#F08080', '#f7d3a0','#efe6a0','#a0efc7','#a9c6f2','#b7a8f1','#dba7f0','#efa6b9'];
+            var colors = ['#D1E5B3', '#F08080', '#f7d3a0', '#efe6a0', '#a0efc7', '#a9c6f2', '#b7a8f1', '#dba7f0', '#efa6b9'];
             //Objeto que contiene las estadisticas de cada cuestionario
             $scope.stat = {
                 title: "",
@@ -273,7 +274,7 @@ angular.module('testManagerApp')
                 $scope.stat.stats.labels = [$scope.fecha];
                 $scope.stat.stats.series = [$scope.title];
                 $scope.stat.stats.data = [[$scope.respuestas]];
-                $scope.stat.stats.colors=[colors[Math.floor(Math.random()*colors.length)]];
+                $scope.stat.stats.colors = [colors[Math.floor(Math.random() * colors.length)]];
                 $scope.cuestionario.stats.push($scope.stat);
                 menuFactory.getCuestionarios().update({ id: $scope.cuestionario.id }, $scope.cuestionario);
             } else {
@@ -311,11 +312,12 @@ angular.module('testManagerApp')
     }])
 
     .controller('MakerController', ['$scope', '$mdDialog', 'menuFactory', function ($scope, $mdDialog, menuFactory) {
-
+        $scope.showMaker = false;
+        $scope.message = "Loading ...";
         $scope.cuestionarios = menuFactory.getCuestionarios().query(
             function (response) {
                 $scope.cuestionarios = response;
-                $scope.showMenu = true;
+                $scope.showMaker = true;
             },
             function (response) {
                 $scope.message = "Error: " + response.status + " " + response.statusText;
@@ -444,13 +446,14 @@ angular.module('testManagerApp')
     }])
 
     .controller('StatsControllerDetails', ['$scope', '$stateParams', '$mdDialog', 'menuFactory', function ($scope, $stateParams, $mdDialog, menuFactory) {
-
+        $scope.showStatInd = false;
+        $scope.message = "Loading ...";
         $scope.cuestionario =
             menuFactory.getCuestionarios().get({ id: parseInt($stateParams.id, 10) })
                 .$promise.then(
                 function (response) {
                     $scope.cuestionario = response;
-                    $scope.showDish = true;
+                    $scope.showStatInd = true;
                     //Dialogo que aparece cuando no hay cuestionarios completados
                     if ($scope.cuestionario.stats.length == 0) {
                         $mdDialog.show({
@@ -535,13 +538,14 @@ angular.module('testManagerApp')
 
     }])
     .controller('StatsController', ['$scope', '$stateParams', '$mdDialog', 'menuFactory', function ($scope, $stateParams, $mdDialog, menuFactory) {
-
+        $scope.showStat = false;
+        $scope.message = "Loading ...";
         $scope.cuestionario =
             menuFactory.getCuestionarios().query()
                 .$promise.then(
                 function (response) {
                     $scope.cuestionario = response;
-                    $scope.showDish = true;
+                    $scope.showStat = true;
                     console.log($scope.cuestionario)
                     //Dialogo que aparece cuando no hay cuestionarios completados
                     if ($scope.cuestionario[0].tests.length == 0) {

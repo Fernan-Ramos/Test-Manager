@@ -1,6 +1,9 @@
 <div class="container">
     <div class="row row-content">
-        <div ng-cloak>
+        <div class="col-xs-12" ng-if="!showMaker">
+            <h3>{{message}}</h3>
+        </div>
+        <div ng-cloak ng-if="showMaker">
             <md-content>
                 <md-tabs md-dynamic-height md-border-bottom>
                     <md-tab label="Crear">
