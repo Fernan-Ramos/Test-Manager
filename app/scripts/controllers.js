@@ -460,7 +460,6 @@ angular.module('testManagerApp')
                     if ($scope.cuestionario.stats.length == 0) {
                         $mdDialog.show({
                             clickOutsideToClose: false,
-
                             scope: $scope,
                             preserveScope: true,
                             template: '<md-dialog aria-label="List dialog">' +
@@ -548,13 +547,41 @@ angular.module('testManagerApp')
                 function (response) {
                     $scope.cuestionario = response;
                     $scope.showStat = true;
-                    
+
                 },
                 function (response) {
                     $scope.message = "Error: " + response.status + " " + response.statusText;
                 }
                 );
 
+        //Dialogo que aparece cuando no se ha realizado un cuestionario pasado por parámetro
+        $scope.dialogo = function (cuest) {
+            if (cuest.length == 0) {
+                $mdDialog.show({
+                    clickOutsideToClose: false,
+                    scope: $scope,
+                    preserveScope: true,
+                    template: '<md-dialog aria-label="List dialog">' +
+                    '  <md-dialog-content>' +
+                    '<md-content class="md-padding">' +
+                    ' <h5 class="md-title">No hay estadisticas que mostrar</h5>' +
+                    ' <p class="md-textContent">Todavía no has realizado este cuestionario</p>' +
+                    '</md-content>      ' +
+                    '  </md-dialog-content>' +
+                    '  <md-dialog-actions>' +
+                    '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
+                    '      Menu' +
+                    '    </md-button>' +
+                    '  </md-dialog-actions>' +
+                    '</md-dialog>',
+                    controller: function DialogController($scope, $mdDialog) {
+                        $scope.closeDialog = function () {
+                            $mdDialog.hide();
+                        }
+                    }
+                });
+            }
+        }
         //Atributos para chart
         $scope.datasetOverride2 = [{
             yAxisID: 'y-axis-1'

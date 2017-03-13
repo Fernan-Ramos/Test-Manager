@@ -37,7 +37,7 @@
                 <div class="panel panel-default" ng-repeat="cuest in cuestionario">
                     <div class="panel-heading">
                         <h3 class="panel-title">
-                            <a role="button" data-toggle="collapse" data-parent="#accordion" data-target="#{{cuest.id}}" aria-expanded="true" aria-controls="{{cuest.id}}">{{cuest.title}} <small>Estadisticas</small></a>
+                            <a role="button" ng-click="dialogo(cuest.tests)" data-toggle="collapse" data-parent="#accordion" data-target="#{{cuest.id}}" aria-expanded="true" aria-controls="{{cuest.id}}">{{cuest.title}} <small>Estadisticas</small></a>
                         </h3>
                     </div>
                     <div role="tabpanel" class="panel-collapse collapse" id="{{cuest.id}}">
