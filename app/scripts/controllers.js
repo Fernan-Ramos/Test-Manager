@@ -21,8 +21,8 @@ angular.module('testManagerApp')
             filename = filename + '.json';
             //Se resetea el atributo id , las respuestas y las estadisticas 
             cuest.id = "";
-            cuest.tests=[];
-            cuest.stats=[]
+            cuest.tests = [];
+            cuest.stats = []
             if (typeof cuest === 'object') {
                 cuest = JSON.stringify(cuest, undefined, 2);
             }
@@ -165,7 +165,7 @@ angular.module('testManagerApp')
                     //Si hay alguna respuesta correcta  
                     else {
                         //Se calcula la calificación parcial
-                        $scope.answer.questions[i].estado = (incluida / $scope.answer.questions[i].r.length) / $scope.answer.questions.length;
+                        $scope.answer.questions[i].estado = (4 - Math.abs($scope.answer.questions[i].rcorrect.length - $scope.answer.questions[i].r.length)) / 4 / $scope.answer.questions.length;
                         parciales = parciales + $scope.answer.questions[i].estado;
                         //Determina que la respuesta es parcialmente correcta
                         $scope.parcial++;
