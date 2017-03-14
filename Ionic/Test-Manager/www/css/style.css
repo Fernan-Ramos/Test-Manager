@@ -1,1 +1,8 @@
 /* Empty. Add your own CSS if you like */
+.nav-teal{
+  background-color: #008080 !important;
+  color:floralwhite
+}
+.nav-header{
+    background-color:#257985 !important;
+}
