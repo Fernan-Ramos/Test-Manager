@@ -36,7 +36,8 @@ angular.module('testManager', ['ionic', 'testManager.controllers', 'testManager.
         url: '/menu',
         views: {
           'mainContent': {
-            templateUrl: 'templates/menu.html'
+            templateUrl: 'templates/menu.html',
+            controller: 'MenuController'
           }
         }
       })
