@@ -1,9 +1,30 @@
-<ion-view view-title="Menu">
+<ion-view view-title="Test Manager">
   <ion-content>
-    <ion-list>
-      <ion-item ng-repeat="test in cuestionarios" href="#/app/menu/{{test.id}}">
-        {{test.title}}
-      </ion-item>
-    </ion-list>
+    <div class="list card" ng-repeat="test in cuestionarios">
+      <div class="item item-avatar">
+        <img ng-src="{{baseURL+test.image}}">
+        <h2>{{test.title}}</h2>
+      </div>
+      <div class="item item-image">
+        <img ng-src="{{baseURL+test.image}}">
+      </div>
+      <div class="item item-body">
+        <p>{{test.text}}</p>
+        <div class="item tabs">
+          <a class="tab-item stable-bg" ui-sref="app.testDetails({id: test.id})">
+            <i class="icon ion-android-checkbox"></i>
+          </a>
+          <a class="tab-item stable-bg" ui-sref="app.statDetails({id: test.id})">
+            <i class="icon ion-stats-bars"></i>
+          </a>
+          <a class="tab-item stable-bg">
+            <i class="icon ion-heart"></i>
+          </a>
+          <a class="tab-item stable-bg" ng-click="removeCuest(test)">
+            <i class="icon ion-trash-a"></i>
+          </a>
+        </div>
+      </div>
+    </div>
   </ion-content>
 </ion-view>
