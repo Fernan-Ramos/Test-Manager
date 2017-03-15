@@ -41,8 +41,8 @@ angular.module('testManager.controllers', [])
     };
   })
 
-  .controller('MenuController', ['$scope', '$mdDialog', 'menuFactory', function ($scope, $mdDialog, menuFactory) {
-
+  .controller('MenuController', ['$scope', 'menuFactory', 'baseURL', function ($scope, menuFactory, baseURL) {
+    $scope.baseURL = baseURL;
     $scope.showMenu = false;
     $scope.message = "Loading ...";
     $scope.cuestionarios = menuFactory.getCuestionarios().query(
