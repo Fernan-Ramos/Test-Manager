@@ -10,20 +10,4 @@ angular.module('testManagerApp')
         };
 
         return menufac;
-    }])
-
-    .factory('testFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
-
-        var testfac = {};
-
-        testfac.getAnswers = function () {
-            return $resource(baseURL + "tests", null, { 'update': { method: 'PUT' } });
-        };
-
-        testfac.getStats = function () {
-            return $resource(baseURL + "stats/:id", null, { 'update': { method: 'PUT' } });
-        };
-
-        return testfac;
-
     }]);

@@ -86,7 +86,7 @@ angular.module('testManagerApp')
 
     }])
 
-    .controller('TestController', ['$scope', '$filter', '$stateParams', '$mdDialog', 'menuFactory', 'testFactory', function ($scope, $filter, $stateParams, $mdDialog, menuFactory, testFactory) {
+    .controller('TestController', ['$scope', '$filter', '$stateParams', '$mdDialog', 'menuFactory', function ($scope, $filter, $stateParams, $mdDialog, menuFactory) {
         $scope.form = {};
         $scope.showCuestionario = false;
         $scope.message = "Loading ...";
