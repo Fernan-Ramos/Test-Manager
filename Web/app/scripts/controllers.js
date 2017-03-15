@@ -233,7 +233,7 @@ angular.module('testManagerApp')
                 '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
                 '      Menu' +
                 '    </md-button>' +
-                '    <md-button ui-sref="app.estadisticasInd({id: cuestionario.id})" ng-click="closeDialog()" class="md-primary">' +
+                '    <md-button ui-sref="app.statDetails({id: cuestionario.id})" ng-click="closeDialog()" class="md-primary">' +
                 '      Estadisticas' +
                 '    </md-button>' +
                 '  </md-dialog-actions>' +
