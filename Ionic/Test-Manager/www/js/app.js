@@ -47,7 +47,7 @@ angular.module('testManager', ['ionic', 'testManager.controllers', 'testManager.
         views: {
           'mainContent': {
             templateUrl: 'templates/testDetails.html',
-            controller: ''
+            controller: 'TestController'
           }
         }
       })
