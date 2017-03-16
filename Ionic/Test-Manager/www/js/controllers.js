@@ -126,7 +126,8 @@ angular.module('testManager.controllers', [])
 
   }])
 
-  .controller('TestController', ['$scope', '$filter', '$stateParams', '$mdDialog', 'menuFactory', function ($scope, $filter, $stateParams, $mdDialog, menuFactory) {
+  .controller('TestController', ['$scope', '$filter', '$stateParams', 'baseURL', '$mdDialog', 'menuFactory', function ($scope, $filter, $stateParams, baseURL, $mdDialog, menuFactory) {
+    $scope.baseURL = baseURL;
     $scope.form = {};
     $scope.showCuestionario = false;
     $scope.message = "Loading ...";
