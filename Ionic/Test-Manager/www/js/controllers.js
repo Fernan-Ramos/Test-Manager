@@ -41,7 +41,7 @@ angular.module('testManager.controllers', [])
     };
   })
 
-  .controller('MenuController', ['$scope', 'menuFactory', 'baseURL', function ($scope, menuFactory, baseURL) {
+  .controller('MenuController', ['$scope', 'menuFactory', 'baseURL', '$mdDialog', function ($scope, menuFactory, baseURL, $mdDialog) {
     $scope.baseURL = baseURL;
     $scope.showMenu = false;
     $scope.message = "Loading ...";
