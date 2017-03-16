@@ -126,8 +126,11 @@ angular.module('testManager.controllers', [])
 
   }])
 
-  .controller('TestController', ['$scope', '$filter', '$stateParams', 'baseURL', '$mdDialog', 'menuFactory', function ($scope, $filter, $stateParams, baseURL, $mdDialog, menuFactory) {
+  .controller('TestController', ['$scope', '$filter', '$stateParams', 'baseURL', '$mdDialog', '$ionicSlideBoxDelegate', 'menuFactory', function ($scope, $filter, $stateParams, baseURL, $mdDialog, $ionicSlideBoxDelegate, menuFactory) {
     $scope.baseURL = baseURL;
+    $scope.updateSlider = function () {
+      $ionicSlideBoxDelegate.update();
+    }
     $scope.form = {};
     $scope.showCuestionario = false;
     $scope.message = "Loading ...";
