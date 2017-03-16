@@ -1,5 +1,5 @@
 'use strict';
-angular.module('testManager.services',['ngResource'])
+angular.module('testManager.services', ['ngResource', 'ngMaterial'])
     .constant("baseURL", "http://localhost:3000/")
     .factory('menuFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
 
