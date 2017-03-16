@@ -1,14 +1,11 @@
 <ion-view view-title="Test Manager">
   <ion-content>
     <div class="list card" ng-repeat="test in cuestionarios">
-      <div class="item item-avatar">
-        <img ng-src="{{baseURL+test.image}}">
-        <h2>{{test.title}}</h2>
-      </div>
       <div class="item item-image">
         <img ng-src="{{baseURL+test.image}}">
       </div>
       <div class="item item-body">
+        <h2>{{test.title}}</h2>
         <p>{{test.text}}</p>
         <div class="item tabs">
           <a class="tab-item stable-bg" ui-sref="app.testDetails({id: test.id})">
