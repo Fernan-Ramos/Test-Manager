@@ -237,7 +237,6 @@ angular.module('testManager.controllers', [])
         scope: $scope,
         preserveScope: true,
         template:
-        '<div ng-cloak>' +
         '<md-dialog aria-label="Respuestas">' +
         '<md-toolbar>' +
         '<div class="md-toolbar-tools" >' +
@@ -249,7 +248,7 @@ angular.module('testManager.controllers', [])
         '<md-tabs md-dynamic-height md-border-bottom>' +
         '<md-tab label="resultados">' +
         '<md-content class="md-padding">' +
-        '<h5 class="md-display-1"><em>Respuestas correctas : {{cuestionario.tests[cuestionario.tests.length-1].cal | number:2}}%</em></h5>' +
+        '<h5 class="md-display-1" style="text-align:center"><em>{{cuestionario.tests[cuestionario.tests.length-1].cal | number:2}}%</em></h5>' +
         '</md-content>' +
         '<md-content class="md-padding">' +
         '<canvas id="doughnut" class="chart chart-doughnut" chart-data="data" chart-labels="labels" chart-colors="colors">' +
@@ -274,15 +273,15 @@ angular.module('testManager.controllers', [])
         '</md-tabs>' +
         '  </md-dialog-content>' +
         '  <md-dialog-actions>' +
-        '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
+        '    <md-button href="#/app/menu" ng-click="closeDialog()" class="md-primary">' +
         '      Menu' +
         '    </md-button>' +
-        '    <md-button ui-sref="app.statDetails({id: cuestionario.id})" ng-click="closeDialog()" class="md-primary">' +
+        '    <md-button href="#/app/stats/{{cuestionario.id}}" ng-click="closeDialog()" class="md-primary">' +
         '      Estadisticas' +
         '    </md-button>' +
         '  </md-dialog-actions>' +
-        '</md-dialog>' +
-        '</div>',
+        '</md-dialog>',
+
         controller: function DialogController($scope, $mdDialog) {
           //Atributos para el char
           $scope.labels = ["Correctas", "Incorrectas", "Parcial"];
