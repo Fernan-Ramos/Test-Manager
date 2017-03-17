@@ -238,9 +238,9 @@ angular.module('testManager.controllers', [])
         preserveScope: true,
         template:
         '<md-dialog aria-label="Respuestas">' +
-        '<md-toolbar>' +
-        '<div class="md-toolbar-tools" >' +
-        '<h2>{{cuestionario.title}}</h2>' +
+        '<md-toolbar class="nav-teal">' +
+        '<div class="md-toolbar-tools"  >' +
+        '<h2 style="color:floralwhite">{{cuestionario.title}}</h2>' +
         '<span flex></span>' +
         '</div>' +
         ' </md-toolbar>' +
