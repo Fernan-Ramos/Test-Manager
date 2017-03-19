@@ -175,7 +175,7 @@ angular.module('testManager.controllers', [])
 
     $scope.submitAnswer = function (ev) {
       //Se guarda la fecha en la que se realiza el cuestionario
-      $scope.answer.date = $filter('date')(new Date(), 'medium');
+      $scope.answer.date = $filter('date')(new Date(), 'shortDate');
       //Se guarda el array de respuestas contestadas en cada pregunta.
       for (var i = 0; i < $scope.selected.length; i++) {
         $scope.answer.questions[i].r = $scope.selected[i];
@@ -551,8 +551,6 @@ angular.module('testManager.controllers', [])
     //Atributos para chart
     $scope.datasetOverride1 = [{
       yAxisID: 'y-axis-1'
-    }, {
-      yAxisID: 'y-axis-2'
     }];
     $scope.options1 = {
       scales: {
@@ -560,27 +558,16 @@ angular.module('testManager.controllers', [])
           ticks: {
             max: 100,
             min: 0,
-            stepSize: 10
+            stepSize: 20
           },
           id: 'y-axis-1',
           type: 'linear',
           display: true,
           position: 'left'
         },
-        {
-          ticks: {
-            max: 100,
-            min: 0,
-            stepSize: 10
-          },
-          id: 'y-axis-2',
-          type: 'linear',
-          display: true,
-          position: 'right'
-        }
+      
         ]
-      },
-      legend: { display: true }
+      }
     };
 
   }])
