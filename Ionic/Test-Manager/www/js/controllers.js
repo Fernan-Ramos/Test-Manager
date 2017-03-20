@@ -226,7 +226,7 @@ angular.module('testManager.controllers', [])
       //Se guarda las respuestas parcialmente correctas
       $scope.answer.parcial = $scope.parcial;
       //Se guarda la calificación obtenida
-      $scope.answer.cal = parseInt($filter('number')((($scope.answer.correctas / $scope.answer.questions.length) + parciales) * 100, 2),10);
+      $scope.answer.cal = parseInt($filter('number')((($scope.answer.correctas / $scope.answer.questions.length) + parciales) * 100, 2), 10);
 
       $scope.cuestionario.tests.push($scope.answer);
       //Se guarda la respuesta al cuestionario en el array de respuestas a cuestionarios
@@ -565,105 +565,105 @@ angular.module('testManager.controllers', [])
           display: true,
           position: 'left'
         },
-      
+
         ]
       }
     };
 
   }])
   .controller('StatsController', ['$scope', '$stateParams', '$mdDialog', 'menuFactory', function ($scope, $stateParams, $mdDialog, menuFactory) {
-    $scope.showStat = false;
-    $scope.message = "Loading ...";
-    $scope.cuestionario =
-      menuFactory.getCuestionarios().query()
-        .$promise.then(
-        function (response) {
-          $scope.cuestionario = response;
-          $scope.showStat = true;
+    $scope.$on("$ionicView.enter", function (event, data) {
+      $scope.showStat = false;
+      $scope.message = "Loading ...";
+      $scope.cuestionario =
+        menuFactory.getCuestionarios().query()
+          .$promise.then(
+          function (response) {
+            $scope.cuestionario = response;
+            $scope.showStat = true;
 
-        },
-        function (response) {
-          $scope.message = "Error: " + response.status + " " + response.statusText;
-        }
-        );
-
-    //Dialogo que aparece cuando no se ha realizado un cuestionario pasado por parámetro
-    $scope.dialogo = function (cuest) {
-      if (cuest.length == 0) {
-        $mdDialog.show({
-          clickOutsideToClose: false,
-          scope: $scope,
-          preserveScope: true,
-          template: '<md-dialog aria-label="List dialog">' +
-          '  <md-dialog-content>' +
-          '<md-content class="md-padding">' +
-          ' <h5 class="md-title">No hay estadisticas que mostrar</h5>' +
-          ' <p class="md-textContent">Todavía no has realizado este cuestionario</p>' +
-          '</md-content>      ' +
-          '  </md-dialog-content>' +
-          '  <md-dialog-actions>' +
-          '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
-          '      Menu' +
-          '    </md-button>' +
-          '  </md-dialog-actions>' +
-          '</md-dialog>',
-          controller: function DialogController($scope, $mdDialog) {
-            $scope.closeDialog = function () {
-              $mdDialog.hide();
-            }
+          },
+          function (response) {
+            $scope.message = "Error: " + response.status + " " + response.statusText;
           }
-        });
-      }
-    }
-    //Atributos para chart
-    $scope.datasetOverride2 = [{
-      yAxisID: 'y-axis-1'
-    }, {
-      yAxisID: 'y-axis-2'
-    }];
-    $scope.options2 = {
-      scales: {
-        yAxes: [{
-          ticks: {
-            max: 100,
-            min: 0,
-            stepSize: 10
-          },
-          id: 'y-axis-1',
-          type: 'linear',
-          display: true,
-          position: 'left'
-        },
-        {
-          ticks: {
-            max: 100,
-            min: 0,
-            stepSize: 10
-          },
-          id: 'y-axis-2',
-          type: 'linear',
-          display: true,
-          position: 'right'
-        }
-        ]
-      },
-      legend: { display: true }
-    };
+          );
 
-    //Función que ordena los cuestionarios por titulo , por calificación o por fecha .
-    $scope.filter = function (value) {
-      switch (value) {
-        case 1:
-          $scope.filtText = "title";
-          break;
-        case 2:
-          $scope.filtText = "-cal";
-          break;
-        case 3:
-          $scope.filtText = "date";
-          break;
-        default:
-          break;
+      $scope.toggleTest = function (test) {
+        if ($scope.isTestShown(test)) {
+          $scope.shownTest = null;
+        } else {
+          $scope.shownTest = test;
+        }
+      };
+      $scope.isTestShown = function (test) {
+        return $scope.shownTest === test;
+      };
+
+      //Dialogo que aparece cuando no se ha realizado un cuestionario pasado por parámetro
+      $scope.dialogo = function (cuest) {
+        if (cuest.length == 0) {
+          $mdDialog.show({
+            clickOutsideToClose: false,
+            scope: $scope,
+            preserveScope: true,
+            template: '<md-dialog aria-label="List dialog">' +
+            '  <md-dialog-content>' +
+            '<md-content class="md-padding">' +
+            ' <h5 class="md-title">No hay estadisticas que mostrar</h5>' +
+            ' <p class="md-textContent">Todavía no has realizado este cuestionario</p>' +
+            '</md-content>      ' +
+            '  </md-dialog-content>' +
+            '  <md-dialog-actions>' +
+            '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
+            '      Menu' +
+            '    </md-button>' +
+            '  </md-dialog-actions>' +
+            '</md-dialog>',
+            controller: function DialogController($scope, $mdDialog) {
+              $scope.closeDialog = function () {
+                $mdDialog.hide();
+              }
+            }
+          });
+        }
       }
-    };
+      //Atributos para chart
+      $scope.datasetOverride2 = [{
+        yAxisID: 'y-axis-1'
+      }];
+      $scope.options2 = {
+        scales: {
+          yAxes: [{
+            ticks: {
+              max: 100,
+              min: 0,
+              stepSize: 20
+            },
+            id: 'y-axis-1',
+            type: 'linear',
+            display: true,
+            position: 'left'
+          }
+          ]
+        }
+      };
+
+      //Función que ordena los cuestionarios por titulo , por calificación o por fecha .
+      $scope.filter = function (value) {
+        switch (value) {
+          case 1:
+            $scope.filtText = "title";
+            break;
+          case 2:
+            $scope.filtText = "-cal";
+            break;
+          case 3:
+            $scope.filtText = "date";
+            break;
+          default:
+            break;
+        }
+      };
+    });
+
   }]);
