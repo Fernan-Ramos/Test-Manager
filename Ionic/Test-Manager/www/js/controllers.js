@@ -614,7 +614,7 @@ angular.module('testManager.controllers', [])
             '</md-content>      ' +
             '  </md-dialog-content>' +
             '  <md-dialog-actions>' +
-            '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
+            '    <md-button href="#/app/menu" ng-click="closeDialog()" class="md-primary">' +
             '      Menu' +
             '    </md-button>' +
             '  </md-dialog-actions>' +
