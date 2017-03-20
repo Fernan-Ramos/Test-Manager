@@ -8,10 +8,10 @@
         <div class="item tabs">
           <p> Ordenar por: </p>
           <a class="tab-item " ng-click="filter(1)">
-            <i class="icon ion-android-checkbox"></i>
+            <i class="icon ion-edit"></i>
           </a>
           <a class="tab-item " ng-click="filter(2)">
-            <i class="icon ion-android-checkbox"></i>
+            <i class="icon ion-arrow-graph-up-right"></i>
           </a>
           <a class="tab-item" ng-click="filter(3)">
             <i class="icon ion-android-calendar"></i>
@@ -33,7 +33,7 @@
       <div class="item item-text-wrap">
         <ion-list>
           <div ng-repeat="cuest in cuestionario">
-            <ion-item class="item-stable" ng-click="toggleTest(cuest)" ng-class="{active: isTestShown(cuest)}">
+            <ion-item class="item-stable" ng-click="toggleTest(cuest);dialogo(cuest.tests)" ng-class="{active: isTestShown(cuest)}">
               <i class="icon" ng-class="isTestShown(cuest) ? 'ion-minus' : 'ion-plus'"></i> {{cuest.title}}
             </ion-item>
             <ion-item class="item-accordion" ng-repeat="stat in cuest.stats" ng-show="isTestShown(cuest)">
