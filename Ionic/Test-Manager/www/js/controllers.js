@@ -226,7 +226,7 @@ angular.module('testManager.controllers', [])
       //Se guarda las respuestas parcialmente correctas
       $scope.answer.parcial = $scope.parcial;
       //Se guarda la calificación obtenida
-      $scope.answer.cal = (($scope.answer.correctas / $scope.answer.questions.length) + parciales) * 100;
+      $scope.answer.cal = parseInt($filter('number')((($scope.answer.correctas / $scope.answer.questions.length) + parciales) * 100, 2),10);
 
       $scope.cuestionario.tests.push($scope.answer);
       //Se guarda la respuesta al cuestionario en el array de respuestas a cuestionarios
