@@ -372,22 +372,16 @@ angular.module('testManager.controllers', [])
       });
 
     $scope.quests = [];
-    for (var i = 1; i <= 100; i++) {
+    for (var i = 1; i <= 20; i++) {
       $scope.quests.push(i);
     }
 
-    $scope.selectedQuest;
-    $scope.getSelectedQuest = function () {
-      if ($scope.selectedQuest !== undefined) {
-        $scope.number = $scope.selectedQuest;
-        return "Nº de preguntas: " + $scope.selectedQuest;
-
-      } else {
-        return "Por favor selecciona un número";
-      }
-    };
-
+   
+    $scope.number=0;
     $scope.getNumber = function (num) {
+      if(num!=null){
+        num=parseInt(num,10);
+      }
       return new Array(num);
     };
 
