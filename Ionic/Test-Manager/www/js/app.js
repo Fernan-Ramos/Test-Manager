@@ -56,7 +56,8 @@ angular.module('testManager', ['ionic', 'testManager.controllers', 'testManager.
         url: '/maker',
         views: {
           'mainContent': {
-            templateUrl: 'templates/maker.html'
+            templateUrl: 'templates/maker.html',
+            controller: 'MakerController'
           }
         }
       })
