@@ -42,87 +42,90 @@ angular.module('testManager.controllers', [])
   })
 
   .controller('MenuController', ['$scope', 'menuFactory', 'baseURL', '$mdDialog', function ($scope, menuFactory, baseURL, $mdDialog) {
-    $scope.baseURL = baseURL;
-    $scope.showMenu = false;
-    $scope.message = "Loading ...";
-    $scope.cuestionarios = menuFactory.getCuestionarios().query(
-      function (response) {
-        $scope.cuestionarios = response;
-        $scope.showMenu = true;
-      },
-      function (response) {
-        $scope.message = "Error: " + response.status + " " + response.statusText;
-      });
+
+    $scope.$on("$ionicView.enter", function (event, data) {
+      $scope.baseURL = baseURL;
+      $scope.showMenu = false;
+      $scope.message = "Loading ...";
+      $scope.cuestionarios = menuFactory.getCuestionarios().query(
+        function (response) {
+          $scope.cuestionarios = response;
+          $scope.showMenu = true;
+        },
+        function (response) {
+          $scope.message = "Error: " + response.status + " " + response.statusText;
+        });
 
 
-    //Función que exporta un cuestionario a fichero en formato json
-    $scope.exportCuest = function (cuest, filename) {
+      //Función que exporta un cuestionario a fichero en formato json
+      $scope.exportCuest = function (cuest, filename) {
 
-      filename = filename + '.json';
-      //Se resetea el atributo id , las respuestas y las estadisticas 
-      cuest.id = "";
-      cuest.tests = [];
-      cuest.stats = []
-      if (typeof cuest === 'object') {
-        cuest = JSON.stringify(cuest, undefined, 2);
-      }
-      var blob = new Blob([cuest], { type: 'text/json' });
-
-      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-        window.navigator.msSaveOrOpenBlob(blob, filename);
-      }
-      else {
-        var e = document.createEvent('MouseEvents'),
-          a = document.createElement('a');
-
-        a.download = filename;
-        a.href = window.URL.createObjectURL(blob);
-        a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
-        e.initEvent('click', true, false, window,
-          0, 0, 0, 0, 0, false, false, false, false, 0, null);
-        a.dispatchEvent(e);
-      }
-    };
-
-    //Función que permite borrar un cuestionario
-    $scope.removeCuest = function (cuest) {
-      $mdDialog.show({
-        clickOutsideToClose: true,
-        scope: $scope,
-        preserveScope: true,
-        template: '<md-dialog aria-label="List dialog">' +
-        '  <md-dialog-content>' +
-        '<md-content class="md-padding">' +
-        ' <h5 class="md-title">Estas seguro de eliminar este cuestionario</h5>' +
-        '</md-content>      ' +
-        '  </md-dialog-content>' +
-        '  <md-dialog-actions>' +
-        '    <md-button ui-sref="app" ng-click="remove()" class="md-primary">' +
-        '      Eliminar' +
-        '    </md-button>' +
-        '    <md-button  ng-click="closeDialog()" class="md-primary">' +
-        '      Cancelar' +
-        '    </md-button>' +
-        '  </md-dialog-actions>' +
-        '</md-dialog>',
-
-        controller: function DialogController($scope, $mdDialog) {
-          $scope.remove = function () {
-            $mdDialog.hide();
-            var index = $scope.cuestionarios.indexOf(cuest);
-            if (index > -1) {
-              $scope.cuestionarios.splice(index, 1);
-            }
-            menuFactory.getCuestionarios().remove(cuest);
-          }
-
-          $scope.closeDialog = function () {
-            $mdDialog.hide();
-          }
+        filename = filename + '.json';
+        //Se resetea el atributo id , las respuestas y las estadisticas 
+        cuest.id = "";
+        cuest.tests = [];
+        cuest.stats = []
+        if (typeof cuest === 'object') {
+          cuest = JSON.stringify(cuest, undefined, 2);
         }
-      });
+        var blob = new Blob([cuest], { type: 'text/json' });
 
-    };
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+          window.navigator.msSaveOrOpenBlob(blob, filename);
+        }
+        else {
+          var e = document.createEvent('MouseEvents'),
+            a = document.createElement('a');
+
+          a.download = filename;
+          a.href = window.URL.createObjectURL(blob);
+          a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
+          e.initEvent('click', true, false, window,
+            0, 0, 0, 0, 0, false, false, false, false, 0, null);
+          a.dispatchEvent(e);
+        }
+      };
+
+      //Función que permite borrar un cuestionario
+      $scope.removeCuest = function (cuest) {
+        $mdDialog.show({
+          clickOutsideToClose: true,
+          scope: $scope,
+          preserveScope: true,
+          template: '<md-dialog aria-label="List dialog">' +
+          '  <md-dialog-content>' +
+          '<md-content class="md-padding">' +
+          ' <h5 class="md-title">Estas seguro de eliminar este cuestionario</h5>' +
+          '</md-content>      ' +
+          '  </md-dialog-content>' +
+          '  <md-dialog-actions>' +
+          '    <md-button ui-sref="app" ng-click="remove()" class="md-primary">' +
+          '      Eliminar' +
+          '    </md-button>' +
+          '    <md-button  ng-click="closeDialog()" class="md-primary">' +
+          '      Cancelar' +
+          '    </md-button>' +
+          '  </md-dialog-actions>' +
+          '</md-dialog>',
+
+          controller: function DialogController($scope, $mdDialog) {
+            $scope.remove = function () {
+              $mdDialog.hide();
+              var index = $scope.cuestionarios.indexOf(cuest);
+              if (index > -1) {
+                $scope.cuestionarios.splice(index, 1);
+              }
+              menuFactory.getCuestionarios().remove(cuest);
+            }
+
+            $scope.closeDialog = function () {
+              $mdDialog.hide();
+            }
+          }
+        });
+
+      };
+    });
 
   }])
 
@@ -376,11 +379,11 @@ angular.module('testManager.controllers', [])
       $scope.quests.push(i);
     }
 
-   
-    $scope.number=0;
+
+    $scope.number;
     $scope.getNumber = function (num) {
-      if(num!=null){
-        num=parseInt(num,10);
+      if (num != null) {
+        num = parseInt(num, 10);
       }
       return new Array(num);
     };
