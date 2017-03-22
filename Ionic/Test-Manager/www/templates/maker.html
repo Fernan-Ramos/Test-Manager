@@ -11,13 +11,11 @@
           <span class="input-label">Descripción</span>
           <input type="text" placeholder="Breve descripción" ng-model="cuest.text">
         </label>
-        <label class="item item-input item-select">
-          <span class="input-label" >Nº de preguntas</span>
-          <select ng-model="number">
-            <option ng-value="quest" ng-repeat="quest in quests">
-              {{quest}}
-            </option>
-          </select>
+        <label class="item item-input item-stacked-label" ng-class="{ 'has-error' : form.makerForm.n.$error.required && !form.makerForm.n.$pristine }">
+          <span class="input-label" >Preguntas del cuestionario</span>
+          <input type="tel"  id="n" name="n"  placeholder="Nº de preguntas (max 30)" ng-model="number" required>
+          <span ng-show="form.makerForm.n.$error.required && !form.makerForm.n.$pristine" class="assertive">*Escribe un numero</span>
+          <span ng-show="max(number)>30" class="assertive">*Maximo 30 preguntas</span>
         </label>
         <div class="list" ng-repeat="n in getNumber(number) track by $index">
           <label class="item item-input item-stacked-label" ng-class="{ 'has-error' : form.makerForm.question{{$index+1}}.$error.required && !form.makerForm.question{{$index+1}}.$pristine }">

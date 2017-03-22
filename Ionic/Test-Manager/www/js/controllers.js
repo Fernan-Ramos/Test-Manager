@@ -379,13 +379,17 @@ angular.module('testManager.controllers', [])
       $scope.quests.push(i);
     }
 
-
     $scope.number;
+
+    $scope.max = function (n) {
+      return parseInt(n, 10);
+    }
+
     $scope.getNumber = function (num) {
-      if (num != null) {
+      if (num != null)
         num = parseInt(num, 10);
-      }
-      return new Array(num);
+      if (Number.isInteger(num) && num <= 30)
+        return new Array(num);
     };
 
 
