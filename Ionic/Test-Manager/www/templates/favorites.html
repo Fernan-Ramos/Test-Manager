@@ -1,0 +1,17 @@
+<ion-view view-title="Mis Favoritos">
+    <ion-content>
+        <div class="list card" ng-repeat="test in favoritos">
+            <div class="item item-divider">
+                {{test.title}}
+                <div class="item-icon-right">
+                    <button class="button button-icon icon ion-ios-more" ng-click="showOptions(test)"></button>
+                </div>
+            </div>
+            <a class="item item-thumbnail-left" ui-sref="app.testDetails({id: test.id})">
+                <img ng-src="{{baseURL+test.image}}">
+                <br>
+                <p>{{test.text}}</p>
+            </a>
+        </div>
+    </ion-content>
+</ion-view>
