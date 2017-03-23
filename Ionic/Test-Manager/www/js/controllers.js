@@ -55,7 +55,7 @@ angular.module('testManager.controllers', [])
     };
   })
 
-  .controller('MenuController', ['$scope', 'menuFactory', 'baseURL', '$mdDialog', function ($scope, menuFactory, baseURL, $mdDialog) {
+  .controller('MenuController', ['$scope', 'menuFactory', 'favoriteFactory', 'baseURL', '$mdDialog', function ($scope, menuFactory, favoriteFactory, baseURL, $mdDialog) {
 
     $scope.$on("$ionicView.enter", function (event, data) {
       $scope.baseURL = baseURL;
@@ -117,7 +117,7 @@ angular.module('testManager.controllers', [])
           '<i class="icon ion-stats-bars"></i>' +
           'Estadisticas' +
           ' </a>' +
-          '<a class="item item-icon-left" >' +
+          '<a class="item item-icon-left" ng-click="addFavorite(test);closeDialog()" >' +
           '<i class="icon ion-heart"></i>' +
           'Añadir a Favoritos' +
           '</a>' +
@@ -138,6 +138,9 @@ angular.module('testManager.controllers', [])
 
       }
 
+      $scope.addFavorite = function (test) {
+        favoriteFactory.getFavoritos().save(test);
+      }
       //Función que permite borrar un cuestionario
       $scope.removeCuest = function (cuest) {
         $mdDialog.show({
