@@ -1,6 +1,6 @@
 angular.module('testManager.controllers', [])
 
-  .controller('AppCtrl', function ($scope, $ionicModal, $timeout) {
+  .controller('AppCtrl', function ($scope, $ionicModal, $timeout, $ionicHistory, $state) {
 
     // With the new view caching in Ionic, Controllers are only called
     // when they are recreated or on app start, instead of every page change.
@@ -8,6 +8,20 @@ angular.module('testManager.controllers', [])
     // listen for the $ionicView.enter event:
     //$scope.$on('$ionicView.enter', function(e) {
     //});
+
+
+    //Función que pasa de una vista a la vista anterior
+    $scope.myGoBack = function () {
+      $ionicHistory.nextViewOptions({
+        disableBack: true
+      });
+      //Si la vista es Estadisticas Individuales se vueleve a la vista menu
+      if ($ionicHistory.currentTitle() == "Estadisticas Ind")
+        $state.go('app.menu');
+      else
+        $ionicHistory.goBack();
+    };
+
 
     // Form data for the login modal
     $scope.loginData = {};
@@ -100,15 +114,15 @@ angular.module('testManager.controllers', [])
           '<md-content class="md-padding">' +
           '<div class="list">' +
           '<a class="item item-icon-left"  href="#/app/stats/{{test.id}}" ng-click="closeDialog()">' +
-          '<i class="icon ion-stats-bars"></i>'+
+          '<i class="icon ion-stats-bars"></i>' +
           'Estadisticas' +
           ' </a>' +
           '<a class="item item-icon-left" >' +
-          '<i class="icon ion-heart"></i>'+
+          '<i class="icon ion-heart"></i>' +
           'Añadir a Favoritos' +
           '</a>' +
-           '<a class="item item-icon-left"  ng-click="removeCuest(test)">' +
-          '<i class="icon ion-trash-a"></i>'+
+          '<a class="item item-icon-left"  ng-click="removeCuest(test)">' +
+          '<i class="icon ion-trash-a"></i>' +
           'Eliminar' +
           '</a>' +
           '</div>' +
