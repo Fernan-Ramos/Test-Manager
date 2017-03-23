@@ -1,25 +1,17 @@
 <ion-view view-title="Test Manager">
   <ion-content>
-    <div class="list">
-      <div class="item item-thumbnail-left item-text-wrap" ng-repeat="test in cuestionarios">
-        <img ng-src="{{baseURL+test.image}}" ui-sref="app.testDetails({id: test.id})">
-        <h2>{{test.title}}</h2>
-        <p>{{test.text}}</p>
-        <div class="item tabs">
-          <a class="tab-item stable-bg" ui-sref="app.testDetails({id: test.id})">
-            <i class="icon ion-android-checkbox"></i>
-          </a>
-          <a class="tab-item stable-bg" ui-sref="app.statDetails({id: test.id})">
-            <i class="icon ion-stats-bars"></i>
-          </a>
-          <a class="tab-item stable-bg">
-            <i class="icon ion-heart"></i>
-          </a>
-          <a class="tab-item stable-bg" ng-click="removeCuest(test)">
-            <i class="icon ion-trash-a"></i>
-          </a>
+    <div class="list card" ng-repeat="test in cuestionarios">
+      <div class="item item-divider">
+        {{test.title}}
+        <div class="item-icon-right">
+          <button class="button button-icon icon ion-ios-more" ng-click="showOptions(test)"></button>
         </div>
       </div>
+      <a class="item item-thumbnail-left" ui-sref="app.testDetails({id: test.id})">
+        <img ng-src="{{baseURL+test.image}}">
+        <br>
+        <p>{{test.text}}</p>
+      </a>
     </div>
   </ion-content>
 </ion-view>
