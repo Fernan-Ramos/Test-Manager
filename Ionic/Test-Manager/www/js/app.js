@@ -81,6 +81,16 @@ angular.module('testManager', ['ionic', 'testManager.controllers', 'testManager.
             controller: 'StatsController'
           }
         }
+      })
+
+      .state('app.favorites', {
+        url: '/favorites',
+        views: {
+          'mainContent': {
+            templateUrl: 'templates/favorites.html',
+            controller: 'FavoritesController'
+          }
+        }
       });
 
 
