@@ -139,8 +139,11 @@ angular.module('testManager.controllers', [])
       }
 
       $scope.addFavorite = function (test) {
+        test.tests = []
+        test.stats = [];
         favoriteFactory.getFavoritos().save(test);
       }
+
       //Función que permite borrar un cuestionario
       $scope.removeCuest = function (cuest) {
         $mdDialog.show({
@@ -550,82 +553,83 @@ angular.module('testManager.controllers', [])
   }])
 
   .controller('StatsControllerDetails', ['$scope', '$stateParams', '$mdDialog', 'menuFactory', function ($scope, $stateParams, $mdDialog, menuFactory) {
-    $scope.showStatInd = false;
-    $scope.message = "Loading ...";
-    $scope.cuestionario =
-      menuFactory.getCuestionarios().get({ id: parseInt($stateParams.id, 10) })
-        .$promise.then(
-        function (response) {
-          $scope.cuestionario = response;
-          $scope.showStatInd = true;
-          //Dialogo que aparece cuando no hay cuestionarios completados
-          if ($scope.cuestionario.stats.length == 0) {
-            $mdDialog.show({
-              clickOutsideToClose: false,
-              scope: $scope,
-              preserveScope: true,
-              template: '<md-dialog aria-label="List dialog">' +
-              '  <md-dialog-content>' +
-              '<md-content class="md-padding">' +
-              ' <h5 class="md-title">No hay estadisticas que mostrar</h5>' +
-              ' <p class="md-textContent">Todavía no has realizado ningún cuestionario</p>' +
-              '</md-content>      ' +
-              '  </md-dialog-content>' +
-              '  <md-dialog-actions>' +
-              '    <md-button href="#/app/menu" ng-click="closeDialog()" class="md-primary">' +
-              '      Menu' +
-              '    </md-button>' +
-              '  </md-dialog-actions>' +
-              '</md-dialog>',
+    $scope.$on("$ionicView.beforeEnter", function (event, data) {
+      $scope.showStatInd = false;
+      $scope.message = "Loading ...";
+      $scope.cuestionario =
+        menuFactory.getCuestionarios().get({ id: parseInt($stateParams.id, 10) })
+          .$promise.then(
+          function (response) {
+            $scope.cuestionario = response;
+            $scope.showStatInd = true;
+            //Dialogo que aparece cuando no hay cuestionarios completados
+            if ($scope.cuestionario.stats.length == 0) {
+              $mdDialog.show({
+                clickOutsideToClose: false,
+                scope: $scope,
+                preserveScope: true,
+                template: '<md-dialog aria-label="List dialog">' +
+                '  <md-dialog-content>' +
+                '<md-content class="md-padding">' +
+                ' <h5 class="md-title">No hay estadisticas que mostrar</h5>' +
+                ' <p class="md-textContent">Todavía no has realizado ningún cuestionario</p>' +
+                '</md-content>      ' +
+                '  </md-dialog-content>' +
+                '  <md-dialog-actions>' +
+                '    <md-button href="#/app/menu" ng-click="closeDialog()" class="md-primary">' +
+                '      Menu' +
+                '    </md-button>' +
+                '  </md-dialog-actions>' +
+                '</md-dialog>',
 
-              controller: function DialogController($scope, $mdDialog) {
-                $scope.closeDialog = function () {
-                  $mdDialog.hide();
+                controller: function DialogController($scope, $mdDialog) {
+                  $scope.closeDialog = function () {
+                    $mdDialog.hide();
+                  }
                 }
-              }
-            });
-          }
-        },
-        function (response) {
-          $scope.message = "Error: " + response.status + " " + response.statusText;
-        }
-        );
-
-    //Función que ordena los cuestionarios por titulo , por calificación o por fecha .
-    $scope.filter = function (value) {
-      switch (value) {
-        case 1:
-          $scope.filtText = "-cal";
-          break;
-        case 2:
-          $scope.filtText = "date";
-          break;
-        default:
-          break;
-      }
-    };
-    //Atributos para chart
-    $scope.datasetOverride1 = [{
-      yAxisID: 'y-axis-1'
-    }];
-    $scope.options1 = {
-      scales: {
-        yAxes: [{
-          ticks: {
-            max: 100,
-            min: 0,
-            stepSize: 20
+              });
+            }
           },
-          id: 'y-axis-1',
-          type: 'linear',
-          display: true,
-          position: 'left'
-        },
+          function (response) {
+            $scope.message = "Error: " + response.status + " " + response.statusText;
+          }
+          );
 
-        ]
-      }
-    };
+      //Función que ordena los cuestionarios por titulo , por calificación o por fecha .
+      $scope.filter = function (value) {
+        switch (value) {
+          case 1:
+            $scope.filtText = "-cal";
+            break;
+          case 2:
+            $scope.filtText = "date";
+            break;
+          default:
+            break;
+        }
+      };
+      //Atributos para chart
+      $scope.datasetOverride1 = [{
+        yAxisID: 'y-axis-1'
+      }];
+      $scope.options1 = {
+        scales: {
+          yAxes: [{
+            ticks: {
+              max: 100,
+              min: 0,
+              stepSize: 20
+            },
+            id: 'y-axis-1',
+            type: 'linear',
+            display: true,
+            position: 'left'
+          },
 
+          ]
+        }
+      };
+    });
   }])
   .controller('StatsController', ['$scope', '$stateParams', '$mdDialog', 'menuFactory', function ($scope, $stateParams, $mdDialog, menuFactory) {
     $scope.$on("$ionicView.enter", function (event, data) {
@@ -720,6 +724,63 @@ angular.module('testManager.controllers', [])
             break;
         }
       };
+    });
+
+  }])
+
+  .controller('FavoritesController', ['$scope', 'menuFactory', 'favoriteFactory', 'baseURL', '$mdDialog', function ($scope, menuFactory, favoriteFactory, baseURL, $mdDialog) {
+    $scope.$on("$ionicView.enter", function (event, data) {
+      $scope.baseURL = baseURL;
+      $scope.favoritos = favoriteFactory.getFavoritos().query(
+        function (response) {
+          $scope.favoritos = response;
+          $scope.showMenu = true;
+        },
+        function (response) {
+          $scope.message = "Error: " + response.status + " " + response.statusText;
+        });
+
+
+      //Dialogo que muestra las opciones para cada cuestionario
+      $scope.showOptions = function (test) {
+        $mdDialog.show({
+          clickOutsideToClose: true,
+          scope: $scope,
+          preserveScope: true,
+          locals: {
+            test: test
+          },
+          template: '<md-dialog aria-label="List dialog">' +
+          '  <md-dialog-content>' +
+          '<md-content class="md-padding">' +
+          '<div class="list">' +
+          '<a class="item item-icon-left"  href="#/app/stats/{{test.id}}" ng-click="closeDialog()">' +
+          '<i class="icon ion-stats-bars"></i>' +
+          'Estadisticas' +
+          ' </a>' +
+          '<a class="item item-icon-left"  ng-click="removeFavorite(test);closeDialog()">' +
+          '<i class="icon ion-trash-a"></i>' +
+          'Eliminar' +
+          '</a>' +
+          '</div>' +
+          '</md-content>' +
+          '</md-dialog>',
+          controller: function DialogController($scope, $mdDialog, test) {
+            $scope.test = test;
+            $scope.closeDialog = function () {
+              $mdDialog.hide();
+            }
+          }
+        });
+      }
+
+      $scope.removeFavorite = function (test) {
+        var index = $scope.favoritos.indexOf(test);
+        if (index > -1) {
+          $scope.favoritos.splice(index, 1);
+        }
+        favoriteFactory.getFavoritos().remove(test);
+      }
     });
 
   }]);
