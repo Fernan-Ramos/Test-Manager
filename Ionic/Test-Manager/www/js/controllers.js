@@ -86,6 +86,44 @@ angular.module('testManager.controllers', [])
         }
       };
 
+      //Dialogo que muestra las opciones para cada cuestionario
+      $scope.showOptions = function (test) {
+        $mdDialog.show({
+          clickOutsideToClose: true,
+          scope: $scope,
+          preserveScope: true,
+          locals: {
+            test: test
+          },
+          template: '<md-dialog aria-label="List dialog">' +
+          '  <md-dialog-content>' +
+          '<md-content class="md-padding">' +
+          '<div class="list">' +
+          '<a class="item item-icon-left"  href="#/app/stats/{{test.id}}" ng-click="closeDialog()">' +
+          '<i class="icon ion-stats-bars"></i>'+
+          'Estadisticas' +
+          ' </a>' +
+          '<a class="item item-icon-left" >' +
+          '<i class="icon ion-heart"></i>'+
+          'Añadir a Favoritos' +
+          '</a>' +
+           '<a class="item item-icon-left"  ng-click="removeCuest(test)">' +
+          '<i class="icon ion-trash-a"></i>'+
+          'Eliminar' +
+          '</a>' +
+          '</div>' +
+          '</md-content>' +
+          '</md-dialog>',
+          controller: function DialogController($scope, $mdDialog, test) {
+            $scope.test = test;
+            $scope.closeDialog = function () {
+              $mdDialog.hide();
+            }
+          }
+        });
+
+      }
+
       //Función que permite borrar un cuestionario
       $scope.removeCuest = function (cuest) {
         $mdDialog.show({
@@ -99,7 +137,7 @@ angular.module('testManager.controllers', [])
           '</md-content>      ' +
           '  </md-dialog-content>' +
           '  <md-dialog-actions>' +
-          '    <md-button ui-sref="app" ng-click="remove()" class="md-primary">' +
+          '    <md-button href="#/app/menu" ng-click="remove()" class="md-primary">' +
           '      Eliminar' +
           '    </md-button>' +
           '    <md-button  ng-click="closeDialog()" class="md-primary">' +
