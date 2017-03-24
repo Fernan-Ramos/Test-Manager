@@ -61,7 +61,7 @@ angular.module('testManager.controllers', [])
       $scope.baseURL = baseURL;
       $scope.showMenu = false;
       $scope.message = "Loading ...";
-      $scope.cuestionarios = menuFactory.getCuestionarios().query(
+      $scope.cuestionarios = menuFactory.query(
         function (response) {
           $scope.cuestionarios = response;
           $scope.showMenu = true;
@@ -141,7 +141,7 @@ angular.module('testManager.controllers', [])
       $scope.addFavorite = function (test) {
         test.tests = []
         test.stats = [];
-        favoriteFactory.getFavoritos().save(test);
+        favoriteFactory.save(test);
       }
 
       //Función que permite borrar un cuestionario
@@ -173,7 +173,7 @@ angular.module('testManager.controllers', [])
               if (index > -1) {
                 $scope.cuestionarios.splice(index, 1);
               }
-              menuFactory.getCuestionarios().remove(cuest);
+              menuFactory.remove(cuest);
             }
 
             $scope.closeDialog = function () {
@@ -197,7 +197,7 @@ angular.module('testManager.controllers', [])
     $scope.message = "Loading ...";
     //Se obtiene el cuestionario 
     $scope.cuestionario =
-      menuFactory.getCuestionarios().get({ id: parseInt($stateParams.id, 10) })
+      menuFactory.get({ id: parseInt($stateParams.id, 10) })
         .$promise.then(
         function (response) {
           $scope.showCuestionario = true;
@@ -291,7 +291,7 @@ angular.module('testManager.controllers', [])
 
       $scope.cuestionario.tests.push($scope.answer);
       //Se guarda la respuesta al cuestionario en el array de respuestas a cuestionarios
-      menuFactory.getCuestionarios().update({ id: $scope.cuestionario.id }, $scope.cuestionario);
+      menuFactory.update({ id: $scope.cuestionario.id }, $scope.cuestionario);
 
       $mdDialog.show({
         clickOutsideToClose: false,
@@ -384,7 +384,7 @@ angular.module('testManager.controllers', [])
         $scope.stat.stats.data = [[$scope.respuestas]];
         $scope.stat.stats.colors = [colors[Math.floor(Math.random() * colors.length)]];
         $scope.cuestionario.stats.push($scope.stat);
-        menuFactory.getCuestionarios().update({ id: $scope.cuestionario.id }, $scope.cuestionario);
+        menuFactory.update({ id: $scope.cuestionario.id }, $scope.cuestionario);
       } else {
         result[0].stats.labels.push($scope.fecha);
         result[0].stats.data[0].push($scope.respuestas);
@@ -423,7 +423,7 @@ angular.module('testManager.controllers', [])
     $scope.form = {};
     $scope.showMaker = false;
     $scope.message = "Loading ...";
-    $scope.cuestionarios = menuFactory.getCuestionarios().query(
+    $scope.cuestionarios = menuFactory.query(
       function (response) {
         $scope.cuestionarios = response;
         $scope.showMaker = true;
@@ -482,7 +482,7 @@ angular.module('testManager.controllers', [])
       }
 
       //Poner el cuestionaro creado en array de cuestionarios
-      menuFactory.getCuestionarios().save($scope.cuest);
+      menuFactory.save($scope.cuest);
       //$scope.cuestionarios.push($scope.cuest);
 
       //Resetea el formulario a  pristine
@@ -519,7 +519,7 @@ angular.module('testManager.controllers', [])
         data.stats = []
         $scope.cuestionarios.push(data);
         //Se guarda el nuevo cuestionario en el array de cuestionarios
-        menuFactory.getCuestionarios().save(data);
+        menuFactory.save(data);
       })
         //Si el archivo no es un archivo de tipo json
         .fail(function () {
@@ -557,7 +557,7 @@ angular.module('testManager.controllers', [])
       $scope.showStatInd = false;
       $scope.message = "Loading ...";
       $scope.cuestionario =
-        menuFactory.getCuestionarios().get({ id: parseInt($stateParams.id, 10) })
+        menuFactory.get({ id: parseInt($stateParams.id, 10) })
           .$promise.then(
           function (response) {
             $scope.cuestionario = response;
@@ -636,7 +636,7 @@ angular.module('testManager.controllers', [])
       $scope.showStat = false;
       $scope.message = "Loading ...";
       $scope.cuestionario =
-        menuFactory.getCuestionarios().query()
+        menuFactory.query()
           .$promise.then(
           function (response) {
             $scope.cuestionario = response;
@@ -731,7 +731,7 @@ angular.module('testManager.controllers', [])
   .controller('FavoritesController', ['$scope', 'menuFactory', 'favoriteFactory', 'baseURL', '$mdDialog', function ($scope, menuFactory, favoriteFactory, baseURL, $mdDialog) {
     $scope.$on("$ionicView.enter", function (event, data) {
       $scope.baseURL = baseURL;
-      $scope.favoritos = favoriteFactory.getFavoritos().query(
+      $scope.favoritos = favoriteFactory.query(
         function (response) {
           $scope.favoritos = response;
           $scope.showMenu = true;
@@ -779,7 +779,7 @@ angular.module('testManager.controllers', [])
         if (index > -1) {
           $scope.favoritos.splice(index, 1);
         }
-        favoriteFactory.getFavoritos().remove(test);
+        favoriteFactory.remove(test);
       }
     });
 
