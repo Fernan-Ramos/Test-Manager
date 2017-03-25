@@ -127,6 +127,7 @@ angular.module('testManager.controllers', [])
           '</a>' +
           '</div>' +
           '</md-content>' +
+          '</md-dialog-content>' +
           '</md-dialog>',
           controller: function DialogController($scope, $mdDialog, test) {
             $scope.test = test;
@@ -136,7 +137,7 @@ angular.module('testManager.controllers', [])
           }
         });
 
-      }
+      };
 
       $scope.addFavorite = function (test) {
         test.tests = []
@@ -764,6 +765,7 @@ angular.module('testManager.controllers', [])
           '</a>' +
           '</div>' +
           '</md-content>' +
+          '</md-dialog-content>' +
           '</md-dialog>',
           controller: function DialogController($scope, $mdDialog, test) {
             $scope.test = test;
