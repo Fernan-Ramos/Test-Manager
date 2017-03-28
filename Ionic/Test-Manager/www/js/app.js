@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('testManager', ['ionic', 'ngCordova', 'testManager.controllers', 'testManager.services'])
 
-  .run(function ($ionicPlatform, cordovaSplashscreen, $timeout) {
+  .run(function ($ionicPlatform, $cordovaSplashscreen, $timeout) {
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -22,7 +22,7 @@ angular.module('testManager', ['ionic', 'ngCordova', 'testManager.controllers', 
 
       $timeout(function () {
         $cordovaSplashscreen.hide();
-      }, 3000);
+      },3000);
 
     });
   })
