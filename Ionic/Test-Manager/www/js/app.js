@@ -4,9 +4,9 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('testManager', ['ionic', 'testManager.controllers', 'testManager.services'])
+angular.module('testManager', ['ionic', 'ngCordova', 'testManager.controllers', 'testManager.services'])
 
-  .run(function ($ionicPlatform) {
+  .run(function ($ionicPlatform, cordovaSplashscreen, $timeout) {
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -19,6 +19,11 @@ angular.module('testManager', ['ionic', 'testManager.controllers', 'testManager.
         // org.apache.cordova.statusbar required
         StatusBar.styleDefault();
       }
+
+      $timeout(function () {
+        $cordovaSplashscreen.hide();
+      }, 300);
+
     });
   })
 
