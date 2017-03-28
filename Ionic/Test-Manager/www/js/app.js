@@ -22,7 +22,7 @@ angular.module('testManager', ['ionic', 'ngCordova', 'testManager.controllers', 
 
       $timeout(function () {
         $cordovaSplashscreen.hide();
-      }, 300);
+      }, 3000);
 
     });
   })
