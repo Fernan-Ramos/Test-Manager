@@ -440,7 +440,7 @@ angular.module('testManager.controllers', [])
     }
   }])
 
-  .controller('MakerController', ['$scope', '$mdDialog', 'menuFactory', function ($scope, $mdDialog, menuFactory) {
+  .controller('MakerController', ['$scope', '$mdDialog', 'menuFactory', '$ionicPlatform', '$cordovaLocalNotification', '$cordovaToast', function ($scope, $mdDialog, menuFactory, $ionicPlatform, $cordovaLocalNotification, $cordovaToast) {
     $scope.form = {};
     $scope.showMaker = false;
     $scope.message = "Loading ...";
@@ -505,7 +505,26 @@ angular.module('testManager.controllers', [])
       //Poner el cuestionaro creado en array de cuestionarios
       menuFactory.save($scope.cuest);
       //$scope.cuestionarios.push($scope.cuest);
+      $ionicPlatform.ready(function () {
+        $cordovaLocalNotification.schedule({
+          id: 1,
+          title: "Cuestionario creado",
+          text: $scope.cuest.title
+        }).then(function () {
+          console.log('Cuestionario creado ' + $scope.cuest.title);
+        },
+          function () {
+            console.log('Failed to add Notification ');
+          });
 
+        $cordovaToast
+          .show('Cuestionario creado ' + $scope.cuest.title, 'long', 'center')
+          .then(function (success) {
+            // success
+          }, function (error) {
+            // error
+          });
+      });
       //Resetea el formulario a  pristine
       $scope.form.makerForm.$setPristine();
 
