@@ -1,7 +1,7 @@
 'use strict';
 angular.module('testManagerApp')
 
-    .controller('MenuController', ['$scope', '$mdDialog', 'menuFactory', function ($scope, $mdDialog, menuFactory) {
+    .controller('MenuController', ['$scope', '$mdDialog', 'menuFactory', 'favoriteFactory', function ($scope, $mdDialog, menuFactory, favoriteFactory) {
 
         $scope.showMenu = false;
         $scope.message = "Loading ...";
@@ -44,6 +44,13 @@ angular.module('testManagerApp')
                 a.dispatchEvent(e);
             }
         };
+
+        //Función que añade un cuestionario a la sección de favoritos
+        $scope.addFavorite = function (test) {
+            test.tests = []
+            test.stats = [];
+            favoriteFactory.save(test);
+        }
 
         //Función que permite borrar un cuestionario
         $scope.removeCuest = function (cuest) {
@@ -656,6 +663,59 @@ angular.module('testManagerApp')
         };
     }])
 
+
+    .controller('FavoritesController', ['$scope', 'favoriteFactory', '$mdDialog', function ($scope, favoriteFactory, $mdDialog) {
+        $scope.showFavorites = false;
+        $scope.message = "Loading ...";
+        $scope.favoritos = favoriteFactory.query(
+            function (response) {
+                $scope.favoritos = response[0].favoritos;
+                $scope.showFavorites = true;
+            },
+            function (response) {
+                $scope.message = "Error: " + response.status + " " + response.statusText;
+            });
+
+        //Función que exporta un cuestionario a fichero en formato json
+        $scope.exportFavorite = function (cuest, filename) {
+
+            filename = filename + '.json';
+            //Se resetea el id, las respuestas y las estadisticas
+            delete cuest._id;
+            cuest.tests = [];
+            cuest.stats = [];
+            if (typeof cuest === 'object') {
+                cuest = JSON.stringify(cuest, undefined, 2);
+            }
+            var blob = new Blob([cuest], {
+                type: 'text/json'
+            });
+
+            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveOrOpenBlob(blob, filename);
+            } else {
+                var e = document.createEvent('MouseEvents'),
+                    a = document.createElement('a');
+
+                a.download = filename;
+                a.href = window.URL.createObjectURL(blob);
+                a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
+                e.initEvent('click', true, false, window,
+                    0, 0, 0, 0, 0, false, false, false, false, 0, null);
+                a.dispatchEvent(e);
+            }
+        };
+
+        $scope.removeFavorite = function (test) {
+            var index = $scope.favoritos.indexOf(test);
+            if (index > -1) {
+                $scope.favoritos.splice(index, 1);
+            }
+            favoriteFactory.remove(test);
+        }
+
+
+    }])
     .controller('HeaderController', ['$scope', '$state', '$rootScope', 'ngDialog', 'AuthFactory', function ($scope, $state, $rootScope, ngDialog, AuthFactory) {
 
         $scope.loggedIn = false;
