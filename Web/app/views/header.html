@@ -5,7 +5,7 @@
                 aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="#page-top">TestManager</a>
+            <a class="navbar-brand" href="#page-top">TestManager</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
@@ -18,18 +18,22 @@
                 <li>
                     <a ui-sref="app.stats">Stats</a>
                 </li>
+                <li>
+                    <a ui-sref="app.favorites">Favorites</a>
+                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-               <li ng-if="!loggedIn"><a ng-click="openLogin()">
-                    <span class="glyphicon glyphicon-log-in"></span> Login</a>
-                    </li>
-                    <li ng-if="loggedIn">
+                <li ng-if="!loggedIn">
+                    <a ng-click="openLogin()">
+                        <span class="glyphicon glyphicon-log-in"></span> Login</a>
+                </li>
+                <li ng-if="loggedIn">
                     <a>{{username}}</a>
-                    </li>
-                    <li ng-if="loggedIn">
+                </li>
+                <li ng-if="loggedIn">
                     <a ng-click="logOut()">
-                    <span class="glyphicon glyphicon-log-in"></span> Logout</a>
-                    </li>
+                        <span class="glyphicon glyphicon-log-in"></span> Logout</a>
+                </li>
             </ul>
         </div>
     </div>
