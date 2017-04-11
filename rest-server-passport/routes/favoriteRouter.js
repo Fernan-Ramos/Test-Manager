@@ -18,7 +18,6 @@ favoriteRouter.route('/')
             .populate('postedBy')
             .exec(function (err, favorites) {
                 if (err) return next(err);
-                console.log(favorites)
                 res.json(favorites);
             });
     })
@@ -54,22 +53,13 @@ favoriteRouter.route('/')
     })
 
     .delete(Verify.verifyOrdinaryUser, function (req, res, next) {
-        Favorites.remove({
-            'postedBy': req.decoded._id
-        }, function (err, resp) {
-            if (err) return next(err);
-            res.json(resp);
-        });
-    });
-
-favoriteRouter.route('/:cuestId')
-
-    .delete(Verify.verifyOrdinaryUser, function (req, res, next) {
         Favorites.findOneAndUpdate({
             'postedBy': req.decoded._id
         }, {
             $pull: {
-                favoritos: req.params.cuestId
+                favoritos: {
+                    _id: req.query._id
+                }
             }
         }, function (err, favorite) {
             if (err) return next(err);
@@ -80,6 +70,7 @@ favoriteRouter.route('/:cuestId')
             });
         });
     });
+
 
 
 module.exports = favoriteRouter;
