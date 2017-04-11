@@ -1,5 +1,5 @@
 'use strict';
-angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngResource'])
+angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngResource', 'ngDialog'])
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
 
@@ -9,6 +9,7 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
                 views: {
                     'header': {
                         templateUrl: 'views/header.html',
+                        controller: 'HeaderController'
                     },
                     'content': {
                         templateUrl: 'views/menu.html',
@@ -43,7 +44,7 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
                 }
             })
 
-             //ruta para la pagina statDetails
+            //ruta para la pagina statDetails
             .state('app.statDetails', {
                 url: 'stats/:id',
                 views: {

@@ -37,10 +37,10 @@
                 <div class="panel panel-default" ng-repeat="cuest in cuestionario">
                     <div class="panel-heading">
                         <h3 class="panel-title">
-                            <a role="button" ng-click="dialogo(cuest.tests)" data-toggle="collapse" data-parent="#accordion" data-target="#{{cuest.id}}" aria-expanded="true" aria-controls="{{cuest.id}}">{{cuest.title}} <small>Estadisticas</small></a>
+                            <a role="button" ng-click="dialogo(cuest.tests)" data-toggle="collapse" data-parent="#accordion" data-target="#{{cuest._id}}" aria-expanded="true" aria-controls="{{cuest._id}}">{{cuest.title}} <small>Estadisticas</small></a>
                         </h3>
                     </div>
-                    <div role="tabpanel" class="panel-collapse collapse" id="{{cuest.id}}">
+                    <div role="tabpanel" class="panel-collapse collapse" id="{{cuest._id}}">
                         <div class="panel-body" ng-repeat="stat in cuest.stats">
                             <canvas id="line" class="chart chart-line" chart-data="stat.stats.data" chart-labels="stat.stats.labels" chart-series="stat.stats.series"
                                 chart-colors="stat.stats.colors" chart-dataset-override="datasetOverride2" chart-options="options2">
