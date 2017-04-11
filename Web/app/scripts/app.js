@@ -65,6 +65,17 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
                         controller: 'StatsController'
                     }
                 }
+            })
+
+            //ruta para la pagina favoritos
+            .state('app.favorites', {
+                url: 'favorites',
+                views: {
+                    'content@': {
+                        templateUrl: 'views/favorites.html',
+                        controller: 'FavoritesController'
+                    }
+                }
             });
 
 
