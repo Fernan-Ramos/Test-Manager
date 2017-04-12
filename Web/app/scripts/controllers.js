@@ -65,7 +65,7 @@ angular.module('testManagerApp')
                     '</md-content>      ' +
                     '  </md-dialog-content>' +
                     '  <md-dialog-actions>' +
-                    '    <md-button ui-sref="app" ng-click="remove()" class="md-primary">' +
+                    '    <md-button ui-sref="app.menu" ng-click="remove()" class="md-primary">' +
                     '      Eliminar' +
                     '    </md-button>' +
                     '    <md-button  ng-click="closeDialog()" class="md-primary">' +
@@ -243,7 +243,7 @@ angular.module('testManagerApp')
                     '</md-tabs>' +
                     '  </md-dialog-content>' +
                     '  <md-dialog-actions>' +
-                    '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
+                    '    <md-button ui-sref="app.menu" ng-click="closeDialog()" class="md-primary">' +
                     '      Menu' +
                     '    </md-button>' +
                     '    <md-button ui-sref="app.statDetails({id: cuestionario._id})" ng-click="closeDialog()" class="md-primary">' +
@@ -494,7 +494,7 @@ angular.module('testManagerApp')
                                 '</md-content>      ' +
                                 '  </md-dialog-content>' +
                                 '  <md-dialog-actions>' +
-                                '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
+                                '    <md-button ui-sref="app.menu" ng-click="closeDialog()" class="md-primary">' +
                                 '      Menu' +
                                 '    </md-button>' +
                                 '  </md-dialog-actions>' +
@@ -595,7 +595,7 @@ angular.module('testManagerApp')
                         '</md-content>      ' +
                         '  </md-dialog-content>' +
                         '  <md-dialog-actions>' +
-                        '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
+                        '    <md-button ui-sref="app.menu" ng-click="closeDialog()" class="md-primary">' +
                         '      Menu' +
                         '    </md-button>' +
                         '  </md-dialog-actions>' +
@@ -726,6 +726,7 @@ angular.module('testManagerApp')
             $scope.username = AuthFactory.getUsername();
         }
 
+        /** 
         $scope.openLogin = function () {
             ngDialog.open({
                 template: 'views/login.html',
@@ -734,11 +735,13 @@ angular.module('testManagerApp')
                 controller: "LoginController"
             });
         };
+        */
 
         $scope.logOut = function () {
             AuthFactory.logout();
             $scope.loggedIn = false;
             $scope.username = '';
+            $state.go('app');
         };
 
         $rootScope.$on('login:Successful', function () {
@@ -757,8 +760,14 @@ angular.module('testManagerApp')
 
     }])
 
-    .controller('LoginController', ['$scope', 'ngDialog', '$localStorage', 'AuthFactory', function ($scope, ngDialog, $localStorage, AuthFactory) {
+    .controller('LoginController', ['$state', '$scope', 'ngDialog', '$rootScope', '$localStorage', 'AuthFactory', function ($state, $scope, ngDialog, $rootScope, $localStorage, AuthFactory) {
+        $scope.loggedIn = false;
+        $scope.username = '';
 
+        if (AuthFactory.isAuthenticated()) {
+            $scope.loggedIn = true;
+            $scope.username = AuthFactory.getUsername();
+        }
         $scope.loginData = $localStorage.getObject('userinfo', '{}');
 
         $scope.doLogin = function () {
@@ -767,8 +776,22 @@ angular.module('testManagerApp')
 
             AuthFactory.login($scope.loginData);
 
-            ngDialog.close();
 
+        };
+
+        $rootScope.$on('login:Successful', function () {
+            $scope.loggedIn = AuthFactory.isAuthenticated();
+            $scope.username = AuthFactory.getUsername();
+            $state.go('app.menu');
+        });
+
+        $rootScope.$on('registration:Successful', function () {
+            $scope.loggedIn = AuthFactory.isAuthenticated();
+            $scope.username = AuthFactory.getUsername();
+        });
+
+        $scope.stateis = function (curstate) {
+            return $state.is(curstate);
         };
 
         $scope.openRegister = function () {
