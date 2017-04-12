@@ -3,7 +3,7 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
 
-            //ruta para la pagina menu
+            //ruta para login
             .state('app', {
                 url: '/',
                 views: {
@@ -12,8 +12,8 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
                         controller: 'HeaderController'
                     },
                     'content': {
-                        templateUrl: 'views/menu.html',
-                        controller: 'MenuController'
+                        templateUrl: 'views/home.html',
+                        controller: 'LoginController'
                     },
                     'footer': {
                         templateUrl: 'views/footer.html',
@@ -22,7 +22,20 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
 
             })
 
-            //ruta para la pagina testDetails
+
+            //ruta para menu
+            .state('app.menu', {
+                url: 'menu',
+                views: {
+                    'content@': {
+                        templateUrl: 'views/menu.html',
+                        controller: 'MenuController'
+                    }
+                }
+            })
+
+
+            //ruta para testDetails
             .state('app.testDetails', {
                 url: 'menu/:id',
                 views: {
@@ -33,7 +46,7 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
                 }
             })
 
-            //ruta para la pagina maker
+            //ruta para maker
             .state('app.maker', {
                 url: 'maker',
                 views: {
@@ -44,7 +57,7 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
                 }
             })
 
-            //ruta para la pagina statDetails
+            //ruta para statDetails
             .state('app.statDetails', {
                 url: 'stats/:id',
                 views: {
@@ -56,7 +69,7 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             })
 
 
-            //ruta para la pagina stats
+            //ruta para stats
             .state('app.stats', {
                 url: 'stats',
                 views: {
@@ -67,7 +80,7 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
                 }
             })
 
-            //ruta para la pagina favoritos
+            //ruta para favorites
             .state('app.favorites', {
                 url: 'favorites',
                 views: {
