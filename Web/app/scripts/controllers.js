@@ -167,38 +167,31 @@ angular.module('testManagerApp')
         $scope.submitAnswer = function (ev) {
             //Se guarda la fecha en la que se realiza el cuestionario
             $scope.answer.date = $filter('date')(new Date(), 'medium');
-            //Se guarda el array de respuestas contestadas en cada pregunta.
+            //Si la pregunta es de tipo múltiple se guarda el array de respuestas contestadas en cada pregunta.
             for (var i = 0; i < $scope.selected.length; i++) {
-                $scope.answer.questions[i].r = $scope.selected[i];
+                if ($scope.cuestionario.questions[i].tipo == "multiple")
+                    $scope.answer.questions[i].r = $scope.selected[i];
             }
             $scope.correctas = 0;
             $scope.incorrectas = 0;
             $scope.parcial = 0;
             var respuestas = [];
-            var incluida = 0;
             var correct = 0;
             var parciales = 0;
             //Se recorre el array de preguntas 
             for (var i = 0; i < $scope.answer.questions.length; i++) {
-                //Se recorre el array de respuestas dadas y se comprueba que cada elemento de dicho array esté en el array de respuestas correctas
-                for (var j = 0; j < $scope.answer.questions[i].r.length; j++) {
-                    if ($scope.answer.questions[i].rcorrect.includes($scope.answer.questions[i].r[j])) {
-                        incluida++;
-                    }
-                }
-                //Si la longuitud del array de respuestas correctas corresponde con el numero de respuestas incluidas y es igual la longuitud del array de respuestas dada, la respuesta es correcta
-                if (incluida == $scope.answer.questions[i].rcorrect.length && $scope.answer.questions[i].r.length == $scope.answer.questions[i].rcorrect.length) {
+                //Si la pregunta es de tipo unica y la respuesta dada corresponde con la respuesta correcta
+                if ($scope.cuestionario.questions[i].tipo == "unica" && $scope.answer.questions[i].rcorrect == $scope.answer.questions[i].r) {
                     $scope.correctas++;
                     //Determina que la respuesta es correcta
                     $scope.answer.questions[i].estado = 1;
                 }
-                //Si la pregunta es de respuestas múltiples y la respuesta no es vacía se calcula la calificación parcial
-                else if ($scope.answer.questions[i].rcorrect.length > 1 && $scope.answer.questions[i].r.length != 0) {
+                //Si la pregunta es de tipo múltiple y la respuesta no es vacía se calcula la calificación parcial
+                else if ($scope.cuestionario.questions[i].tipo == "multiple" && $scope.answer.questions[i].r.length != 0) {
                     respuestas.push($scope.cuestionario.questions[i].r1, $scope.cuestionario.questions[i].r2, $scope.cuestionario.questions[i].r3, $scope.cuestionario.questions[i].r4);
                     for (var z = 0; z < respuestas.length; z++) {
                         if (($scope.answer.questions[i].rcorrect.includes(respuestas[z]) && $scope.answer.questions[i].r.includes(respuestas[z])) || (!$scope.answer.questions[i].rcorrect.includes(respuestas[z]) && !$scope.answer.questions[i].r.includes(respuestas[z])))
                             correct++;
-                            console.log(correct)
                     }
                     $scope.answer.questions[i].estado = correct / respuestas.length;
                     if ($scope.answer.questions[i].estado == 0) {
@@ -216,7 +209,6 @@ angular.module('testManagerApp')
                 }
                 respuestas = [];
                 correct = 0;
-                incluida = 0;
             }
 
             //Se guarda las respuestas correctas 
@@ -409,6 +401,7 @@ angular.module('testManagerApp')
                 title: "",
                 pregunta: "",
                 image: "img/libro.jpg",
+                tipo: "",
                 r1: "",
                 r2: "",
                 r3: "",
@@ -447,6 +440,7 @@ angular.module('testManagerApp')
                     title: "",
                     pregunta: "",
                     image: "img/libro.jpg",
+                    tipo: "",
                     r1: "",
                     r2: "",
                     r3: "",
