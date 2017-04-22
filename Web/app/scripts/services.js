@@ -21,6 +21,39 @@ angular.module('testManagerApp')
 
     }])
 
+    .factory('exportFactory', function () {
+        var ex = {};
+        ex.exportTest = function (cuest, filename) {
+
+            filename = filename + '.json';
+            //Se resetea el id, las respuestas y las estadisticas
+            delete cuest._id;
+            cuest.tests = [];
+            cuest.stats = [];
+            if (typeof cuest === 'object') {
+                cuest = JSON.stringify(cuest, undefined, 2);
+            }
+            var blob = new Blob([cuest], {
+                type: 'text/json'
+            });
+
+            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveOrOpenBlob(blob, filename);
+            } else {
+                var e = document.createEvent('MouseEvents'),
+                    a = document.createElement('a');
+
+                a.download = filename;
+                a.href = window.URL.createObjectURL(blob);
+                a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
+                e.initEvent('click', true, false, window,
+                    0, 0, 0, 0, 0, false, false, false, false, 0, null);
+                a.dispatchEvent(e);
+            }
+        };
+        return ex;
+    })
+
     .factory('$localStorage', ['$window', function ($window) {
         return {
             store: function (key, value) {
@@ -82,37 +115,37 @@ angular.module('testManagerApp')
 
             $resource(baseURL + "users/login")
                 .save(loginData,
-                    function (response) {
-                        storeUserCredentials({
-                            username: loginData.username,
-                            token: response.token
-                        });
-                        $rootScope.$broadcast('login:Successful');
-                    },
-                    function (response) {
-                        isAuthenticated = false;
+                function (response) {
+                    storeUserCredentials({
+                        username: loginData.username,
+                        token: response.token
+                    });
+                    $rootScope.$broadcast('login:Successful');
+                },
+                function (response) {
+                    isAuthenticated = false;
 
-                        var message = '\
+                    var message = '\
                 <div class="ngdialog-message">\
                 <div><h3>Login Unsuccessful</h3></div>' +
-                            '<div><p>' + response.data.err.message + '</p><p>' +
-                            response.data.err.name + '</p></div>' +
-                            '<div class="ngdialog-buttons">\
+                        '<div><p>' + response.data.err.message + '</p><p>' +
+                        response.data.err.name + '</p></div>' +
+                        '<div class="ngdialog-buttons">\
                     <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=confirm("OK")>OK</button>\
                 </div>'
 
-                        ngDialog.openConfirm({
-                            template: message,
-                            plain: 'true'
-                        });
-                    }
+                    ngDialog.openConfirm({
+                        template: message,
+                        plain: 'true'
+                    });
+                }
 
                 );
 
         };
 
         authFac.logout = function () {
-            $resource(baseURL + "users/logout").get(function (response) {});
+            $resource(baseURL + "users/logout").get(function (response) { });
             destroyUserCredentials();
         };
 
@@ -120,34 +153,34 @@ angular.module('testManagerApp')
 
             $resource(baseURL + "users/register")
                 .save(registerData,
-                    function (response) {
-                        authFac.login({
+                function (response) {
+                    authFac.login({
+                        username: registerData.username,
+                        password: registerData.password
+                    });
+                    if (registerData.rememberMe) {
+                        $localStorage.storeObject('userinfo', {
                             username: registerData.username,
                             password: registerData.password
                         });
-                        if (registerData.rememberMe) {
-                            $localStorage.storeObject('userinfo', {
-                                username: registerData.username,
-                                password: registerData.password
-                            });
-                        }
+                    }
 
-                        $rootScope.$broadcast('registration:Successful');
-                    },
-                    function (response) {
+                    $rootScope.$broadcast('registration:Successful');
+                },
+                function (response) {
 
-                        var message = '\
+                    var message = '\
                 <div class="ngdialog-message">\
                 <div><h3>Registration Unsuccessful</h3></div>' +
-                            '<div><p>' + response.data.err.message +
-                            '</p><p>' + response.data.err.name + '</p></div>';
+                        '<div><p>' + response.data.err.message +
+                        '</p><p>' + response.data.err.name + '</p></div>';
 
-                        ngDialog.openConfirm({
-                            template: message,
-                            plain: 'true'
-                        });
+                    ngDialog.openConfirm({
+                        template: message,
+                        plain: 'true'
+                    });
 
-                    }
+                }
 
                 );
         };
