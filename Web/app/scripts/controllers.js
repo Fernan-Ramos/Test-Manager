@@ -139,7 +139,7 @@ angular.module('testManagerApp')
                     }
                     $scope.selected = [];
                     //Por cada pregunta del cuestionaro se guarda un array de respuestas
-                    for (var i = 0; i < $scope.cuestionario.questions.length; i++) {
+                    for (var j = 0; j < $scope.cuestionario.questions.length; j++) {
                         $scope.selected.push([]);
                     }
                     //Función que añade o elimina una respuesta al array de respuestas
@@ -164,7 +164,7 @@ angular.module('testManagerApp')
         //Se obtiene las respuestas guardadas
 
 
-        $scope.submitAnswer = function (ev) {
+        $scope.submitAnswer = function () {
             //Se guarda la fecha en la que se realiza el cuestionario
             $scope.answer.date = $filter('date')(new Date(), 'medium');
             //Si la pregunta es de tipo múltiple se guarda el array de respuestas contestadas en cada pregunta.
@@ -364,7 +364,7 @@ angular.module('testManagerApp')
 
         $scope.cuestionarios = menuFactory.query(
             function (response) {
-                $scope.cuestionarios = response[0].cuestionarios;;
+                $scope.cuestionarios = response[0].cuestionarios;
                 $scope.showMaker = true;
             },
             function (response) {
@@ -426,7 +426,6 @@ angular.module('testManagerApp')
 
             //Poner el cuestionaro creado en array de cuestionarios
             menuFactory.save($scope.cuest);
-            //$scope.cuestionarios.push($scope.cuest);
 
             //Resetea el formulario a  pristine
             $scope.form.makerForm.$setPristine();
@@ -691,7 +690,7 @@ angular.module('testManagerApp')
     }])
 
 
-    .controller('FavoritesController', ['$scope', 'favoriteFactory', '$mdDialog', function ($scope, favoriteFactory, $mdDialog) {
+    .controller('FavoritesController', ['$scope', 'favoriteFactory', function ($scope, favoriteFactory) {
         $scope.showFavorites = false;
         $scope.message = "Loading ...";
         $scope.favoritos = favoriteFactory.query(
@@ -838,7 +837,6 @@ angular.module('testManagerApp')
         $scope.loginData = {};
 
         $scope.doRegister = function () {
-            console.log('Doing registration', $scope.registration);
 
             AuthFactory.register($scope.registration);
 
