@@ -5,15 +5,15 @@ var mongoose = require('mongoose');
 var Favorites = require('../models/favorites');
 
 var favoriteRouter = express.Router();
-favoriteRouter.use(bodyParser.json());
+favoriteRouter.use(bodyParser.json({ limit: '1024mb' }));
 
 var Verify = require('./verify');
 
 favoriteRouter.route('/')
     .get(Verify.verifyOrdinaryUser, function (req, res, next) {
         Favorites.find({
-                'postedBy': req.decoded._id
-            })
+            'postedBy': req.decoded._id
+        })
             .populate('favoritos')
             .populate('postedBy')
             .exec(function (err, favorites) {
@@ -56,19 +56,19 @@ favoriteRouter.route('/')
         Favorites.findOneAndUpdate({
             'postedBy': req.decoded._id
         }, {
-            $pull: {
-                favoritos: {
-                    _id: req.query._id
+                $pull: {
+                    favoritos: {
+                        _id: req.query._id
+                    }
                 }
-            }
-        }, function (err, favorite) {
-            if (err) return next(err);
-            Favorites.findOne({
-                'postedBy': req.decoded._id
             }, function (err, favorite) {
-                res.json(favorite);
+                if (err) return next(err);
+                Favorites.findOne({
+                    'postedBy': req.decoded._id
+                }, function (err, favorite) {
+                    res.json(favorite);
+                });
             });
-        });
     });
 
 
