@@ -136,9 +136,26 @@ angular.module('testManagerApp')
                 }
                 );
 
+        //Función que calcula la calificación para preguntas de tipo multiple
+        function multiple(j, respuestas) {
+            var correct = 0;
+            for (var z = 0; z < respuestas.length; z++) {
+                if (($scope.answer.questions[j].rcorrect.includes(respuestas[z]) && $scope.answer.questions[j].r.includes(respuestas[z])) || (!$scope.answer.questions[j].rcorrect.includes(respuestas[z]) && !$scope.answer.questions[j].r.includes(respuestas[z])))
+                    correct++;
+            }
+            $scope.answer.questions[j].estado = correct / respuestas.length;
+            if ($scope.answer.questions[j].estado == 0) {
+                $scope.incorrectas++;
+            } else if ($scope.answer.questions[j].estado < 1 && $scope.answer.questions[j].estado > 0) {
+                $scope.parciales = $scope.parciales + $scope.answer.questions[j].estado;
+                $scope.parcial++;
+            } else if ($scope.answer.questions[j].estado == 1) {
+                $scope.correctas++;
+            }
+
+        }
+
         //Se obtiene las respuestas guardadas
-
-
         $scope.submitAnswer = function () {
             //Se guarda la fecha en la que se realiza el cuestionario
             $scope.answer.date = $filter('date')(new Date(), 'medium');
@@ -147,12 +164,12 @@ angular.module('testManagerApp')
                 if ($scope.cuestionario.questions[i].tipo == "multiple")
                     $scope.answer.questions[i].r = $scope.selected[i];
             }
+
             $scope.correctas = 0;
             $scope.incorrectas = 0;
             $scope.parcial = 0;
             var respuestas = [];
-            var correct = 0;
-            var parciales = 0;
+            $scope.parciales = 0;
             //Se recorre el array de preguntas 
             for (var j = 0; j < $scope.answer.questions.length; j++) {
                 //Si la pregunta es de tipo unica y la respuesta dada corresponde con la respuesta correcta
@@ -164,26 +181,13 @@ angular.module('testManagerApp')
                 //Si la pregunta es de tipo múltiple y la respuesta no es vacía se calcula la calificación parcial
                 else if ($scope.cuestionario.questions[j].tipo == "multiple" && $scope.answer.questions[j].r.length != 0) {
                     respuestas.push($scope.cuestionario.questions[j].r1, $scope.cuestionario.questions[j].r2, $scope.cuestionario.questions[j].r3, $scope.cuestionario.questions[j].r4);
-                    for (var z = 0; z < respuestas.length; z++) {
-                        if (($scope.answer.questions[j].rcorrect.includes(respuestas[z]) && $scope.answer.questions[j].r.includes(respuestas[z])) || (!$scope.answer.questions[j].rcorrect.includes(respuestas[z]) && !$scope.answer.questions[j].r.includes(respuestas[z])))
-                            correct++;
-                    }
-                    $scope.answer.questions[j].estado = correct / respuestas.length;
-                    if ($scope.answer.questions[j].estado == 0) {
-                        $scope.incorrectas++;
-                    } else if ($scope.answer.questions[j].estado < 1 && $scope.answer.questions[j].estado > 0) {
-                        parciales = parciales + $scope.answer.questions[j].estado;
-                        $scope.parcial++;
-                    } else if ($scope.answer.questions[j].estado == 1) {
-                        $scope.correctas++;
-                    }
+                    multiple(j, respuestas);
                 } else {
                     $scope.incorrectas++;
                     //Determina que la respuesta es incorrecta
                     $scope.answer.questions[j].estado = 0;
                 }
                 respuestas = [];
-                correct = 0;
             }
 
             //Se guarda las respuestas correctas 
@@ -193,7 +197,7 @@ angular.module('testManagerApp')
             //Se guarda las respuestas parcialmente correctas
             $scope.answer.parcial = $scope.parcial;
             //Se guarda la calificación obtenida
-            $scope.answer.cal = (($scope.answer.correctas + parciales) / $scope.answer.questions.length) * 100;
+            $scope.answer.cal = (($scope.answer.correctas + $scope.parciales) / $scope.answer.questions.length) * 100;
 
             $scope.cuestionario.tests.push($scope.answer);
             //Se guarda la respuesta al cuestionario en el array de respuestas a cuestionarios
