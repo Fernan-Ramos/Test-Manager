@@ -44,6 +44,28 @@
           <span ng-show="form.makerForm.r4{{$index+1}}.$error.required && !form.makerForm.r4{{$index+1}}.$pristine" class="assertive">*La respuesta es necesaria</span>
         </label>
           <div class="row">
+            <div class="col" style="color:#003333"><br>Tipo de pregunta</div>
+            <div class="col col-75">
+              <md-radio-group ng-model="cuest.questions[$index].tipo" required>
+                <md-radio-button value="unica" class="md-primary">Respuesta única</md-radio-button>
+                <md-radio-button value="multiple">Respuesta múltiple</md-radio-button>
+              </md-radio-group>
+            </div>
+          </div>
+          <div class="list" ng-if="cuest.questions[$index].tipo=='unica'">
+            <label class="item item-input item-select">
+            <div class="input-label">
+              Respuesta correcta
+            </div>
+            <select ng-model="cuest.questions[$index].rcorrect" required>
+               <option>{{cuest.questions[$index].r1}}</option>
+                <option>{{cuest.questions[$index].r2}}</option>
+                <option>{{cuest.questions[$index].r3}}</option>
+                <option>{{cuest.questions[$index].r4}}</option>
+            </select>
+          </label>
+          </div>
+          <div class="row" ng-if="cuest.questions[$index].tipo=='multiple'">
             <div class="col" style="color:#003333"><br>Respuesta correcta</div>
             <div class="col col-75">
               <md-select placeholder="Respuesta correcta" ng-model="cuest.questions[$index].rcorrect" multiple required>

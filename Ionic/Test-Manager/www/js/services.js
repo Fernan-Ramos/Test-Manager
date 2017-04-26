@@ -10,7 +10,7 @@ angular.module('testManager.services', ['ngResource', 'ngMaterial', 'chart.js'])
 
     .factory('favoriteFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
 
-        return $resource(baseURL + "favoritos/:id", null, { 'update': { method: 'PUT' } });
+        return $resource(baseURL + "favorites/:id", null, { 'update': { method: 'PUT' } });
 
     }])
 

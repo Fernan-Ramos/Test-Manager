@@ -16,7 +16,18 @@
                 <span class="md-subhead">Selecciona una respuesta</span>
               </md-card-title-text>
             </md-card-title>
-            <md-card-content>
+
+            <md-card-content ng-if="preg.tipo=='unica'">
+              <!-- Si es tipo única -->
+              <md-radio-group ng-model="answer.questions[$index].r " required>
+                <md-radio-button value="{{preg.r1}}" class="md-primary">{{preg.r1}}</md-radio-button>
+                <md-radio-button value="{{preg.r2}}" class="md-primary">{{preg.r2}}</md-radio-button>
+                <md-radio-button value="{{preg.r3}}" class="md-primary">{{preg.r3}}</md-radio-button>
+                <md-radio-button value="{{preg.r4}}" class="md-primary">{{preg.r4}}</md-radio-button>
+              </md-radio-group>
+            </md-card-content>
+
+            <md-card-content ng-if="preg.tipo=='multiple'">
               <ul class="list-group list-group-flush">
                 <li class="list-group-item">
                   <md-checkbox class="md-primary" ng-checked="exists(preg.r1, selected[$index])" ng-click="toggle(preg.r1,selected[$index])">

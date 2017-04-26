@@ -47,6 +47,14 @@ angular.module('testManager.controllers', [])
           $scope.message = "Error: " + response.status + " " + response.statusText;
         });
 
+      $scope.favoritos = favoriteFactory.query(
+        function (response) {
+          $scope.favoritos = response[0].favoritos;
+        },
+        function (response) {
+          $scope.message = "Error: " + response.status + " " + response.statusText;
+        });
+
 
       //Dialogo que muestra las opciones para cada cuestionario
       $scope.showOptions = function (test) {
@@ -142,6 +150,15 @@ angular.module('testManager.controllers', [])
               if (index > -1) {
                 $scope.cuestionarios.splice(index, 1);
               }
+              //Se comprueba si existe favorito de dicho cuestionario
+              var isFav = $scope.favoritos.some(function (element) {
+                return element._id == cuest._id;
+              });
+              //Se elimina el favorito del cuestionario a borrar si existe dicho favorito
+              if (isFav) {
+                favoriteFactory.remove(cuest);
+              }
+
               menuFactory.remove(cuest);
             }
 
@@ -320,7 +337,7 @@ angular.module('testManager.controllers', [])
         '    <md-button href="#/app/menu" ng-click="closeDialog()" class="md-primary">' +
         '      Menu' +
         '    </md-button>' +
-        '    <md-button href="#/app/stats/{{cuestionario.id}}" ng-click="closeDialog()" class="md-primary">' +
+        '    <md-button href="#/app/stats/{{cuestionario._id}}" ng-click="closeDialog()" class="md-primary">' +
         '      Estadisticas' +
         '    </md-button>' +
         '  </md-dialog-actions>' +
