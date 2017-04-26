@@ -63,3 +63,15 @@
 .bs-callout-info h4 {
     color: #5bc0de;
 }
+
+@font-face {
+    font-family: myFirstFont;
+    src: url('../img/Snowboarding Only.ttf');
+}
+
+.testManager {
+    font-family: myFirstFont;
+    color: teal;
+    text-align: center;
+    font-size: 210%;
+}

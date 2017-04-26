@@ -7,7 +7,7 @@
           <i class="icon ion-ios-more" ng-click="showOptions(test)"></i>
         </div>
       </div>
-      <a class="item item-thumbnail-left" ui-sref="app.testDetails({id: test.id})">
+      <a class="item item-thumbnail-left" ui-sref="app.testDetails({id: test._id})">
         <img ng-src="{{baseURL+test.image}}">
         <br>
         <p>{{test.text}}</p>

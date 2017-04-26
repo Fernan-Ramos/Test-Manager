@@ -22,7 +22,7 @@ angular.module('testManager', ['ionic', 'ngCordova', 'testManager.controllers', 
 
       $timeout(function () {
         $cordovaSplashscreen.hide();
-      },3000);
+      }, 3000);
 
     });
   })
@@ -35,6 +35,12 @@ angular.module('testManager', ['ionic', 'ngCordova', 'testManager.controllers', 
         abstract: true,
         templateUrl: 'templates/sidebar.html',
         controller: 'AppCtrl'
+      })
+
+      .state('login', {
+        url: '/login',
+        templateUrl: 'templates/login.html',
+        controller: 'LoginController'
       })
 
       .state('app.menu', {
@@ -100,5 +106,5 @@ angular.module('testManager', ['ionic', 'ngCordova', 'testManager.controllers', 
 
 
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/app/menu');
+    $urlRouterProvider.otherwise('/login');
   });

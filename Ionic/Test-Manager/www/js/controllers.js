@@ -1,6 +1,6 @@
 angular.module('testManager.controllers', [])
 
-  .controller('AppCtrl', function ($scope, $ionicModal, $timeout, $ionicHistory, $state) {
+  .controller('AppCtrl', function ($scope, $rootScope, $ionicModal, $timeout, $ionicHistory, $state, $localStorage, AuthFactory) {
 
     // With the new view caching in Ionic, Controllers are only called
     // when they are recreated or on app start, instead of every page change.
@@ -23,36 +23,13 @@ angular.module('testManager.controllers', [])
     };
 
 
-    // Form data for the login modal
-    $scope.loginData = {};
-
-    // Create the login modal that we will use later
-    $ionicModal.fromTemplateUrl('templates/login.html', {
-      scope: $scope
-    }).then(function (modal) {
-      $scope.modal = modal;
-    });
-
-    // Triggered in the login modal to close it
-    $scope.closeLogin = function () {
-      $scope.modal.hide();
+    $scope.logOut = function () {
+      AuthFactory.logout();
+      $scope.loggedIn = false;
+      $scope.username = '';
+      $state.go('login');
     };
 
-    // Open the login modal
-    $scope.login = function () {
-      $scope.modal.show();
-    };
-
-    // Perform the login action when the user submits the login form
-    $scope.doLogin = function () {
-      console.log('Doing login', $scope.loginData);
-
-      // Simulate a login delay. Remove this and replace with your login
-      // code if using a login system
-      $timeout(function () {
-        $scope.closeLogin();
-      }, 1000);
-    };
   })
 
   .controller('MenuController', ['$scope', 'menuFactory', 'favoriteFactory', 'baseURL', '$mdDialog', '$ionicPlatform', '$cordovaLocalNotification', '$cordovaToast', function ($scope, menuFactory, favoriteFactory, baseURL, $mdDialog, $ionicPlatform, $cordovaLocalNotification, $cordovaToast) {
@@ -63,42 +40,13 @@ angular.module('testManager.controllers', [])
       $scope.message = "Loading ...";
       $scope.cuestionarios = menuFactory.query(
         function (response) {
-          $scope.cuestionarios = response;
+          $scope.cuestionarios = response[0].cuestionarios;
           $scope.showMenu = true;
         },
         function (response) {
           $scope.message = "Error: " + response.status + " " + response.statusText;
         });
 
-
-      //Función que exporta un cuestionario a fichero en formato json
-      $scope.exportCuest = function (cuest, filename) {
-
-        filename = filename + '.json';
-        //Se resetea el atributo id , las respuestas y las estadisticas 
-        cuest.id = "";
-        cuest.tests = [];
-        cuest.stats = []
-        if (typeof cuest === 'object') {
-          cuest = JSON.stringify(cuest, undefined, 2);
-        }
-        var blob = new Blob([cuest], { type: 'text/json' });
-
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-          window.navigator.msSaveOrOpenBlob(blob, filename);
-        }
-        else {
-          var e = document.createEvent('MouseEvents'),
-            a = document.createElement('a');
-
-          a.download = filename;
-          a.href = window.URL.createObjectURL(blob);
-          a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
-          e.initEvent('click', true, false, window,
-            0, 0, 0, 0, 0, false, false, false, false, 0, null);
-          a.dispatchEvent(e);
-        }
-      };
 
       //Dialogo que muestra las opciones para cada cuestionario
       $scope.showOptions = function (test) {
@@ -113,7 +61,7 @@ angular.module('testManager.controllers', [])
           '  <md-dialog-content>' +
           '<md-content class="md-padding">' +
           '<div class="list">' +
-          '<a class="item item-icon-left"  href="#/app/stats/{{test.id}}" ng-click="closeDialog()">' +
+          '<a class="item item-icon-left"  href="#/app/stats/{{test._id}}" ng-click="closeDialog()">' +
           '<i class="icon ion-stats-bars"></i>' +
           'Estadisticas' +
           ' </a>' +
@@ -218,15 +166,22 @@ angular.module('testManager.controllers', [])
     $scope.message = "Loading ...";
     //Se obtiene el cuestionario 
     $scope.cuestionario =
-      menuFactory.get({ id: parseInt($stateParams.id, 10) })
+      menuFactory.get({ id: $stateParams.id })
         .$promise.then(
         function (response) {
           $scope.showCuestionario = true;
-          $scope.cuestionario = response;
+          $scope.cuestionario = response.cuestionarios[0];
           //Se crea un objeto que contendra la respuestas
           $scope.answer = {};
-          //Se añade un atributo con las preguntas al objeto de respuestas
-          $scope.answer.questions = $scope.cuestionario.questions;
+          //Se crea un array dentro del objeto respuesta que contendrá la respuesta a cada pregunta
+          $scope.answer.questions = [];
+          //Se añade un objeto al array $scope.answer.questions donde se guarda las respuestas correctas y el texto de la pregunta por cada pregunta del cuestionario 
+          for (var i = 0; i < $scope.cuestionario.questions.length; i++) {
+            var obj = {};
+            obj.rcorrect = $scope.cuestionario.questions[i].rcorrect;
+            obj.pregunta = $scope.cuestionario.questions[i].pregunta;
+            $scope.answer.questions.push(obj)
+          }
           $scope.selected = [];
           //Por cada pregunta del cuestionaro se guarda un array de respuestas
           for (var i = 0; i < $scope.cuestionario.questions.length; i++) {
@@ -252,53 +207,58 @@ angular.module('testManager.controllers', [])
         }
         );
 
+    //Función que calcula la calificación para preguntas de tipo multiple
+    function multiple(j, respuestas) {
+      var correct = 0;
+      for (var z = 0; z < respuestas.length; z++) {
+        if (($scope.answer.questions[j].rcorrect.includes(respuestas[z]) && $scope.answer.questions[j].r.includes(respuestas[z])) || (!$scope.answer.questions[j].rcorrect.includes(respuestas[z]) && !$scope.answer.questions[j].r.includes(respuestas[z])))
+          correct++;
+      }
+      $scope.answer.questions[j].estado = correct / respuestas.length;
+      if ($scope.answer.questions[j].estado == 0) {
+        $scope.incorrectas++;
+      } else if ($scope.answer.questions[j].estado < 1 && $scope.answer.questions[j].estado > 0) {
+        $scope.parciales = $scope.parciales + $scope.answer.questions[j].estado;
+        $scope.parcial++;
+      } else if ($scope.answer.questions[j].estado == 1) {
+        $scope.correctas++;
+      }
+
+    }
+
     //Se obtiene las respuestas guardadas
-
-
     $scope.submitAnswer = function (ev) {
       //Se guarda la fecha en la que se realiza el cuestionario
       $scope.answer.date = $filter('date')(new Date(), 'shortDate');
-      //Se guarda el array de respuestas contestadas en cada pregunta.
+      //Si la pregunta es de tipo múltiple se guarda el array de respuestas contestadas en cada pregunta.
       for (var i = 0; i < $scope.selected.length; i++) {
-        $scope.answer.questions[i].r = $scope.selected[i];
+        if ($scope.cuestionario.questions[i].tipo == "multiple")
+          $scope.answer.questions[i].r = $scope.selected[i];
       }
+
       $scope.correctas = 0;
       $scope.incorrectas = 0;
       $scope.parcial = 0;
-      var incluida = 0;
-      var parciales = 0;
+      var respuestas = [];
+      $scope.parciales = 0;
       //Se recorre el array de preguntas 
-      for (var i = 0; i < $scope.answer.questions.length; i++) {
-        //Se recorre el array de respuestas dadas y se comprueba que cada elemento de dicho array esté en el array de respuestas correctas
-        for (var j = 0; j < $scope.answer.questions[i].r.length; j++) {
-          if ($scope.answer.questions[i].rcorrect.includes($scope.answer.questions[i].r[j])) {
-            incluida++;
-          }
-        }
-        //Si la longuitud del array de respuestas correctas corresponde con el numero de respuestas incluidas y es igual la longuitud del array de respuestas dada, la respuesta es correcta
-        if (incluida == $scope.answer.questions[i].rcorrect.length && $scope.answer.questions[i].r.length == $scope.answer.questions[i].rcorrect.length) {
+      for (var j = 0; j < $scope.answer.questions.length; j++) {
+        //Si la pregunta es de tipo unica y la respuesta dada corresponde con la respuesta correcta
+        if ($scope.cuestionario.questions[j].tipo == "unica" && $scope.answer.questions[j].rcorrect == $scope.answer.questions[j].r) {
           $scope.correctas++;
           //Determina que la respuesta es correcta
-          $scope.answer.questions[i].estado = 1;
-
-        } else {
-          //Si no hay ninguna respuesta correcta 
-          if (incluida == 0) {
-            $scope.incorrectas++;
-            //Determina que la respuesta es incorrecta
-            $scope.answer.questions[i].estado = 0;
-          }
-          //Si hay alguna respuesta correcta  
-          else {
-            //Se calcula la calificación parcial
-            $scope.answer.questions[i].estado = (4 - Math.abs($scope.answer.questions[i].rcorrect.length - $scope.answer.questions[i].r.length)) / 4 / $scope.answer.questions.length;
-            parciales = parciales + $scope.answer.questions[i].estado;
-            //Determina que la respuesta es parcialmente correcta
-            $scope.parcial++;
-          }
+          $scope.answer.questions[j].estado = 1;
         }
-        incluida = 0;
-
+        //Si la pregunta es de tipo múltiple y la respuesta no es vacía se calcula la calificación parcial
+        else if ($scope.cuestionario.questions[j].tipo == "multiple" && $scope.answer.questions[j].r.length != 0) {
+          respuestas.push($scope.cuestionario.questions[j].r1, $scope.cuestionario.questions[j].r2, $scope.cuestionario.questions[j].r3, $scope.cuestionario.questions[j].r4);
+          multiple(j, respuestas);
+        } else {
+          $scope.incorrectas++;
+          //Determina que la respuesta es incorrecta
+          $scope.answer.questions[j].estado = 0;
+        }
+        respuestas = [];
       }
 
       //Se guarda las respuestas correctas 
@@ -308,11 +268,13 @@ angular.module('testManager.controllers', [])
       //Se guarda las respuestas parcialmente correctas
       $scope.answer.parcial = $scope.parcial;
       //Se guarda la calificación obtenida
-      $scope.answer.cal = parseInt($filter('number')((($scope.answer.correctas / $scope.answer.questions.length) + parciales) * 100, 2), 10);
+      $scope.answer.cal = (($scope.answer.correctas + $scope.parciales) / $scope.answer.questions.length) * 100;
 
       $scope.cuestionario.tests.push($scope.answer);
       //Se guarda la respuesta al cuestionario en el array de respuestas a cuestionarios
-      menuFactory.update({ id: $scope.cuestionario.id }, $scope.cuestionario);
+      menuFactory.update({
+        id: $stateParams.id
+      }, $scope.cuestionario);
 
       $mdDialog.show({
         clickOutsideToClose: false,
@@ -405,7 +367,7 @@ angular.module('testManager.controllers', [])
         $scope.stat.stats.data = [[$scope.respuestas]];
         $scope.stat.stats.colors = [colors[Math.floor(Math.random() * colors.length)]];
         $scope.cuestionario.stats.push($scope.stat);
-        menuFactory.update({ id: $scope.cuestionario.id }, $scope.cuestionario);
+        menuFactory.update({ id: $stateParams.id }, $scope.cuestionario);
       } else {
         result[0].stats.labels.push($scope.fecha);
         result[0].stats.data[0].push($scope.respuestas);
@@ -446,7 +408,7 @@ angular.module('testManager.controllers', [])
     $scope.message = "Loading ...";
     $scope.cuestionarios = menuFactory.query(
       function (response) {
-        $scope.cuestionarios = response;
+        $scope.cuestionarios = response[0].cuestionarios;
         $scope.showMaker = true;
       },
       function (response) {
@@ -480,6 +442,7 @@ angular.module('testManager.controllers', [])
         title: "",
         pregunta: "",
         image: "img/libro.jpg",
+        tipo: "",
         r1: "",
         r2: "",
         r3: "",
@@ -537,6 +500,7 @@ angular.module('testManager.controllers', [])
           title: "",
           pregunta: "",
           image: "img/libro.jpg",
+          tipo: "",
           r1: "",
           r2: "",
           r3: "",
@@ -597,10 +561,10 @@ angular.module('testManager.controllers', [])
       $scope.showStatInd = false;
       $scope.message = "Loading ...";
       $scope.cuestionario =
-        menuFactory.get({ id: parseInt($stateParams.id, 10) })
+        menuFactory.get({ id: $stateParams.id })
           .$promise.then(
           function (response) {
-            $scope.cuestionario = response;
+            $scope.cuestionario = response.cuestionarios[0];
             $scope.showStatInd = true;
             //Dialogo que aparece cuando no hay cuestionarios completados
             if ($scope.cuestionario.stats.length == 0) {
@@ -679,7 +643,7 @@ angular.module('testManager.controllers', [])
         menuFactory.query()
           .$promise.then(
           function (response) {
-            $scope.cuestionario = response;
+            $scope.cuestionario = response[0].cuestionarios;
             $scope.showStat = true;
 
           },
@@ -773,7 +737,7 @@ angular.module('testManager.controllers', [])
       $scope.baseURL = baseURL;
       $scope.favoritos = favoriteFactory.query(
         function (response) {
-          $scope.favoritos = response;
+          $scope.favoritos = response[0].favoritos;
           $scope.showMenu = true;
         },
         function (response) {
@@ -822,6 +786,73 @@ angular.module('testManager.controllers', [])
         }
         favoriteFactory.remove(test);
       }
+    });
+
+  }])
+
+  .controller('LoginController', ['$state', '$scope', '$rootScope', '$ionicModal', '$localStorage', 'AuthFactory', function ($state, $scope, $rootScope, $ionicModal, $localStorage, AuthFactory) {
+
+
+    /** Login */
+
+    $scope.loginData = $localStorage.getObject('userinfo', '{}');
+
+    $scope.loggedIn = false;
+
+    if (AuthFactory.isAuthenticated()) {
+      $scope.loggedIn = true;
+      $scope.username = AuthFactory.getUsername();
+    }
+
+    // Perform the login action when the user submits the login form
+    $scope.doLogin = function () {
+      console.log('Doing login', $scope.loginData);
+      $localStorage.storeObject('userinfo', $scope.loginData);
+
+      AuthFactory.login($scope.loginData);
+    };
+
+
+    $rootScope.$on('login:Successful', function () {
+      $scope.loggedIn = AuthFactory.isAuthenticated();
+      $scope.username = AuthFactory.getUsername();
+      $state.go('app.menu');
+    });
+
+    /** Register */
+
+    $scope.registration = {};
+
+    $ionicModal.fromTemplateUrl('templates/register.html', {
+      scope: $scope
+    }).then(function (modal) {
+      $scope.registerform = modal;
+    });
+
+    // Open the login modal
+    $scope.register = function () {
+      $scope.registerform.show();
+    };
+
+    // Triggered in the login modal to close it
+    $scope.closeRegister = function () {
+      $scope.registerform.hide();
+    };
+    $scope.doRegister = function () {
+      console.log('Doing registration', $scope.registration);
+      $scope.loginData.username = $scope.registration.username;
+      $scope.loginData.password = $scope.registration.password;
+
+      AuthFactory.register($scope.registration);
+
+      $scope.closeRegister();
+
+    };
+
+    $rootScope.$on('registration:Successful', function () {
+      $scope.loggedIn = AuthFactory.isAuthenticated();
+      $scope.username = AuthFactory.getUsername();
+      $localStorage.storeObject('userinfo', $scope.loginData);
     });
 
   }]);
