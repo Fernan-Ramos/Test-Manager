@@ -30,9 +30,68 @@ angular.module('testManagerApp')
 
         //Función que añade un cuestionario a la sección de favoritos
         $scope.addFavorite = function (test) {
-            test.tests = []
+            test.tests = [];
             test.stats = [];
-            favoriteFactory.save(test);
+            //Se comprueba si existe ya ese favorito de dicho cuestionario
+            var isFav = $scope.favoritos.some(function (element) {
+                return element._id == test._id;
+            });
+            if (!isFav) {
+                favoriteFactory.save(test);
+                $mdDialog.show({
+                    clickOutsideToClose: true,
+                    scope: $scope,
+                    locals: {
+                        test: test
+                    },
+                    preserveScope: true,
+                    template: '<md-dialog aria-label="List dialog">' +
+                    '  <md-dialog-content>' +
+                    '<md-content class="md-padding">' +
+                    ' <h5 class="md-title">Añadido favorito <em>{{test.title}}</em></h5>' +
+                    '</md-content>      ' +
+                    '  </md-dialog-content>' +
+                    '  <md-dialog-actions>' +
+                    '    <md-button ui-sref="app.favorites" ng-click="closeDialog()" class="md-primary">' +
+                    '      Favoritos' +
+                    '    </md-button>' +
+                    '  </md-dialog-actions>' +
+                    '</md-dialog>',
+                    controller: function DialogController($scope, $mdDialog, test) {
+                        $scope.test = test;
+                        $scope.closeDialog = function () {
+                            $mdDialog.hide();
+                        }
+                    }
+                });
+            } else {
+                $mdDialog.show({
+                    clickOutsideToClose: true,
+                    scope: $scope,
+                    locals: {
+                        test: test
+                    },
+                    preserveScope: true,
+                    template: '<md-dialog aria-label="List dialog">' +
+                    '  <md-dialog-content>' +
+                    '<md-content class="md-padding">' +
+                    ' <h5 class="md-title">Ya existe el favorito <em>{{test.title}}</em></h5>' +
+                    '</md-content>      ' +
+                    '  </md-dialog-content>' +
+                    '  <md-dialog-actions>' +
+                    '    <md-button ui-sref="app.favorites" ng-click="closeDialog()" class="md-primary">' +
+                    '      Favoritos' +
+                    '    </md-button>' +
+                    '  </md-dialog-actions>' +
+                    '</md-dialog>',
+                    controller: function DialogController($scope, $mdDialog, test) {
+                        $scope.test = test;
+                        $scope.closeDialog = function () {
+                            $mdDialog.hide();
+                        }
+                    }
+                });
+            }
         }
 
         //Función que permite borrar un cuestionario

@@ -96,29 +96,36 @@ angular.module('testManager.controllers', [])
       };
 
       $scope.addFavorite = function (test) {
-        test.tests = []
+        test.tests = [];
         test.stats = [];
-        favoriteFactory.save(test);
-        $ionicPlatform.ready(function () {
-          $cordovaLocalNotification.schedule({
-            id: 1,
-            title: "Añadio Favorito",
-            text: test.title
-          }).then(function () {
-            console.log('Añadido favorito ' + test.title);
-          },
-            function () {
-              console.log('Failed to add Notification ');
-            });
-
-          $cordovaToast
-            .show('Añadido favorito ' + test.title, 'long', 'center')
-            .then(function (success) {
-              // success
-            }, function (error) {
-              // error
-            });
+        //Se comprueba si existe ya ese favorito de dicho cuestionario
+        var isFav = $scope.favoritos.some(function (element) {
+          return element._id == test._id;
         });
+        if (!isFav) {
+          favoriteFactory.save(test);
+          $ionicPlatform.ready(function () {
+            $cordovaLocalNotification.schedule({
+              id: 1,
+              title: "Añadio Favorito",
+              text: test.title
+            }).then(function () {
+              console.log('Añadido favorito ' + test.title);
+            },
+              function () {
+                console.log('Failed to add Notification ');
+              });
+
+            $cordovaToast
+              .show('Añadido favorito ' + test.title, 'long', 'center')
+              .then(function (success) {
+                // success
+              }, function (error) {
+                // error
+              });
+          });
+        }
+
       }
 
       //Función que permite borrar un cuestionario
