@@ -11,11 +11,9 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="#about">About</a>
+                        <a href="#!features">Caracteristicas</a>
                     </li>
-                    <li>
-                        <a href="#app">App</a>
-                    </li>
+
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a ng-click=openRegister()><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
@@ -24,31 +22,131 @@
         </div>
     </nav>
 
-    <header class="log">
-        <!-- Main component for a primary marketing message or call to action -->
+
+    <header>
         <div class="container">
-            <div class="row row-header">
-                <div class="col-xs-4 col-xs-offset-4">
-                    <form ng-submit="doLogin()">
-                        <div class="form-group">
-                            <label class="sr-only" for="username">Username</label>
-                            <input type="text" class="form-control input-sm" id="username" placeholder="Username" ng-model="loginData.username">
+            <div class="row">
+                <div class="col-sm-7">
+                    <div class="header-content">
+                        <div class="header-content-inner">
+                            <h1>Test Manager es una plataforma diseñada para la evaluación de cuestionarios</h1>
+                            <a href="#features" class="boton boton-outline boton-xl page-scroll">Empieza ahora </a>
                         </div>
-                        <div class="form-group">
-                            <label class="sr-only" for="password">Password</label>
-                            <input type="password" class="form-control input-sm" id="password" placeholder="Password" ng-model="loginData.password">
-                        </div>
-                        <hr>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-lg btn-success btn-block">Sign in</button>
-                        </div>
-                        <div class="checkbox">
-                            <label>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="header-content">
+                        <div class="header-content-inner">
+                            <form ng-submit="doLogin()">
+                                <div class="form-group">
+                                    <label class="sr-only" for="username">Username</label>
+                                    <input type="text" class="form-control input-sm" id="username" placeholder="Username" ng-model="loginData.username">
+                                </div>
+                                <div class="form-group">
+                                    <label class="sr-only" for="password">Password</label>
+                                    <input type="password" class="form-control input-sm" id="password" placeholder="Password" ng-model="loginData.password">
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-lg btn-success btn-block">Sign in</button>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
                             <input type="checkbox" ng-model="rememberMe"> Remember me
                         </label>
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </header>
+
+    <section id="features" class="features">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="section-heading">
+                        <h2>Diviértete Aprendiendo</h2>
+                        <md-button md-colors="{background: 'teal'}" class="md-raised md-accent" ng-click=openRegister()>Unete a Test Manager</md-button>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="device-container">
+                        <div class="device-mockup imac imac">
+                            <div class="device">
+                                <div class="screen">
+                                    <!-- Demo image for screen mockup, you can put an image here, some HTML, an animation, video, or anything else! -->
+                                    <img src="img/stas.png" class="img-responsive" alt=""> </div>
+                                <div class="button">
+                                    <!-- You can hook the "home button" to some JavaScript events or just remove it -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="feature-item">
+                                    <i class="icon-graph text-primary"></i>
+                                    <h3>Estadisticas detalladas</h3>
+                                    <p class="text-muted">Compueba tu evolución a través de la sección de Estadisticas!</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-item">
+                                    <i class="icon-graduation text-primary"></i>
+                                    <h3>Aprendizaje</h3>
+                                    <p class="text-muted">Aumenta tu aprendizaje gracias a la retroalimentación!</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="feature-item">
+                                    <i class="icon-pencil text-primary"></i>
+                                    <h3>Crea tus propios cuestionarios</h3>
+                                    <p class="text-muted">Puedes crear cuestionarios de una forma muy sencilla!</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-item">
+                                    <i class="icon-arrow-down-circle text-primary"></i>
+                                    <h3>Exporta cuestionarios</h3>
+                                    <p class="text-muted">Guarda tus cuestionarios para poder compartirlos con quien quieras!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="cta-content">
+            <div class="container">
+                <h2>Stop waiting.<br>Start building.</h2>
+            </div>
+        </div>
+        <div class="overlay"></div>
+    </section>
+</body>
+
+<footer class="text-center">
+    <div class="footer-below">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    Copyright &copy; Test Manager 2017
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

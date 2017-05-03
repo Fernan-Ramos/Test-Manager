@@ -48,7 +48,7 @@ angular.module('testManagerApp')
                 '</md-content>      ' +
                 '  </md-dialog-content>' +
                 '  <md-dialog-actions>' +
-                '    <md-button ui-sref="app.menu" ng-click="remove()" class="md-primary">' +
+                '    <md-button ui-sref="app" ng-click="remove()" class="md-primary">' +
                 '      Eliminar' +
                 '    </md-button>' +
                 '    <md-button  ng-click="closeDialog()" class="md-primary">' +
@@ -247,7 +247,7 @@ angular.module('testManagerApp')
                 '</md-tabs>' +
                 '  </md-dialog-content>' +
                 '  <md-dialog-actions>' +
-                '    <md-button ui-sref="app.menu" ng-click="closeDialog()" class="md-primary">' +
+                '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
                 '      Menu' +
                 '    </md-button>' +
                 '    <md-button ui-sref="app.statDetails({id: cuestionario._id})" ng-click="closeDialog()" class="md-primary">' +
@@ -499,7 +499,7 @@ angular.module('testManagerApp')
                             '</md-content>      ' +
                             '  </md-dialog-content>' +
                             '  <md-dialog-actions>' +
-                            '    <md-button ui-sref="app.menu" ng-click="closeDialog()" class="md-primary">' +
+                            '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
                             '      Menu' +
                             '    </md-button>' +
                             '  </md-dialog-actions>' +
@@ -600,7 +600,7 @@ angular.module('testManagerApp')
                     '</md-content>      ' +
                     '  </md-dialog-content>' +
                     '  <md-dialog-actions>' +
-                    '    <md-button ui-sref="app.menu" ng-click="closeDialog()" class="md-primary">' +
+                    '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
                     '      Menu' +
                     '    </md-button>' +
                     '  </md-dialog-actions>' +
@@ -721,7 +721,7 @@ angular.module('testManagerApp')
             AuthFactory.logout();
             $scope.loggedIn = false;
             $scope.username = '';
-            $state.go('app');
+            $state.go('login');
         };
 
         $rootScope.$on('login:Successful', function () {
@@ -762,7 +762,7 @@ angular.module('testManagerApp')
         $rootScope.$on('login:Successful', function () {
             $scope.loggedIn = AuthFactory.isAuthenticated();
             $scope.username = AuthFactory.getUsername();
-            $state.go('app.menu');
+            $state.go('app');
         });
 
         $rootScope.$on('registration:Successful', function () {

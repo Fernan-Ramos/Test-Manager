@@ -12,8 +12,8 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
                         controller: 'HeaderController'
                     },
                     'content': {
-                        templateUrl: 'views/home.html',
-                        controller: 'LoginController'
+                        templateUrl: 'views/menu.html',
+                        controller: 'MenuController'
                     },
                     'footer': {
                         templateUrl: 'views/footer.html',
@@ -24,12 +24,12 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
 
 
             //ruta para menu
-            .state('app.menu', {
-                url: 'menu',
+            .state('login', {
+                url: '/login',
                 views: {
                     'content@': {
-                        templateUrl: 'views/menu.html',
-                        controller: 'MenuController'
+                        templateUrl: 'views/home.html',
+                        controller: 'LoginController'
                     }
                 }
             })
@@ -92,6 +92,6 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             });
 
 
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/login');
 
     });
