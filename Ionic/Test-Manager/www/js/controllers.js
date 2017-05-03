@@ -775,7 +775,7 @@ angular.module('testManager.controllers', [])
           '  <md-dialog-content>' +
           '<md-content class="md-padding">' +
           '<div class="list">' +
-          '<a class="item item-icon-left"  href="#/app/stats/{{test.id}}" ng-click="closeDialog()">' +
+          '<a class="item item-icon-left"  href="#/app/stats/{{test._id}}" ng-click="closeDialog()">' +
           '<i class="icon ion-stats-bars"></i>' +
           'Estadisticas' +
           ' </a>' +
