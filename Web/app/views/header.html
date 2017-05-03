@@ -10,16 +10,16 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li>
-                    <a ui-sref="app">Quizs</a>
+                    <a ui-sref="app">Cuestionarios</a>
                 </li>
                 <li>
                     <a ui-sref="app.maker">Quiz Maker</a>
                 </li>
                 <li>
-                    <a ui-sref="app.stats">Stats</a>
+                    <a ui-sref="app.stats">Estadisticas</a>
                 </li>
                 <li>
-                    <a ui-sref="app.favorites">Favorites</a>
+                    <a ui-sref="app.favorites">Favoritos</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -28,19 +28,9 @@
                 </li>
                 <li ng-if="loggedIn">
                     <a ng-click="logOut()">
-                        <span class="glyphicon glyphicon-log-in"></span> Logout</a>
+                        <span class="glyphicon glyphicon-log-in"></span> Salir</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
-<header class="jumbotron">
-    <div class="container">
-        <div class="row row-header">
-            <div class="col-xs-12 col-sm-8">
-                <h1 id="homeHeading">TestManager</h1>
-                <hr>
-            </div>
-        </div>
-    </div>
-</header>

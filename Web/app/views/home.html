@@ -16,7 +16,7 @@
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a ng-click=openRegister()><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    <li><a ng-click=openRegister()><span class="glyphicon glyphicon-user"></span> Regístrate</a></li>
                 </ul>
             </div>
         </div>
@@ -39,20 +39,20 @@
                         <div class="header-content-inner">
                             <form ng-submit="doLogin()">
                                 <div class="form-group">
-                                    <label class="sr-only" for="username">Username</label>
-                                    <input type="text" class="form-control input-sm" id="username" placeholder="Username" ng-model="loginData.username">
+                                    <label class="sr-only" for="username">Usuario</label>
+                                    <input type="text" class="form-control input-sm" id="username" placeholder="Usuario" ng-model="loginData.username">
                                 </div>
                                 <div class="form-group">
-                                    <label class="sr-only" for="password">Password</label>
-                                    <input type="password" class="form-control input-sm" id="password" placeholder="Password" ng-model="loginData.password">
+                                    <label class="sr-only" for="password">Contraseña</label>
+                                    <input type="password" class="form-control input-sm" id="password" placeholder="Contraseña" ng-model="loginData.password">
                                 </div>
                                 <hr>
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-lg btn-success btn-block">Sign in</button>
+                                    <button type="submit" class="btn btn-lg btn-success btn-block">Entrar</button>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                            <input type="checkbox" ng-model="rememberMe"> Remember me
+                            <input type="checkbox" ng-model="rememberMe">Recuerdame
                         </label>
                                 </div>
                             </form>
@@ -69,7 +69,7 @@
                 <div class="col-lg-12 text-center">
                     <div class="section-heading">
                         <h2>Diviértete Aprendiendo</h2>
-                        <md-button md-colors="{background: 'teal'}" class="md-raised md-accent" ng-click=openRegister()>Unete a Test Manager</md-button>
+                        <md-button md-colors="{background: 'teal'}" class="md-raised md-accent" ng-click=openRegister()>Únete a Test Manager</md-button>
                         <hr>
                     </div>
                 </div>

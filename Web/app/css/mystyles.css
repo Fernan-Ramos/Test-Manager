@@ -5,9 +5,13 @@
   width: 100%;
 }
 
+body{
+  padding-top: 30px;
+}
+
 .row-content {
   margin: 0px auto;
-  padding: 50px 0px;
+  padding: 50px 0px 300px;
   border-bottom: 1px ridge;
   min-height: 400px;
 }
@@ -89,20 +93,6 @@ header .device-container .screen img {
   header .header-content .header-content-inner h1 {
     font-size: 50px;
   }
-}
-
-.jumbotron {
-  margin: 0px auto;
-  padding: 70px 30px;
-  position: relative;
-  width: 100%;
-  min-height: auto;
-  background-size: cover;
-  color: lightgray;
-  background-color: lightgray;
-  background-image: url('../img/web.jpg');
-  background-position: center;
-  text-align: center;
 }
 
 .container-fluid {
