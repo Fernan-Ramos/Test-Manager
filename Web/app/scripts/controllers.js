@@ -38,6 +38,7 @@ angular.module('testManagerApp')
             });
             if (!isFav) {
                 favoriteFactory.save(test);
+                $scope.favoritos.push(test);
                 $mdDialog.show({
                     clickOutsideToClose: true,
                     scope: $scope,
@@ -48,11 +49,11 @@ angular.module('testManagerApp')
                     template: '<md-dialog aria-label="List dialog">' +
                     '  <md-dialog-content>' +
                     '<md-content class="md-padding">' +
-                    ' <h5 class="md-title">Añadido favorito <em>{{test.title}}</em></h5>' +
+                    ' <h5 class="md-title" translate="ADDFAVORITE">Añadido favorito</h5> <em>{{test.title}}</em>' +
                     '</md-content>      ' +
                     '  </md-dialog-content>' +
                     '  <md-dialog-actions>' +
-                    '    <md-button ui-sref="app.favorites" ng-click="closeDialog()" class="md-primary">' +
+                    '    <md-button translate="FAVORITEBUTTON" ui-sref="app.favorites" ng-click="closeDialog()" class="md-primary">' +
                     '      Favoritos' +
                     '    </md-button>' +
                     '  </md-dialog-actions>' +
@@ -75,11 +76,11 @@ angular.module('testManagerApp')
                     template: '<md-dialog aria-label="List dialog">' +
                     '  <md-dialog-content>' +
                     '<md-content class="md-padding">' +
-                    ' <h5 class="md-title">Ya existe el favorito <em>{{test.title}}</em></h5>' +
+                    ' <h5  translate="EXISTFAVORITE" class="md-title">Ya existe el favorito</h5> <em>{{test.title}}</em>' +
                     '</md-content>      ' +
                     '  </md-dialog-content>' +
                     '  <md-dialog-actions>' +
-                    '    <md-button ui-sref="app.favorites" ng-click="closeDialog()" class="md-primary">' +
+                    '    <md-button translate="FAVORITEBUTTON" ui-sref="app.favorites" ng-click="closeDialog()" class="md-primary">' +
                     '      Favoritos' +
                     '    </md-button>' +
                     '  </md-dialog-actions>' +
@@ -103,14 +104,14 @@ angular.module('testManagerApp')
                 template: '<md-dialog aria-label="List dialog">' +
                 '  <md-dialog-content>' +
                 '<md-content class="md-padding">' +
-                ' <h5 class="md-title">Estas seguro de eliminar este cuestionario</h5>' +
+                ' <h5 translate="REMOVEQUESTION" class="md-title">Estas seguro de eliminar este cuestionario</h5>' +
                 '</md-content>      ' +
                 '  </md-dialog-content>' +
                 '  <md-dialog-actions>' +
-                '    <md-button ui-sref="app" ng-click="remove()" class="md-primary">' +
+                '    <md-button translate="REMOVEQUIZ" ui-sref="app" ng-click="remove()" class="md-primary">' +
                 '      Eliminar' +
                 '    </md-button>' +
-                '    <md-button  ng-click="closeDialog()" class="md-primary">' +
+                '    <md-button translate="CANCELREMOVE" ng-click="closeDialog()" class="md-primary">' +
                 '      Cancelar' +
                 '    </md-button>' +
                 '  </md-dialog-actions>' +
@@ -279,7 +280,7 @@ angular.module('testManagerApp')
                 ' </md-toolbar>' +
                 '  <md-dialog-content>' +
                 '<md-tabs md-dynamic-height md-border-bottom>' +
-                '<md-tab label="resultados">' +
+                '<md-tab label="{{\'RESULTTAB\' | translate}}">' +
                 '<md-content class="md-padding">' +
                 '<h5 class="md-display-1" style="text-align:center"><em>{{cuestionario.tests[cuestionario.tests.length-1].cal | number:2}}%</em></h5>' +
                 '</md-content>' +
@@ -287,19 +288,19 @@ angular.module('testManagerApp')
                 '<canvas id="doughnut" class="chart chart-doughnut" chart-data="data" chart-labels="labels" chart-colors="colors">' +
                 '</md-content>' +
                 '</md-tab>' +
-                '<md-tab label="sumario">' +
+                '<md-tab label="{{\'SUMMARYTAB\' | translate}}">' +
                 ' <md-content class="md-padding" ng-repeat="preg in cuestionario.tests[cuestionario.tests.length-1].questions  track by $index">' +
                 '<div ng-if="preg.estado==1" class="bs-callout bs-callout-success">' +
-                '<h4><em>Pregunta {{$index+1}} : {{preg.pregunta}}</em></h4>' +
-                '<p>Muy bien, <strong class="text-success">{{preg.rcorrect}}</strong> es la respuesta correcta</p>' +
+                '<h4><em>{{\'QUESTION\'| translate}} {{ $index+1 }} : {{preg.pregunta}}</em></h4>' +
+                '<p translate>{{\'CORRECT\'}} </p> <strong class="text-success">{{preg.rcorrect}}</strong> ' +
                 '</div>' +
                 '<div ng-if="preg.estado==0" class="bs-callout bs-callout-danger">' +
-                '<h4><em>Pregunta {{$index+1}} : {{preg.pregunta}}</em></h4>' +
-                '<p>Vaya! <strong class="text-danger">{{preg.r}} </strong> no es la respuesta correcta.' +
+                '<h4><em>{{\'QUESTION\'| translate}} {{ $index+1 }} : {{preg.pregunta}}</em></h4>' +
+                '<p translate>{{\'INCORRECT\'}} </p> <strong class="text-danger">{{preg.r}} </strong> ' +
                 ' </div>' +
                 '<div ng-if="preg.estado>0 && preg.estado<1 " class="bs-callout bs-callout-warning">' +
-                '<h4><em>Pregunta {{$index+1}} : {{preg.pregunta}}</em></h4>' +
-                '<p>La respuesta <strong class="text-warning">{{preg.r}} </strong> es correcta parcialmente.' +
+                '<h4><em>{{\'QUESTION\'| translate}} {{ $index+1 }} : {{preg.pregunta}}</em></h4>' +
+                '<p translate>{{\'PARCIAL1\'}}</p> <strong class="text-warning">{{preg.r}} </strong> <p translate>{{\'PARCIAL2\'}}</p>' +
                 ' </div>' +
                 '</md-content>' +
                 '</md-tab>' +
@@ -309,7 +310,7 @@ angular.module('testManagerApp')
                 '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
                 '      Menu' +
                 '    </md-button>' +
-                '    <md-button ui-sref="app.statDetails({id: cuestionario._id})" ng-click="closeDialog()" class="md-primary">' +
+                '    <md-button translate="STAT" ui-sref="app.statDetails({id: cuestionario._id})" ng-click="closeDialog()" class="md-primary">' +
                 '      Estadisticas' +
                 '    </md-button>' +
                 '  </md-dialog-actions>' +
@@ -419,10 +420,7 @@ angular.module('testManagerApp')
         $scope.getSelectedQuest = function () {
             if ($scope.selectedQuest !== undefined) {
                 $scope.number = $scope.selectedQuest;
-                return "Nº de preguntas: " + $scope.selectedQuest;
-
-            } else {
-                return "Por favor selecciona un número";
+                return $scope.selectedQuest;
             }
         };
 
@@ -511,12 +509,12 @@ angular.module('testManagerApp')
                         template: '<md-dialog aria-label="File invalid">' +
                         '  <md-dialog-content>' +
                         '<md-content class="md-padding">' +
-                        ' <h5 class="md-title">Archivo no válido</h5>' +
-                        ' <p class="md-textContent">Debes seleccionar un archivo en formato json</p>' +
+                        ' <h5 translate="FILENOTVALID" class="md-title">Archivo no válido</h5>' +
+                        ' <p translate="FILEREC" class="md-textContent">Debes seleccionar un archivo en formato json</p>' +
                         '</md-content>      ' +
                         '  </md-dialog-content>' +
                         '  <md-dialog-actions>' +
-                        '    <md-button ng-click="closeDialog()" class="md-primary">' +
+                        '    <md-button translate="CLOSE" ng-click="closeDialog()" class="md-primary">' +
                         '      Cerrar' +
                         '    </md-button>' +
                         '  </md-dialog-actions>' +
@@ -621,9 +619,6 @@ angular.module('testManagerApp')
                     position: 'right'
                 }
                 ]
-            },
-            legend: {
-                display: true
             }
         };
 
@@ -703,10 +698,8 @@ angular.module('testManagerApp')
                     position: 'right'
                 }
                 ]
-            },
-            legend: {
-                display: true
             }
+
         };
 
         //Función que ordena los cuestionarios por titulo , por calificación o por fecha .
@@ -755,11 +748,13 @@ angular.module('testManagerApp')
 
 
     }])
-    .controller('HeaderController', ['$scope', '$state', '$rootScope', 'ngDialog', 'AuthFactory', function ($scope, $state, $rootScope, ngDialog, AuthFactory) {
+    .controller('HeaderController', ['$scope', '$translate', '$state', '$rootScope', 'ngDialog', 'AuthFactory', function ($scope, $translate, $state, $rootScope, ngDialog, AuthFactory) {
 
         $scope.loggedIn = false;
         $scope.username = '';
-
+        $scope.changeLanguage = function (key) {
+            $translate.use(key);
+        };
         if (AuthFactory.isAuthenticated()) {
             $scope.loggedIn = true;
             $scope.username = AuthFactory.getUsername();
@@ -799,9 +794,19 @@ angular.module('testManagerApp')
 
     }])
 
-    .controller('LoginController', ['$state', '$scope', 'ngDialog', '$rootScope', '$localStorage', 'AuthFactory', function ($state, $scope, ngDialog, $rootScope, $localStorage, AuthFactory) {
+    .controller('LoginController', ['$window', '$state', '$scope', '$translate', 'ngDialog', '$rootScope', '$localStorage', 'AuthFactory', function ($window, $state, $scope, $translate, ngDialog, $rootScope, $localStorage, AuthFactory) {
+
+        //Se detecta el lenguaje del navegador
+        var language = $window.navigator.language || $window.navigator.userLanguage;
+        //Se traduce al lenguaje predefinido en el navegador
+        if (language == 'es' || language == 'en')
+            $translate.use(language);
+
         $scope.loggedIn = false;
         $scope.username = '';
+        $scope.changeLanguage = function (key) {
+            $translate.use(key);
+        };
 
         if (AuthFactory.isAuthenticated()) {
             $scope.loggedIn = true;

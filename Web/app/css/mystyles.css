@@ -276,30 +276,6 @@ section.cta .overlay {
   left: 0;
 }
 
-
-.boton-outline {
-  color: white;
-  border-color: white;
-  border: 1px solid;
-}
-.boton-outline:hover,
-.boton-outline:focus,
-.bbotontn-outline:active,
-.boton-outline.active {
-  color: white;
-  background-color: teal;
-  border-color:teal;
-}
-.boton {
-  font-family: 'Lato', 'Helvetica', 'Arial', 'sans-serif';
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  border-radius: 300px;
-}
-.boton-xl {
-  padding: 15px 45px;
-  font-size: 11px;
-}
 footer {
   color: white;
 }

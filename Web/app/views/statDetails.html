@@ -5,9 +5,9 @@
         </div>
         <div class="col-lg-6 col-sm-12" ng-if="showStatInd">
             <div class="panel panel-default">
-                <div class="panel-heading">Cuestionarios realizados</div>
+                <div translate class="panel-heading">{{'STATSTITLE'}}</div>
                 <div class="panel-body">
-                    <p> Ordenar por: </p>
+                    <p translate> {{'SORT'}} </p>
                     <md-button ng-click="filter(1)" aria-label="Cal">
                         <md-icon class="fa fa-check-square-o fa-2x"></md-button>
                     <md-button ng-click="filter(2)" aria-label="Date">
@@ -27,7 +27,7 @@
     <div class="row row-content">
         <div class="col-xs-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Estadisticas por hora</div>
+                <div translate class="panel-heading">{{'CHARTITLE2'}}</div>
                 <div class="panel-body">
                     <canvas id="line" class="chart chart-line" chart-data="cuestionario.stats[0].stats.data" chart-labels="cuestionario.stats[0].stats.labels"
                         chart-series="cuestionario.stats[0].stats.series" chart-colors="cuestionario.stats[0].stats.colors" chart-options="options1"

@@ -8,20 +8,20 @@
                 <md-content>
                     <form class="form-horizontal" role="form" name="form.testForm" ng-submit="submitAnswer($event)" novalidate>
                         <md-tabs md-dynamic-height md-border-bottom>
-                            <md-tab ng-repeat="preg in cuestionario.questions  track by $index" label="Pregunta {{$index+1}}">
+                            <md-tab ng-repeat="preg in cuestionario.questions  track by $index" label="{{'QUESTION' | translate}} {{$index+1}}">
                                 <md-content class="md-padding">
                                     <md-card>
                                         <md-card-header>
                                             <md-card-header-text>
                                                 <span class="md-title">{{preg.title}}</span>
-                                                <span class="md-subhead">Pregunta {{$index+1}}</span>
+                                                <span class="md-subhead">{{ 'QUESTION' | translate}} {{ $index+1 }}</span>
                                             </md-card-header-text>
                                         </md-card-header>
                                         <img class="md-card-image" ng-src={{preg.image}} alt="">
                                         <md-card-title>
                                             <md-card-title-text>
                                                 <span class="md-headline">{{preg.pregunta}}</span>
-                                                <span class="md-subhead">Selecciona una respuesta</span>
+                                                <span translate class="md-subhead">{{'SELECTQUESTION'}}</span>
                                             </md-card-title-text>
                                         </md-card-title>
 
@@ -64,7 +64,7 @@
                                 </md-content>
                             </md-tab>
                         </md-tabs>
-                        <md-button type="submit" md-colors="{background: 'teal'}" class="md-raised md-accent" ng-disabled="form.testForm.$invalid">Listo !</md-button>
+                        <md-button translate="READY" type="submit" md-colors="{background: 'teal'}" class="md-raised md-accent" ng-disabled="form.testForm.$invalid">Listo !</md-button>
                     </form>
                 </md-content>
             </div>

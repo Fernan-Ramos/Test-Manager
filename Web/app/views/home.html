@@ -11,12 +11,19 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="#!features">Caracteristicas</a>
+                        <a href="#!features" translate>FEATURES</a>
                     </li>
-
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a ng-click=openRegister()><span class="glyphicon glyphicon-user"></span> Regístrate</a></li>
+                    <li><a ng-click=openRegister()><span class="glyphicon glyphicon-user"></span> {{'REGISTER' | translate}}</a></li>
+                    <li>
+                        <a type="button" ng-click="changeLanguage('es')">Español <span class="flag flag-es"></span> </a>
+                    </li>
+                    <li>
+                        <a type="button" ng-click="changeLanguage('en')">English <span class="flag flag-gb"></a>
+
+                    </li>
+
                 </ul>
             </div>
         </div>
@@ -29,8 +36,7 @@
                 <div class="col-sm-7">
                     <div class="header-content">
                         <div class="header-content-inner">
-                            <h1>Test Manager es una plataforma diseñada para la evaluación de cuestionarios</h1>
-                            <a href="#features" class="boton boton-outline boton-xl page-scroll">Empieza ahora </a>
+                            <h1 translate="INFO">Test Manager es una plataforma diseñada para la evaluación de cuestionarios</h1>
                         </div>
                     </div>
                 </div>
@@ -39,21 +45,16 @@
                         <div class="header-content-inner">
                             <form ng-submit="doLogin()">
                                 <div class="form-group">
-                                    <label class="sr-only" for="username">Usuario</label>
-                                    <input type="text" class="form-control input-sm" id="username" placeholder="Usuario" ng-model="loginData.username">
+                                    <label translate="USER" class="sr-only" for="username">Usuario</label>
+                                    <input type="text" class="form-control input-sm" id="username" placeholder="{{'USER'|translate}}" ng-model="loginData.username">
                                 </div>
                                 <div class="form-group">
                                     <label class="sr-only" for="password">Contraseña</label>
-                                    <input type="password" class="form-control input-sm" id="password" placeholder="Contraseña" ng-model="loginData.password">
+                                    <input type="password" class="form-control input-sm" id="password" placeholder="{{'PASS'|translate}}" ng-model="loginData.password">
                                 </div>
                                 <hr>
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-lg btn-success btn-block">Entrar</button>
-                                </div>
-                                <div class="checkbox">
-                                    <label>
-                            <input type="checkbox" ng-model="rememberMe">Recuerdame
-                        </label>
+                                    <button type="submit" translate class="btn btn-lg btn-success btn-block">{{'LOG'}}</button>
                                 </div>
                             </form>
                         </div>
@@ -68,8 +69,8 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="section-heading">
-                        <h2>Diviértete Aprendiendo</h2>
-                        <md-button md-colors="{background: 'teal'}" class="md-raised md-accent" ng-click=openRegister()>Únete a Test Manager</md-button>
+                        <h2 translate="FUN">Diviértete Aprendiendo</h2>
+                        <md-button translate="JOIN" md-colors="{background: 'teal'}" class="md-raised md-accent" ng-click=openRegister()>Únete a Test Manager</md-button>
                         <hr>
                     </div>
                 </div>
@@ -95,15 +96,15 @@
                             <div class="col-md-6">
                                 <div class="feature-item">
                                     <i class="icon-graph text-primary"></i>
-                                    <h3>Estadisticas detalladas</h3>
-                                    <p class="text-muted">Compueba tu evolución a través de la sección de Estadisticas!</p>
+                                    <h3 translate>{{'STATS'}}</h3>
+                                    <p translate class="text-muted">{{'STATS1'}}</p>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="feature-item">
                                     <i class="icon-graduation text-primary"></i>
-                                    <h3>Aprendizaje</h3>
-                                    <p class="text-muted">Aumenta tu aprendizaje gracias a la retroalimentación!</p>
+                                    <h3 translate>{{'LEARN'}}</h3>
+                                    <p translate class="text-muted">{{'LEARN1'}}</p>
                                 </div>
                             </div>
                         </div>
@@ -111,15 +112,15 @@
                             <div class="col-md-6">
                                 <div class="feature-item">
                                     <i class="icon-pencil text-primary"></i>
-                                    <h3>Crea tus propios cuestionarios</h3>
-                                    <p class="text-muted">Puedes crear cuestionarios de una forma muy sencilla!</p>
+                                    <h3 translate>{{'MAKE'}}</h3>
+                                    <p translate class="text-muted">{{'MAKE1'}}</p>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="feature-item">
                                     <i class="icon-arrow-down-circle text-primary"></i>
-                                    <h3>Exporta cuestionarios</h3>
-                                    <p class="text-muted">Guarda tus cuestionarios para poder compartirlos con quien quieras!</p>
+                                    <h3 translate>{{'EXPORT'}}</h3>
+                                    <p translate class="text-muted">{{'EXPORT1'}}</p>
                                 </div>
                             </div>
                         </div>

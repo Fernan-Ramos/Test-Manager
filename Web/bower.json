@@ -29,5 +29,8 @@
     "angular-ui-router": "^0.4.2",
     "chart.js": "^2.5.0",
     "angular-resource": "^1.6.2"
+  },
+  "devDependencies": {
+    "angular-translate": "^2.15.1"
   }
 }

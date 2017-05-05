@@ -7,48 +7,49 @@
         <div>
             <md-content>
                 <md-tabs md-dynamic-height md-border-bottom>
-                    <md-tab label="Crear">
+                    <md-tab label="{{'MAKERTAB1' | translate}}">
                         <md-content class="md-padding">
                             <div class="col-xs-12">
-                                <h3>Crea tu propio cuestionario </h3>
+                                <h3 translate>{{'MAKERTITLE'}}</h3>
                                 <hr>
                             </div>
                             <div class="col-xs-12 col-sm-9">
                                 <form class="form-horizontal" role="form" name="form.makerForm" ng-submit="submitTest()" novalidate>
                                     <div class="form-group" ng-class="{ 'has-error' : form.makerForm.title.$error.required && !form.makerForm.title.$pristine }">
-                                        <label for="title" class="col-sm-2 control-label">Título</label>
+                                        <label translate for="title" class="col-sm-2 control-label">{{'QUIZTITLE'}}</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="title" name="title" placeholder="Escribe un Título" ng-model="cuest.title" required>
-                                            <span ng-show="form.makerForm.title.$error.required && !form.makerForm.title.$pristine" class="help-block">El titulo es necesario</span>
+                                            <input type="text" class="form-control" id="title" name="title" placeholder="{{'QUIZTITLEPLACE' | translate}}" ng-model="cuest.title"
+                                                required>
+                                            <span translate ng-show="form.makerForm.title.$error.required && !form.makerForm.title.$pristine" class="help-block">{{'NOQUIZTITLE'}}</span>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="description" class="col-sm-2 control-label">Descripción</label>
+                                        <label translate for="description" class="col-sm-2 control-label">{{'QUIZDESCR'}}</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="description" name="description" placeholder="Describelo" ng-model="cuest.text">
+                                            <input type="text" class="form-control" id="description" name="description" placeholder="{{'QUIZDESCRPLACE' | translate}}"
+                                                ng-model="cuest.text">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="questions" class="col-sm-2 control-label">Nº de preguntas</label>
+                                        <label translate for="questions" class="col-sm-2 control-label">{{'NQUESTIONS'}}</label>
                                         <div class="col-sm-10">
-                                            <md-input-container>
-                                                <label>Preguntas</label>
-                                                <md-select ng-model="selectedQuest" md-selected-text="getSelectedQuest()">
-                                                    <md-optgroup label="Nº de preguntas">
-                                                        <md-option ng-value="quest" ng-repeat="quest in quests">
-                                                            {{quest}} preguntas
-                                                        </md-option>
-                                                    </md-optgroup>
-                                                </md-select>
-                                            </md-input-container>
+                                            <md-select placeholder="{{'NQUESTIONS' | translate }}" ng-model="selectedQuest" md-selected-text="getSelectedQuest()">
+                                                <md-optgroup label="{{'NQUESTIONS' | translate}}">
+                                                    <md-option ng-value="quest" ng-repeat="quest in quests">
+                                                        {{quest}}
+                                                    </md-option>
+                                                </md-optgroup>
+                                            </md-select>
+
                                         </div>
                                     </div>
                                     <div class="form-group" ng-repeat="n in getNumber(number) track by $index">
-                                        <label for="question" class="col-sm-2 control-label">Pregunta {{$index+1}}</label>
+                                        <label for="question" class="col-sm-2 control-label">{{ 'QUESTION' | translate}} {{ $index+1 }}</label>
                                         <div class="col-sm-10" ng-class="{ 'has-error' : form.makerForm.question{{$index+1}}.$error.required && !form.makerForm.question{{$index+1}}.$pristine }">
-                                            <input type="text" class="form-control" id="question{{$index+1}}" name="question{{$index+1}}" placeholder="Escribe la pregunta"
+                                            <input type="text" class="form-control" id="question{{$index+1}}" name="question{{$index+1}}" placeholder="{{'QUESTIONPLACE'|translate}}"
                                                 ng-model="cuest.questions[$index].pregunta" required>
-                                            <span ng-show="form.makerForm.question{{$index+1}}.$error.required && !form.makerForm.question{{$index+1}}.$pristine" class="help-block">La pregunta es necesaria</span>
+                                            <span translate ng-show="form.makerForm.question{{$index+1}}.$error.required && !form.makerForm.question{{$index+1}}.$pristine"
+                                                class="help-block">{{'NOQUESTION'}}</span>
                                             <!-- 
                                 <div class="form-group" ng-repeat="n in [1,2,3,4]">
                                     <hr>
@@ -59,47 +60,47 @@
                                 </div> -->
                                             <div class="form-group">
                                                 <hr>
-                                                <label for="image" class="col-sm-2 control-label">Selecciona una imagen </label>
+                                                <label translate for="image" class="col-sm-2 control-label">{{'IMAGE'}} </label>
                                                 <div class="col-sm-10">
                                                     <input type="file" fileread="cuest.questions[$index].image"><br>
                                                     <hr>
                                                 </div>
-                                                <label for="answer" class="col-sm-2 control-label">Respuesta 1</label>
+                                                <label translate for="answer" class="col-sm-2 control-label">{{'ANSWER1'}}</label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r1"
+                                                    <input type="text" class="form-control" id="answer" name="answer" placeholder="{{'ANSWERPLACE' | translate}}" ng-model="cuest.questions[$index].r1"
                                                         required>
                                                     <hr>
                                                 </div>
-                                                <label for="answer" class="col-sm-2 control-label">Respuesta 2</label>
+                                                <label translate for="answer" class="col-sm-2 control-label">{{'ANSWER2'}}</label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r2"
+                                                    <input type="text" class="form-control" id="answer" name="answer" placeholder="{{'ANSWERPLACE' | translate}}" ng-model="cuest.questions[$index].r2"
                                                         required>
                                                     <hr>
                                                 </div>
-                                                <label for="answer" class="col-sm-2 control-label">Respuesta 3</label>
+                                                <label translate for="answer" class="col-sm-2 control-label">{{'ANSWER3'}}</label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r3"
+                                                    <input type="text" class="form-control" id="answer" name="answer" placeholder="{{'ANSWERPLACE' | translate}}" ng-model="cuest.questions[$index].r3"
                                                         required>
                                                     <hr>
                                                 </div>
-                                                <label for="answer" class="col-sm-2 control-label">Respuesta 4</label>
+                                                <label translate for="answer" class="col-sm-2 control-label">{{'ANSWER4'}}</label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" class="form-control" id="answer" name="answer" placeholder="Escribe la respuesta" ng-model="cuest.questions[$index].r4"
+                                                    <input type="text" class="form-control" id="answer" name="answer" placeholder="{{'ANSWERPLACE' | translate}}" ng-model="cuest.questions[$index].r4"
                                                         required>
                                                     <hr>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <hr>
-                                                <label for="type" class="col-sm-2 control-label">Tipo de pregunta</label>
+                                                <label translate for="type" class="col-sm-2 control-label">{{'TYPE'}}</label>
                                                 <div class="col-sm-10">
                                                     <md-radio-group ng-model="cuest.questions[$index].tipo" required>
-                                                        <md-radio-button value="unica" class="md-primary">Respuesta única</md-radio-button>
-                                                        <md-radio-button value="multiple">Respuesta múltiple</md-radio-button>
+                                                        <md-radio-button value="unica" class="md-primary">{{'UNIC' | translate}}</md-radio-button>
+                                                        <md-radio-button value="multiple">{{'MULTIPLE' | translate}}</md-radio-button>
                                                     </md-radio-group>
                                                 </div>
                                             </div>
-                                            <label for="correct" class="col-sm-2 control-label">Respuesta Correcta </label>
+                                            <label translate for="correct" class="col-sm-2 control-label">{{'QUESTIONCORRECT'}} </label>
                                             <!-- Si es de tipo única -->
                                             <div ng-if="cuest.questions[$index].tipo=='unica'" class="col-sm-10">
                                                 <select class="form-control" ng-model="cuest.questions[$index].rcorrect" required>
@@ -111,8 +112,8 @@
                                             </div>
                                             <!-- Si es de tipo múltiple -->
                                             <div ng-if="cuest.questions[$index].tipo=='multiple'" class="col-sm-10">
-                                                <md-select placeholder="Respuesta correcta" ng-model="cuest.questions[$index].rcorrect" multiple required>
-                                                    <md-optgroup label="Correctas">
+                                                <md-select placeholder="{{'QUESTIONCORRECT' | translate }}" ng-model="cuest.questions[$index].rcorrect" multiple required>
+                                                    <md-optgroup label="{{'CORRECTSELECT' | translate}}">
                                                         <md-option ng-value="cuest.questions[$index].r1">{{cuest.questions[$index].r1}}</md-option>
                                                         <md-option ng-value="cuest.questions[$index].r2">{{cuest.questions[$index].r2}}</md-option>
                                                         <md-option ng-value="cuest.questions[$index].r3">{{cuest.questions[$index].r3}}</md-option>
@@ -124,7 +125,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-sm-offset-2 col-sm-10">
-                                            <md-button type="submit" class="md-raised md-primary" ng-disabled="form.makerForm.$invalid">Crear</md-button>
+                                            <md-button translate="CREATE" type="submit" class="md-raised md-primary" ng-disabled="form.makerForm.$invalid">Crear</md-button>
                                         </div>
                                     </div>
                                 </form>
@@ -179,18 +180,18 @@
                             </div>
                         </md-content>
                     </md-tab>
-                    <md-tab label="Importar">
+                    <md-tab label="{{'MAKERTAB2' | translate}}">
                         <md-content class="md-padding">
                             <div class="col-xs-12">
-                                <h3>Importa un cuestionario</h3>
+                                <h3 translate>{{'IMPORTITLE'}}</h3>
                                 <hr>
                             </div>
                             <div class="col-xs-6">
-                                <p><em>el archivo debe estar en formato .json</em></p>
+                                <p><em translate>{{'IMPORTALERT'}}</em></p>
                                 <input id="inputCuest" type="file" class="file" data-show-preview="false" fileread="fichero.fic">
                             </div>
                             <div class="col-xs-6">
-                                <md-button md-colors="{background: 'teal'}" ng-click="import()" class="md-raised md-accent">Importar</md-button>
+                                <md-button translate="IMPORTBUTTON" md-colors="{background: 'teal'}" ng-click="import()" class="md-raised md-accent">Importar</md-button>
                             </div>
                         </md-content>
                     </md-tab>
