@@ -218,7 +218,7 @@ angular.module('testManagerApp')
         //Se obtiene las respuestas guardadas
         $scope.submitAnswer = function () {
             //Se guarda la fecha en la que se realiza el cuestionario
-            $scope.answer.date = $filter('date')(new Date(), 'medium');
+            $scope.answer.date = new Date();
             //Si la pregunta es de tipo múltiple se guarda el array de respuestas contestadas en cada pregunta.
             for (var i = 0; i < $scope.selected.length; i++) {
                 if ($scope.cuestionario.questions[i].tipo == "multiple")
@@ -531,7 +531,7 @@ angular.module('testManagerApp')
 
     }])
 
-    .controller('StatsControllerDetails', ['$scope', '$stateParams', '$mdDialog', 'menuFactory', function ($scope, $stateParams, $mdDialog, menuFactory) {
+    .controller('StatsControllerDetails', ['$scope', '$filter', '$stateParams', '$mdDialog', 'menuFactory', function ($scope, $filter, $stateParams, $mdDialog, menuFactory) {
         $scope.showStatInd = false;
         $scope.message = "Loading ...";
         $scope.cuestionario =
@@ -542,17 +542,21 @@ angular.module('testManagerApp')
                 function (response) {
                     $scope.cuestionario = response.cuestionarios[0];
                     $scope.showStatInd = true;
+                    $scope.fechas = $scope.cuestionario.stats[0].stats.labels;
+                    for (var i = 0; i < $scope.fechas.length; i++) {
+                        $scope.fechas[i] = $filter('date')($scope.fechas[i], 'shortDate');
+                    }
                     //Dialogo que aparece cuando no hay cuestionarios completados
                     if ($scope.cuestionario.stats.length == 0) {
                         $mdDialog.show({
-                            clickOutsideToClose: false,
+                            clickOutsideToClose: true,
                             scope: $scope,
                             preserveScope: true,
                             template: '<md-dialog aria-label="List dialog">' +
                             '  <md-dialog-content>' +
                             '<md-content class="md-padding">' +
-                            ' <h5 class="md-title">No hay estadisticas que mostrar</h5>' +
-                            ' <p class="md-textContent">Todavía no has realizado ningún cuestionario</p>' +
+                            ' <h5 class="md-title" translate>{{\'STATDIALOGTEXT\'}}</h5>' +
+                            ' <p class="md-textContent" translate>{{\'STATDIALOGTEXT\'}}</p>' +
                             '</md-content>      ' +
                             '  </md-dialog-content>' +
                             '  <md-dialog-actions>' +
@@ -623,7 +627,7 @@ angular.module('testManagerApp')
         };
 
     }])
-    .controller('StatsController', ['$scope', '$stateParams', '$mdDialog', 'menuFactory', function ($scope, $stateParams, $mdDialog, menuFactory) {
+    .controller('StatsController', ['$scope', '$stateParams', '$translate', '$mdDialog', '$filter', 'menuFactory', function ($scope, $stateParams, $translate, $mdDialog, $filter, menuFactory) {
         $scope.showStat = false;
         $scope.message = "Loading ...";
         $scope.cuestionario =
@@ -632,7 +636,10 @@ angular.module('testManagerApp')
                 function (response) {
                     $scope.cuestionario = response[0].cuestionarios;
                     $scope.showStat = true;
-
+                    $scope.fechas = $scope.cuestionario[0].stats[0].stats.labels;
+                    for (var i = 0; i < $scope.fechas.length; i++) {
+                        $scope.fechas[i] = $filter('date')($scope.fechas[i], 'shortDate');
+                    }
                 },
                 function (response) {
                     $scope.message = "Error: " + response.status + " " + response.statusText;
@@ -643,14 +650,14 @@ angular.module('testManagerApp')
         $scope.dialogo = function (cuest) {
             if (cuest.length == 0) {
                 $mdDialog.show({
-                    clickOutsideToClose: false,
+                    clickOutsideToClose: true,
                     scope: $scope,
                     preserveScope: true,
                     template: '<md-dialog aria-label="List dialog">' +
                     '  <md-dialog-content>' +
                     '<md-content class="md-padding">' +
-                    ' <h5 class="md-title">No hay estadisticas que mostrar</h5>' +
-                    ' <p class="md-textContent">Todavía no has realizado este cuestionario</p>' +
+                    ' <h5 class="md-title" translate>{{\'STATSDIALOGTITLE\'}}</h5>' +
+                    ' <p class="md-textContent" translate>{{\'STATSDIALOGTEXT\'}}</p>' +
                     '</md-content>      ' +
                     '  </md-dialog-content>' +
                     '  <md-dialog-actions>' +

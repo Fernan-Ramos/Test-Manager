@@ -113,10 +113,12 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             MAKE1: 'Puedes crear cuestionarios de una forma muy sencilla!',
             EXPORT: 'Exporta cuestionarios',
             EXPORT1: 'Guarda tus cuestionarios para poder compartirlos con quien quieras!',
+            NOLOGIN: 'Login Incorrecto',
             /**REGISTER */
             REGISTTITLE: 'Registro',
             NAME: 'Nombre',
             SUBNAME: 'Apellidos',
+            NOREGISTER: 'Registro Incorrecto',
             /**HEADER */
             QUIZS: 'Mis Cuestionarios',
             MAKER: 'Crear Cuestionario',
@@ -162,6 +164,9 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             CHARTITLE2: 'Gráfica de estadisticas',
             CHARTSTATS: 'Estadisticas',
             STATSTITLE: 'Cuestionarios realizados',
+            STATSDIALOGTITLE: 'No hay estadisticas que mostrar',
+            STATDIALOGTEXT: 'Todavía no has realizado ningún cuestionario',
+            STATSDIALOGTEXT: 'Todavía no has realizado este cuestionario',
             /**MENU */
             ADDFAVORITE: 'Añadido favorito',
             FAVORITEBUTTON: 'Mis Favoritos',
@@ -178,7 +183,7 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             PARCIAL1: 'La respuesta',
             PARCIAL2: 'es correcta parcialmente.',
             INCORRECT: 'Vaya! La respuesta correcta no es : ',
-
+            DATE: '{{date|date:\'short\'}}',
             BUTTON_LANG_ES: 'Español',
             BUTTON_LANG_EN: 'Inglés'
         };
@@ -201,10 +206,12 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             MAKE1: 'You can create quizs in a very simple way!',
             EXPORT: 'Export quizs',
             EXPORT1: 'Save your quizs so you can share them with anyone!',
+            NOLOGIN: 'Login Unsuccessful',
             /**REGISTER */
             REGISTTITLE: 'Sign up',
             NAME: 'Name',
             SUBNAME: 'Last Name',
+            NOREGISTER: 'Registro Incorrecto',
             /**HEADER */
             QUIZS: 'Quizs',
             MAKER: 'Quiz Maker',
@@ -250,6 +257,9 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             CHARTTITLE1: 'Graphs of statistics',
             CHARTITLE2: 'Graph of statistics',
             CHARTSTATS: 'Statistics',
+            STATSDIALOGTITLE: 'There are no statistics to display',
+            STATDIALOGTEXT: 'You have not yet completed any quiz',
+            STATSDIALOGTEXT: 'You have not yet completed this quiz',
             /**MENU */
             ADDFAVORITE: 'Added favorite',
             FAVORITEBUTTON: 'My favorites',
@@ -266,7 +276,7 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             PARCIAL1: 'The answer',
             PARCIAL2: 'is partially correct.',
             INCORRECT: 'Wow! The correct answer is not :',
-
+            DATE: '{{date|date:\'medium\'}}',
             BUTTON_LANG_ES: 'Spanish',
             BUTTON_LANG_EN: 'English'
         };
@@ -275,6 +285,7 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
         $translateProvider.preferredLanguage('es');
         $translateProvider.fallbackLanguage('es');
         $translateProvider.useSanitizeValueStrategy(null);
+        $translateProvider.forceAsyncReload(true);
 
 
     });

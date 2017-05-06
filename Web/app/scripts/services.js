@@ -127,7 +127,7 @@ angular.module('testManagerApp')
 
                     var message = '\
                 <div class="ngdialog-message">\
-                <div><h3>Login Unsuccessful</h3></div>' +
+                <div><h3 translate>{{\'NOLOGIN\'}}</h3></div>' +
                         '<div><p>' + response.data.err.message + '</p><p>' +
                         response.data.err.name + '</p></div>' +
                         '<div class="ngdialog-buttons">\
@@ -171,7 +171,7 @@ angular.module('testManagerApp')
 
                     var message = '\
                 <div class="ngdialog-message">\
-                <div><h3>Registration Unsuccessful</h3></div>' +
+                <div><h3 translate>{{\'NOREGISTER\'}}</h3></div>' +
                         '<div><p>' + response.data.err.message +
                         '</p><p>' + response.data.err.name + '</p></div>';
 
