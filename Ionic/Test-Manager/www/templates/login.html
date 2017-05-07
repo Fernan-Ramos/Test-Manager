@@ -6,15 +6,15 @@
     <form ng-submit="doLogin()">
       <div class="list">
         <label class="item item-input item-floating-label">
-          <span class="input-label" >Username</span>
-          <input type="text"  placeholder="Username" ng-model="loginData.username">
+          <span class="input-label" translate>{{'USER'}}</span>
+          <input type="text"  placeholder="{{'USER' | translate }}" ng-model="loginData.username">
         </label>
         <label class="item item-input item-floating-label">
-          <span class="input-label" >Password</span>
-          <input type="password" placeholder="Password" ng-model="loginData.password">
+          <span class="input-label" translate>{{'PASS'}}</span>
+          <input type="password" placeholder="{{'PASS' | translate}}" ng-model="loginData.password">
         </label>
         <div class="padding">
-          <button style="background-color: teal" class="button button-full button button-dark ink" type="submit">Login</button>
+          <button style="background-color: teal" class="button button-full button button-dark ink" type="submit" translate>{{'LOG'}}</button>
         </div>
       </div>
     </form>
@@ -23,7 +23,7 @@
       <div class="col"> </div>
       <div class="col"> </div>
       <div class="col col-bottom">
-        <md-button class="md-raised" ng-click="register()">Register</md-button>
+        <md-button translate="REGISTER" class="md-raised" ng-click="register()" translate>Register</md-button>
       </div>
     </div>
   </ion-content>

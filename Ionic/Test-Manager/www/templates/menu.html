@@ -1,4 +1,4 @@
-<ion-view view-title="Test Manager">
+<ion-view view-title="{{'QUIZS' | translate}}">
   <ion-content>
     <div class="list card" ng-repeat="test in cuestionarios">
       <div class="item item-divider">
@@ -7,11 +7,9 @@
           <i class="icon ion-ios-more" ng-click="showOptions(test)"></i>
         </div>
       </div>
-      <a class="item item-thumbnail-left" ui-sref="app.testDetails({id: test._id})">
-        <img ng-src="{{baseURL+test.image}}">
-        <br>
-        <p>{{test.text}}</p>
-      </a>
+      <div class="item item-text-wrap">
+        <p ui-sref="app.testDetails({id: test._id})">{{test.text}}</p>
+      </div>
     </div>
   </ion-content>
 </ion-view>

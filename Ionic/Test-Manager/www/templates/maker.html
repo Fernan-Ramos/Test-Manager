@@ -1,61 +1,61 @@
-<ion-view view-title="Maker" cache-view="false">
+<ion-view view-title="{{'MAKER' | translate}}" cache-view="false">
   <ion-content>
-    <form class="form-horizontal" role="form" name="form.makerForm" ng-submit="submitTest()" novalidate>
+    <form class="form-horizontal" role="form" name="form.makerForm" ng-submit="submitTest(cuest)" novalidate>
       <div class="list">
         <label class="item item-input item-stacked-label" ng-class="{ 'has-error' : form.makerForm.title.$error.required && !form.makerForm.title.$pristine }">
-          <span class="input-label">Título</span>
-          <input type="text" id="title" name="title" placeholder="Escribe un Título" ng-model="cuest.title" required>
-          <span ng-show="form.makerForm.title.$error.required && !form.makerForm.title.$pristine" class="assertive">*El titulo es necesario</span>
+          <span class="input-label" translate>{{'QUIZTITLE'}}</span>
+          <input type="text" id="title" name="title" placeholder="{{'QUIZTITLEPLACE' | translate}}" ng-model="cuest.title" required>
+          <span ng-show="form.makerForm.title.$error.required && !form.makerForm.title.$pristine" class="assertive" translate>*{{'NOQUIZTITLE'}}</span>
         </label>
         <label class="item item-input item-floating-label">
-          <span class="input-label">Descripción</span>
-          <input type="text" placeholder="Breve descripción" ng-model="cuest.text">
+          <span class="input-label" translate>{{'QUIZDESCR'}}</span>
+          <input type="text" placeholder="{{'QUIZDESCRPLACE' | translate}}" ng-model="cuest.text" required>
         </label>
         <label class="item item-input item-stacked-label" ng-class="{ 'has-error' : form.makerForm.n.$error.required && !form.makerForm.n.$pristine }">
-          <span class="input-label" >Preguntas del cuestionario</span>
-          <input type="tel"  id="n" name="n"  placeholder="Nº de preguntas (max 30)" ng-model="number" required>
-          <span ng-show="form.makerForm.n.$error.required && !form.makerForm.n.$pristine" class="assertive">*Escribe un numero</span>
-          <span ng-show="max(number)>30" class="assertive">*Maximo 30 preguntas</span>
+          <span class="input-label" translate>{{'NQUESTIONS'}}</span>
+          <input type="tel"  id="n" name="n"  placeholder="{{'MAXQUESTPLACE' | translate}}" ng-model="number" required>
+          <span ng-show="form.makerForm.n.$error.required && !form.makerForm.n.$pristine" class="assertive" translate>*{{'QUESTIONSSELECT1'}}</span>
+          <span ng-show="max(number)>30" class="assertive" translate>*{{'MAXQUEST'}}</span>
         </label>
         <div class="list" ng-repeat="n in getNumber(number) track by $index">
           <label class="item item-input item-stacked-label" ng-class="{ 'has-error' : form.makerForm.question{{$index+1}}.$error.required && !form.makerForm.question{{$index+1}}.$pristine }">
-          <span class="input-label" style="color:#003333">Pregunta {{$index+1}}</span>
-          <input type="text" id="question{{$index+1}}" name="question{{$index+1}}" placeholder="Escribe la pregunta" ng-model="cuest.questions[$index].pregunta" required>
-          <span ng-show="form.makerForm.question{{$index+1}}.$error.required && !form.makerForm.question{{$index+1}}.$pristine" class="assertive">*La pregunta es necesaria</span>
+          <span class="input-label" style="color:#003333">{{'QUESTION' | translate}} {{$index+1}}</span>
+          <input type="text" id="question{{$index+1}}" name="question{{$index+1}}" placeholder="{{'QUESTIONPLACE' | translate}}" ng-model="cuest.questions[$index].pregunta" required>
+          <span ng-show="form.makerForm.question{{$index+1}}.$error.required && !form.makerForm.question{{$index+1}}.$pristine" class="assertive" translate>*{{'NOQUESTION'}}</span>
         </label>
           <label class="item item-input item-floating-label" ng-class="{ 'has-error' : form.makerForm.r1{{$index+1}}.$error.required && !form.makerForm.r1{{$index+1}}.$pristine }">
-          <span class="input-label" style="color: teal">Respuesta 1</span>
-          <input type="text" id="r1{{$index+1}}" name="r1{{$index+1}}" placeholder="Respuesta 1" ng-model="cuest.questions[$index].r1" required>
-          <span ng-show="form.makerForm.r1{{$index+1}}.$error.required && !form.makerForm.r1{{$index+1}}.$pristine" class="assertive">*La respuesta es necesaria</span>
+          <span class="input-label" style="color: teal" translate>{{'ANSWER'}} 1</span>
+          <input type="text" id="r1{{$index+1}}" name="r1{{$index+1}}" placeholder="{{'ANSWER' | translate}} 1" ng-model="cuest.questions[$index].r1" required>
+          <span ng-show="form.makerForm.r1{{$index+1}}.$error.required && !form.makerForm.r1{{$index+1}}.$pristine" class="assertive" translate>*{{'NOANSWER'}}</span>
         </label>
           <label class="item item-input item-floating-label" ng-class="{ 'has-error' : form.makerForm.r2{{$index+1}}.$error.required && !form.makerForm.r2{{$index+1}}.$pristine }">
-          <span class="input-label" style="color: teal">Respuesta 2</span>
-          <input type="text" id="r2{{$index+1}}" name="r2{{$index+1}}" placeholder="Respuesta 2"  ng-model="cuest.questions[$index].r2" required>
-          <span ng-show="form.makerForm.r2{{$index+1}}.$error.required && !form.makerForm.r2{{$index+1}}.$pristine" class="assertive">*La respuesta es necesaria</span>
+          <span class="input-label" style="color: teal" translate>{{'ANSWER'}} 2</span>
+          <input type="text" id="r2{{$index+1}}" name="r2{{$index+1}}" placeholder="{{'ANSWER' | translate}} 2"  ng-model="cuest.questions[$index].r2" required>
+          <span ng-show="form.makerForm.r2{{$index+1}}.$error.required && !form.makerForm.r2{{$index+1}}.$pristine" class="assertive" translate>*{{'NOANSWER'}}</span>
         </label>
           <label class="item item-input item-floating-label" ng-class="{ 'has-error' : form.makerForm.r3{{$index+1}}.$error.required && !form.makerForm.r3{{$index+1}}.$pristine }">
-          <span class="input-label" style="color: teal">Respuesta 3</span>
-          <input type="text"  id="r3{{$index+1}}" name="r3{{$index+1}}" placeholder="Respuesta 3"  ng-model="cuest.questions[$index].r3" required>
-          <span ng-show="form.makerForm.r3{{$index+1}}.$error.required && !form.makerForm.r3{{$index+1}}.$pristine" class="assertive">*La respuesta es necesaria</span>
+          <span class="input-label" style="color: teal"translate>{{'ANSWER'}} 3</span>
+          <input type="text"  id="r3{{$index+1}}" name="r3{{$index+1}}" placeholder="{{'ANSWER' | translate}} 3"  ng-model="cuest.questions[$index].r3" required>
+          <span ng-show="form.makerForm.r3{{$index+1}}.$error.required && !form.makerForm.r3{{$index+1}}.$pristine" class="assertive" translate>*{{'NOANSWER'}}</span>
         </label>
           <label class="item item-input item-floating-label" ng-class="{ 'has-error' : form.makerForm.r4{{$index+1}}.$error.required && !form.makerForm.r4{{$index+1}}.$pristine }">
-          <span class="input-label" style="color: teal">Respuesta 4</span>
-          <input type="text" id="r4{{$index+1}}" name="r4{{$index+1}}" placeholder="Respuesta 4"  ng-model="cuest.questions[$index].r4" required>
-          <span ng-show="form.makerForm.r4{{$index+1}}.$error.required && !form.makerForm.r4{{$index+1}}.$pristine" class="assertive">*La respuesta es necesaria</span>
+          <span class="input-label" style="color: teal" translate>{{'ANSWER'}} 4</span>
+          <input type="text" id="r4{{$index+1}}" name="r4{{$index+1}}" placeholder="{{'ANSWER' | translate}} 4"  ng-model="cuest.questions[$index].r4" required>
+          <span ng-show="form.makerForm.r4{{$index+1}}.$error.required && !form.makerForm.r4{{$index+1}}.$pristine" class="assertive" translate>*{{'NOANSWER'}}</span>
         </label>
           <div class="row">
-            <div class="col" style="color:#003333"><br>Tipo de pregunta</div>
+            <div class="col" style="color:#003333" translate><br>{{'TYPE'}}</div>
             <div class="col col-75">
               <md-radio-group ng-model="cuest.questions[$index].tipo" required>
-                <md-radio-button value="unica" class="md-primary">Respuesta única</md-radio-button>
-                <md-radio-button value="multiple">Respuesta múltiple</md-radio-button>
+                <md-radio-button value="unica" class="md-primary">{{'UNIC' | translate}}</md-radio-button>
+                <md-radio-button value="multiple">{{'MULTIPLE' | translate}}</md-radio-button>
               </md-radio-group>
             </div>
           </div>
           <div class="list" ng-if="cuest.questions[$index].tipo=='unica'">
             <label class="item item-input item-select">
-            <div class="input-label">
-              Respuesta correcta
+            <div class="input-label" translate>
+              {{'QUESTIONCORRECT'}}
             </div>
             <select ng-model="cuest.questions[$index].rcorrect" required>
                <option>{{cuest.questions[$index].r1}}</option>
@@ -65,22 +65,22 @@
             </select>
           </label>
           </div>
-          <div class="row" ng-if="cuest.questions[$index].tipo=='multiple'">
-            <div class="col" style="color:#003333"><br>Respuesta correcta</div>
-            <div class="col col-75">
-              <md-select placeholder="Respuesta correcta" ng-model="cuest.questions[$index].rcorrect" multiple required>
-                <md-optgroup label="Correctas">
-                  <md-option ng-value="cuest.questions[$index].r1">{{cuest.questions[$index].r1}}</md-option>
-                  <md-option ng-value="cuest.questions[$index].r2">{{cuest.questions[$index].r2}}</md-option>
-                  <md-option ng-value="cuest.questions[$index].r3">{{cuest.questions[$index].r3}}</md-option>
-                  <md-option ng-value="cuest.questions[$index].r4">{{cuest.questions[$index].r4}}</md-option>
-                </md-optgroup>
-              </md-select>
+          <div class="list" ng-if="cuest.questions[$index].tipo=='multiple'">
+            <label class="item item-input item-select">
+            <div class="input-label" translate>
+              {{'QUESTIONCORRECT'}}
             </div>
+            <select ng-model="cuest.questions[$index].rcorrect" required multiple>
+               <option>{{cuest.questions[$index].r1}}</option>
+                <option>{{cuest.questions[$index].r2}}</option>
+                <option>{{cuest.questions[$index].r3}}</option>
+                <option>{{cuest.questions[$index].r4}}</option>
+            </select>
+          </label>
           </div>
         </div>
         <label class="item">
-          <button class="button button-block nav-teal" ng-disabled="form.makerForm.$invalid">Crear </button>
+          <button class="button button-block nav-teal" ng-disabled="form.makerForm.$invalid" translate="MAKERTAB1">Crear </button>
         </label>
       </div>
     </form>

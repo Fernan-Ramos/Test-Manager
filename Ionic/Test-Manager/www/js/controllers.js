@@ -71,15 +71,15 @@ angular.module('testManager.controllers', [])
           '<div class="list">' +
           '<a class="item item-icon-left"  href="#/app/stats/{{test._id}}" ng-click="closeDialog()">' +
           '<i class="icon ion-stats-bars"></i>' +
-          'Estadisticas' +
+          '{{\'STAT\' | translate }}' +
           ' </a>' +
           '<a class="item item-icon-left" ng-click="addFavorite(test);closeDialog()" >' +
           '<i class="icon ion-heart"></i>' +
-          'Añadir a Favoritos' +
+          '{{\'ADDFAVORITE\' | translate }}' +
           '</a>' +
           '<a class="item item-icon-left"  ng-click="removeCuest(test)">' +
           '<i class="icon ion-trash-a"></i>' +
-          'Eliminar' +
+          '{{\'REMOVEQUIZ\' | translate }}' +
           '</a>' +
           '</div>' +
           '</md-content>' +
@@ -104,25 +104,59 @@ angular.module('testManager.controllers', [])
         });
         if (!isFav) {
           favoriteFactory.save(test);
-          $ionicPlatform.ready(function () {
-            $cordovaLocalNotification.schedule({
-              id: 1,
-              title: "Añadio Favorito",
-              text: test.title
-            }).then(function () {
-              console.log('Añadido favorito ' + test.title);
+          $scope.favoritos.push(test);
+          $mdDialog.show({
+            clickOutsideToClose: true,
+            scope: $scope,
+            locals: {
+              test: test
             },
-              function () {
-                console.log('Failed to add Notification ');
-              });
-
-            $cordovaToast
-              .show('Añadido favorito ' + test.title, 'long', 'center')
-              .then(function (success) {
-                // success
-              }, function (error) {
-                // error
-              });
+            preserveScope: true,
+            template: '<md-dialog aria-label="List dialog">' +
+            '  <md-dialog-content>' +
+            '<md-content class="md-padding">' +
+            ' <h5 class="md-title" translate="ADDEDFAVORITE">{{\'ADDEDFAVORITE\' | translate}}</h5> <em>{{test.title}}</em>' +
+            '</md-content>      ' +
+            '  </md-dialog-content>' +
+            '  <md-dialog-actions>' +
+            '    <md-button translate="FAVORITEBUTTON" ui-sref="app.favorites" ng-click="closeDialog()" class="md-primary">' +
+            '      Favoritos' +
+            '    </md-button>' +
+            '  </md-dialog-actions>' +
+            '</md-dialog>',
+            controller: function DialogController($scope, $mdDialog, test) {
+              $scope.test = test;
+              $scope.closeDialog = function () {
+                $mdDialog.hide();
+              }
+            }
+          });
+        } else {
+          $mdDialog.show({
+            clickOutsideToClose: true,
+            scope: $scope,
+            locals: {
+              test: test
+            },
+            preserveScope: true,
+            template: '<md-dialog aria-label="List dialog">' +
+            '  <md-dialog-content>' +
+            '<md-content class="md-padding">' +
+            ' <h5  translate="EXISTFAVORITE" class="md-title">Ya existe el favorito</h5> <em>{{test.title}}</em>' +
+            '</md-content>      ' +
+            '  </md-dialog-content>' +
+            '  <md-dialog-actions>' +
+            '    <md-button translate="FAVORITEBUTTON" ui-sref="app.favorites" ng-click="closeDialog()" class="md-primary">' +
+            '      Favoritos' +
+            '    </md-button>' +
+            '  </md-dialog-actions>' +
+            '</md-dialog>',
+            controller: function DialogController($scope, $mdDialog, test) {
+              $scope.test = test;
+              $scope.closeDialog = function () {
+                $mdDialog.hide();
+              }
+            }
           });
         }
 
@@ -137,14 +171,14 @@ angular.module('testManager.controllers', [])
           template: '<md-dialog aria-label="List dialog">' +
           '  <md-dialog-content>' +
           '<md-content class="md-padding">' +
-          ' <h5 class="md-title">Estas seguro de eliminar este cuestionario</h5>' +
+          ' <h5 class="md-title">{{\'REMOVEQUESTION\'| translate }}</h5>' +
           '</md-content>      ' +
           '  </md-dialog-content>' +
           '  <md-dialog-actions>' +
-          '    <md-button href="#/app/menu" ng-click="remove()" class="md-primary">' +
+          '    <md-button  translate="REMOVEQUIZ" href="#/app/menu" ng-click="remove()" class="md-primary">' +
           '      Eliminar' +
           '    </md-button>' +
-          '    <md-button  ng-click="closeDialog()" class="md-primary">' +
+          '    <md-button  translate="CANCELREMOVE" ng-click="closeDialog()" class="md-primary">' +
           '      Cancelar' +
           '    </md-button>' +
           '  </md-dialog-actions>' +
@@ -314,7 +348,7 @@ angular.module('testManager.controllers', [])
         ' </md-toolbar>' +
         '  <md-dialog-content>' +
         '<md-tabs md-dynamic-height md-border-bottom>' +
-        '<md-tab label="resultados">' +
+        '<md-tab label="{{\'RESULTTAB\' | translate}}">' +
         '<md-content class="md-padding">' +
         '<h5 class="md-display-1" style="text-align:center"><em>{{cuestionario.tests[cuestionario.tests.length-1].cal | number:2}}%</em></h5>' +
         '</md-content>' +
@@ -322,19 +356,19 @@ angular.module('testManager.controllers', [])
         '<canvas id="doughnut" class="chart chart-doughnut" chart-data="data" chart-labels="labels" chart-colors="colors">' +
         '</md-content>' +
         '</md-tab>' +
-        '<md-tab label="sumario">' +
+        '<md-tab label="{{\'SUMMARYTAB\' | translate}}">' +
         ' <md-content class="md-padding" ng-repeat="preg in cuestionario.tests[cuestionario.tests.length-1].questions  track by $index">' +
         '<div ng-if="preg.estado==1" class="bs-callout bs-callout-success">' +
-        '<h4><em>Pregunta {{$index+1}} : {{preg.pregunta}}</em></h4>' +
-        '<p>Muy bien, <strong class="text-success">{{preg.rcorrect}}</strong> es la respuesta correcta</p>' +
+        '<h4><em>{{\'QUESTION\'| translate}} {{$index+1}} : {{preg.pregunta}}</em></h4>' +
+        '<p translate>{{\'CORRECT\'}} </p> <strong class="text-success">{{preg.rcorrect}}</strong>' +
         '</div>' +
         '<div ng-if="preg.estado==0" class="bs-callout bs-callout-danger">' +
-        '<h4><em>Pregunta {{$index+1}} : {{preg.pregunta}}</em></h4>' +
-        '<p>Vaya! <strong class="text-danger">{{preg.r}} </strong> no es la respuesta correcta.' +
+        '<h4><em>{{\'QUESTION\'| translate}} {{$index+1}} : {{preg.pregunta}}</em></h4>' +
+        '<p translate>{{\'INCORRECT\'}} </p> <strong class="text-danger">{{preg.r}} </strong>' +
         ' </div>' +
         '<div ng-if="preg.estado>0 && preg.estado<1 " class="bs-callout bs-callout-warning">' +
-        '<h4><em>Pregunta {{$index+1}} : {{preg.pregunta}}</em></h4>' +
-        '<p>La respuesta <strong class="text-warning">{{preg.r}} </strong> es correcta parcialmente.' +
+        '<h4><em>{{\'QUESTION\'| translate}} {{$index+1}} : {{preg.pregunta}}</em></h4>' +
+        '<p translate>{{\'PARCIAL1\'}}</p> <strong class="text-warning">{{preg.r}} </strong> <p translate>{{\'PARCIAL2\'}}</p>' +
         ' </div>' +
         '</md-content>' +
         '</md-tab>' +
@@ -344,7 +378,7 @@ angular.module('testManager.controllers', [])
         '    <md-button href="#/app/menu" ng-click="closeDialog()" class="md-primary">' +
         '      Menu' +
         '    </md-button>' +
-        '    <md-button href="#/app/stats/{{cuestionario._id}}" ng-click="closeDialog()" class="md-primary">' +
+        '    <md-button  translate="STAT" href="#/app/stats/{{cuestionario._id}}" ng-click="closeDialog()" class="md-primary">' +
         '      Estadisticas' +
         '    </md-button>' +
         '  </md-dialog-actions>' +
@@ -406,25 +440,6 @@ angular.module('testManager.controllers', [])
 
   }])
 
-  //Directiva para poder cargar una imagen
-  .directive("fileread", [function () {
-    return {
-      scope: {
-        fileread: "="
-      },
-      link: function (scope, element) {
-        element.bind("change", function (changeEvent) {
-          var reader = new FileReader();
-          reader.onload = function (loadEvent) {
-            scope.$apply(function () {
-              scope.fileread = loadEvent.target.result;
-            });
-          }
-          reader.readAsDataURL(changeEvent.target.files[0]);
-        });
-      }
-    }
-  }])
 
   .controller('MakerController', ['$scope', '$mdDialog', 'menuFactory', '$ionicPlatform', '$cordovaLocalNotification', '$cordovaToast', function ($scope, $mdDialog, menuFactory, $ionicPlatform, $cordovaLocalNotification, $cordovaToast) {
     $scope.form = {};
@@ -465,7 +480,7 @@ angular.module('testManager.controllers', [])
       questions: [{
         title: "",
         pregunta: "",
-        image: "img/libro.jpg",
+        image: "",
         tipo: "",
         r1: "",
         r2: "",
@@ -478,20 +493,10 @@ angular.module('testManager.controllers', [])
     };
 
 
-    $scope.submitTest = function () {
-
-      for (var i = 0; i < $scope.cuest.questions.length; i++) {
-        //Se establece un identificador por cada pregunta
-        if (typeof $scope.cuest.questions[i].image === "undefined") {
-          $scope.cuest.questions[i].image = "img/libro.jpg";
-        }
-        //Cada pregunta tiene como titulo el mismo titulo del cuestionario
-        $scope.cuest.questions[i].title = $scope.cuest.title;
-      }
+    $scope.submitTest = function (cuest) {
 
       //Poner el cuestionaro creado en array de cuestionarios
       menuFactory.save($scope.cuest);
-      //$scope.cuestionarios.push($scope.cuest);
       $ionicPlatform.ready(function () {
         $cordovaLocalNotification.schedule({
           id: 1,
@@ -505,13 +510,16 @@ angular.module('testManager.controllers', [])
           });
 
         $cordovaToast
-          .show('Cuestionario creado ' + $scope.cuest.title, 'long', 'center')
+          .show('New Quiz ' + $scope.cuest.title, 'long', 'center')
           .then(function (success) {
             // success
           }, function (error) {
             // error
           });
       });
+
+
+
       //Resetea el formulario a  pristine
       $scope.form.makerForm.$setPristine();
 
@@ -523,7 +531,7 @@ angular.module('testManager.controllers', [])
         questions: [{
           title: "",
           pregunta: "",
-          image: "img/libro.jpg",
+          image: "",
           tipo: "",
           r1: "",
           r2: "",
@@ -537,50 +545,9 @@ angular.module('testManager.controllers', [])
 
     };
 
-    $scope.fichero = {};
-    //Función que importa un cuestionario desde un fichero en formato .json
-    $scope.import = function () {
-
-      $.getJSON($scope.fichero.fic, function (data) {
-        //Se resetea las respuestas y las estadisticas 
-        data.tests = []
-        data.stats = []
-        $scope.cuestionarios.push(data);
-        //Se guarda el nuevo cuestionario en el array de cuestionarios
-        menuFactory.save(data);
-      })
-        //Si el archivo no es un archivo de tipo json
-        .fail(function () {
-          $mdDialog.show({
-            clickOutsideToClose: true,
-            scope: $scope,
-            preserveScope: true,
-            template: '<md-dialog aria-label="File invalid">' +
-            '  <md-dialog-content>' +
-            '<md-content class="md-padding">' +
-            ' <h5 class="md-title">Archivo no válido</h5>' +
-            ' <p class="md-textContent">Debes seleccionar un archivo en formato json</p>' +
-            '</md-content>      ' +
-            '  </md-dialog-content>' +
-            '  <md-dialog-actions>' +
-            '    <md-button ng-click="closeDialog()" class="md-primary">' +
-            '      Cerrar' +
-            '    </md-button>' +
-            '  </md-dialog-actions>' +
-            '</md-dialog>',
-
-            controller: function DialogController($scope, $mdDialog) {
-              $scope.closeDialog = function () {
-                $mdDialog.hide();
-              }
-            }
-          });
-        })
-    };
-
   }])
 
-  .controller('StatsControllerDetails', ['$scope', '$stateParams', '$mdDialog', 'menuFactory', function ($scope, $stateParams, $mdDialog, menuFactory) {
+  .controller('StatsControllerDetails', ['$scope', '$filter', '$stateParams', '$mdDialog', 'menuFactory', function ($scope, $filter, $stateParams, $mdDialog, menuFactory) {
     $scope.$on("$ionicView.beforeEnter", function (event, data) {
       $scope.showStatInd = false;
       $scope.message = "Loading ...";
@@ -593,14 +560,14 @@ angular.module('testManager.controllers', [])
             //Dialogo que aparece cuando no hay cuestionarios completados
             if ($scope.cuestionario.stats.length == 0) {
               $mdDialog.show({
-                clickOutsideToClose: false,
+                clickOutsideToClose: true,
                 scope: $scope,
                 preserveScope: true,
                 template: '<md-dialog aria-label="List dialog">' +
                 '  <md-dialog-content>' +
                 '<md-content class="md-padding">' +
-                ' <h5 class="md-title">No hay estadisticas que mostrar</h5>' +
-                ' <p class="md-textContent">Todavía no has realizado ningún cuestionario</p>' +
+                ' <h5 class="md-title" translate>{{\'STATSDIALOGTITLE\'}}</h5>' +
+                ' <p class="md-textContent" translate>{{\'STATDIALOGTEXT\'}}</p>' +
                 '</md-content>      ' +
                 '  </md-dialog-content>' +
                 '  <md-dialog-actions>' +
@@ -659,7 +626,7 @@ angular.module('testManager.controllers', [])
       };
     });
   }])
-  .controller('StatsController', ['$scope', '$stateParams', '$mdDialog', 'menuFactory', function ($scope, $stateParams, $mdDialog, menuFactory) {
+  .controller('StatsController', ['$scope', '$filter', '$stateParams', '$mdDialog', 'menuFactory', function ($scope, $filter, $stateParams, $mdDialog, menuFactory) {
     $scope.$on("$ionicView.enter", function (event, data) {
       $scope.showStat = false;
       $scope.message = "Loading ...";
@@ -669,7 +636,6 @@ angular.module('testManager.controllers', [])
           function (response) {
             $scope.cuestionario = response[0].cuestionarios;
             $scope.showStat = true;
-
           },
           function (response) {
             $scope.message = "Error: " + response.status + " " + response.statusText;
@@ -697,8 +663,8 @@ angular.module('testManager.controllers', [])
             template: '<md-dialog aria-label="List dialog">' +
             '  <md-dialog-content>' +
             '<md-content class="md-padding">' +
-            ' <h5 class="md-title">No hay estadisticas que mostrar</h5>' +
-            ' <p class="md-textContent">Todavía no has realizado este cuestionario</p>' +
+            ' <h5 class="md-title" translate>{{\'STATSDIALOGTITLE\'}}</h5>' +
+            ' <p class="md-textContent" translate>{{\'STATSDIALOGTEXT\'}}</p>' +
             '</md-content>      ' +
             '  </md-dialog-content>' +
             '  <md-dialog-actions>' +
@@ -784,11 +750,11 @@ angular.module('testManager.controllers', [])
           '<div class="list">' +
           '<a class="item item-icon-left"  href="#/app/stats/{{test._id}}" ng-click="closeDialog()">' +
           '<i class="icon ion-stats-bars"></i>' +
-          'Estadisticas' +
+          '{{\'STAT\' | translate}}' +
           ' </a>' +
           '<a class="item item-icon-left"  ng-click="removeFavorite(test);closeDialog()">' +
           '<i class="icon ion-trash-a"></i>' +
-          'Eliminar' +
+          '{{\'REMOVEQUIZ\' | translate}}' +
           '</a>' +
           '</div>' +
           '</md-content>' +

@@ -1,4 +1,4 @@
-<ion-view view-title="Cuestionario" cache-view="false">
+<ion-view view-title="{{'QUIZ'| translate}}"  cache-view="false">
   <ion-content>
     <form class="form-horizontal" role="form" name="form.testForm" ng-submit="submitAnswer($event)" novalidate>
       <ion-slide-box delegate-handle="img-viewer">
@@ -6,14 +6,15 @@
           <md-card>
             <md-card-header>
               <md-card-header-text>
-                <span class="md-subhead">Pregunta {{$index+1}}</span>
+                <span class="md-subhead">{{ 'QUESTION' | translate}} {{$index+1}}</span>
               </md-card-header-text>
             </md-card-header>
-            <img class="md-card-image" ng-src={{baseURL+preg.image}}>
+            <img class="md-card-image"  ng-if="preg.image" ng-src={{baseURL+preg.image}}>
             <md-card-title>
               <md-card-title-text>
                 <span class="md-headline">{{preg.pregunta}}</span>
-                <span class="md-subhead">Selecciona una respuesta</span>
+                <span class="md-subhead" ng-if="preg.tipo=='unica'" translate>{{'SELECTQUESTION'}}</span>
+                <span class="md-subhead" ng-if="preg.tipo=='multiple'" translate>{{'SELECTQUESTIONS'}}</span>
               </md-card-title-text>
             </md-card-title>
 
@@ -54,7 +55,7 @@
           </md-card>
         </ion-slide>
       </ion-slide-box>
-      <md-button type="submit" md-colors="{background: 'teal'}" class="md-raised md-accent" ng-disabled="form.testForm.$invalid">Listo !</md-button>
+      <md-button  translate="READY" type="submit" md-colors="{background: 'teal'}" class="md-raised md-accent" ng-disabled="form.testForm.$invalid">Listo !</md-button>
     </form>
   </ion-content>
 </ion-view>
