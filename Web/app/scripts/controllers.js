@@ -218,7 +218,7 @@ angular.module('testManagerApp')
         //Se obtiene las respuestas guardadas
         $scope.submitAnswer = function () {
             //Se guarda la fecha en la que se realiza el cuestionario
-            $scope.answer.date = new Date();
+            $scope.answer.date = $filter('date')(new Date(), 'd/M/yy');
             //Si la pregunta es de tipo múltiple se guarda el array de respuestas contestadas en cada pregunta.
             for (var i = 0; i < $scope.selected.length; i++) {
                 if ($scope.cuestionario.questions[i].tipo == "multiple")
@@ -436,7 +436,7 @@ angular.module('testManagerApp')
             questions: [{
                 title: "",
                 pregunta: "",
-                image: "img/libro.jpg",
+                image: "",
                 tipo: "",
                 r1: "",
                 r2: "",
@@ -452,9 +452,31 @@ angular.module('testManagerApp')
         $scope.submitTest = function () {
 
             for (var i = 0; i < $scope.cuest.questions.length; i++) {
-                //Se establece un identificador por cada pregunta
-                if (typeof $scope.cuest.questions[i].image === "undefined") {
-                    $scope.cuest.questions[i].image = "img/libro.jpg";
+                if (!$scope.cuest.questions[i].image) {
+                    $scope.cuest.questions[i].image = "";
+                } else {
+                    var imga = document.createElement('img');
+                    imga.src = $scope.cuest.questions[i].image;
+                    var newDataUri = imageToDataUri(imga, 100, 100);
+                    function imageToDataUri(img, width, height) {
+
+                        // create an off-screen canvas
+                        var canvas = document.createElement('canvas'),
+                            ctx = canvas.getContext('2d');
+
+                        // set its dimension to target size
+                        canvas.width = width;
+                        canvas.height = height;
+
+                        // draw source image into the off-screen canvas:
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // encode image to data-uri with base64 version of compressed image
+                        return canvas.toDataURL();
+                    }
+
+                    $scope.cuest.questions[i].image = newDataUri;
+
                 }
                 //Cada pregunta tiene como titulo el mismo titulo del cuestionario
                 $scope.cuest.questions[i].title = $scope.cuest.title;
@@ -474,7 +496,7 @@ angular.module('testManagerApp')
                 questions: [{
                     title: "",
                     pregunta: "",
-                    image: "img/libro.jpg",
+                    image: "",
                     tipo: "",
                     r1: "",
                     r2: "",
@@ -542,10 +564,6 @@ angular.module('testManagerApp')
                 function (response) {
                     $scope.cuestionario = response.cuestionarios[0];
                     $scope.showStatInd = true;
-                    $scope.fechas = $scope.cuestionario.stats[0].stats.labels;
-                    for (var i = 0; i < $scope.fechas.length; i++) {
-                        $scope.fechas[i] = $filter('date')($scope.fechas[i], 'shortDate');
-                    }
                     //Dialogo que aparece cuando no hay cuestionarios completados
                     if ($scope.cuestionario.stats.length == 0) {
                         $mdDialog.show({
@@ -636,10 +654,6 @@ angular.module('testManagerApp')
                 function (response) {
                     $scope.cuestionario = response[0].cuestionarios;
                     $scope.showStat = true;
-                    $scope.fechas = $scope.cuestionario[0].stats[0].stats.labels;
-                    for (var i = 0; i < $scope.fechas.length; i++) {
-                        $scope.fechas[i] = $filter('date')($scope.fechas[i], 'shortDate');
-                    }
                 },
                 function (response) {
                     $scope.message = "Error: " + response.status + " " + response.statusText;

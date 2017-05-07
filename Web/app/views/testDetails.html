@@ -21,7 +21,8 @@
                                         <md-card-title>
                                             <md-card-title-text>
                                                 <span class="md-headline">{{preg.pregunta}}</span>
-                                                <span translate class="md-subhead">{{'SELECTQUESTION'}}</span>
+                                                <span class="md-subhead" ng-if="preg.tipo=='unica'" translate>{{'SELECTQUESTION'}}</span>
+                                                <span class="md-subhead" ng-if="preg.tipo=='multiple'" translate>{{'SELECTQUESTIONS'}}</span>
                                             </md-card-title-text>
                                         </md-card-title>
 

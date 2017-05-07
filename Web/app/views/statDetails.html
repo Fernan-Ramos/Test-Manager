@@ -14,8 +14,8 @@
                         <md-icon class="fa fa-calendar-o fa-2x"></md-button>
                     <div ng-repeat="test in cuestionario.tests | orderBy:filtText" ng-class="{'bs-callout bs-callout-success':test.cal>=70,'bs-callout bs-callout-warning': test.cal>=50 && test.cal<70,'bs-callout bs-callout-danger':test.cal<50}">
                         <h4>{{cuestionario.title}}</h4>
-                        <p><strong><em>{{test.cal | number : 2}}% correcto</em></strong></p>
-                        <cite title="Source Title">{{ 'DATE'|translate:{date:test.date} }}</cite>
+                        <p><strong><em>{{test.cal | number : 2}}%</em></strong></p>
+                        <cite title="Source Title">{{test.date}}</cite>
                     </div>
 
                 </div>
@@ -29,7 +29,7 @@
             <div class="panel panel-default">
                 <div translate class="panel-heading">{{'CHARTITLE2'}}</div>
                 <div class="panel-body">
-                    <canvas id="line" class="chart chart-line" chart-data="cuestionario.stats[0].stats.data" chart-labels="fechas" chart-series="cuestionario.stats[0].stats.series"
+                    <canvas id="line" class="chart chart-line" chart-data="cuestionario.stats[0].stats.data" chart-labels="cuestionario.stats[0].stats.labels" chart-series="cuestionario.stats[0].stats.series"
                         chart-colors="cuestionario.stats[0].stats.colors" chart-options="options1" chart-dataset-override="datasetOverride1"
                         chart-click="onClick">
                     </canvas>
