@@ -781,17 +781,6 @@ angular.module('testManagerApp')
             $scope.username = AuthFactory.getUsername();
         }
 
-        /** 
-        $scope.openLogin = function () {
-            ngDialog.open({
-                template: 'views/login.html',
-                scope: $scope,
-                className: 'ngdialog-theme-default',
-                controller: "LoginController"
-            });
-        };
-        */
-
         $scope.logOut = function () {
             AuthFactory.logout();
             $scope.loggedIn = false;
@@ -820,9 +809,10 @@ angular.module('testManagerApp')
         //Se detecta el lenguaje del navegador
         var language = $window.navigator.language || $window.navigator.userLanguage;
         //Se traduce al lenguaje predefinido en el navegador
-        if (language == 'es' || language == 'en')
+        if (language == 'es' || language == 'en' || language == 'en-US' || language == 'en-GB')
             $translate.use(language);
 
+        console.log(language)
         $scope.loggedIn = false;
         $scope.username = '';
         $scope.changeLanguage = function (key) {
@@ -838,10 +828,7 @@ angular.module('testManagerApp')
         $scope.doLogin = function () {
             if ($scope.rememberMe)
                 $localStorage.storeObject('userinfo', $scope.loginData);
-
             AuthFactory.login($scope.loginData);
-
-
         };
 
         $rootScope.$on('login:Successful', function () {

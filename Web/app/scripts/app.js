@@ -277,6 +277,9 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             BUTTON_LANG_EN: 'English'
         };
         $translateProvider.translations('es', translationsES);
+        $translateProvider.translations('en-US', translationsEN);
+        $translateProvider.translations('en-GB', translationsEN);
+        $translateProvider.translations('en', translationsEN);
         $translateProvider.translations('en', translationsEN);
         $translateProvider.preferredLanguage('es');
         $translateProvider.fallbackLanguage('es');
