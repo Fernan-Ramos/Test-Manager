@@ -56,45 +56,6 @@ angular.module('testManager.controllers', [])
         });
 
 
-      //Dialogo que muestra las opciones para cada cuestionario
-      $scope.showOptions = function (test) {
-        $mdDialog.show({
-          clickOutsideToClose: true,
-          scope: $scope,
-          preserveScope: true,
-          locals: {
-            test: test
-          },
-          template: '<md-dialog aria-label="List dialog">' +
-          '  <md-dialog-content>' +
-          '<md-content class="md-padding">' +
-          '<div class="list">' +
-          '<a class="item item-icon-left"  href="#/app/stats/{{test._id}}" ng-click="closeDialog()">' +
-          '<i class="icon ion-stats-bars"></i>' +
-          '{{\'STAT\' | translate }}' +
-          ' </a>' +
-          '<a class="item item-icon-left" ng-click="addFavorite(test);closeDialog()" >' +
-          '<i class="icon ion-heart"></i>' +
-          '{{\'ADDFAVORITE\' | translate }}' +
-          '</a>' +
-          '<a class="item item-icon-left"  ng-click="removeCuest(test)">' +
-          '<i class="icon ion-trash-a"></i>' +
-          '{{\'REMOVEQUIZ\' | translate }}' +
-          '</a>' +
-          '</div>' +
-          '</md-content>' +
-          '</md-dialog-content>' +
-          '</md-dialog>',
-          controller: function DialogController($scope, $mdDialog, test) {
-            $scope.test = test;
-            $scope.closeDialog = function () {
-              $mdDialog.hide();
-            }
-          }
-        });
-
-      };
-
       $scope.addFavorite = function (test) {
         test.tests = [];
         test.stats = [];
@@ -105,31 +66,14 @@ angular.module('testManager.controllers', [])
         if (!isFav) {
           favoriteFactory.save(test);
           $scope.favoritos.push(test);
-          $mdDialog.show({
-            clickOutsideToClose: true,
-            scope: $scope,
-            locals: {
-              test: test
-            },
-            preserveScope: true,
-            template: '<md-dialog aria-label="List dialog">' +
-            '  <md-dialog-content>' +
-            '<md-content class="md-padding">' +
-            ' <h5 class="md-title" translate="ADDEDFAVORITE">{{\'ADDEDFAVORITE\' | translate}}</h5> <em>{{test.title}}</em>' +
-            '</md-content>      ' +
-            '  </md-dialog-content>' +
-            '  <md-dialog-actions>' +
-            '    <md-button translate="FAVORITEBUTTON" ui-sref="app.favorites" ng-click="closeDialog()" class="md-primary">' +
-            '      Favoritos' +
-            '    </md-button>' +
-            '  </md-dialog-actions>' +
-            '</md-dialog>',
-            controller: function DialogController($scope, $mdDialog, test) {
-              $scope.test = test;
-              $scope.closeDialog = function () {
-                $mdDialog.hide();
-              }
-            }
+          $ionicPlatform.ready(function () {
+            $cordovaToast
+              .show("{{'ADDEDFAVORITE\' | translate}}" + test.title, 'long', 'center')
+              .then(function (success) {
+                // success
+              }, function (error) {
+                // error
+              });
           });
         } else {
           $mdDialog.show({
@@ -287,7 +231,7 @@ angular.module('testManager.controllers', [])
     //Se obtiene las respuestas guardadas
     $scope.submitAnswer = function (ev) {
       //Se guarda la fecha en la que se realiza el cuestionario
-      $scope.answer.date = $filter('date')(new Date(), 'shortDate');
+      $scope.answer.date = $filter('date')(new Date(), 'y/M/d');
       //Si la pregunta es de tipo múltiple se guarda el array de respuestas contestadas en cada pregunta.
       for (var i = 0; i < $scope.selected.length; i++) {
         if ($scope.cuestionario.questions[i].tipo == "multiple")
@@ -498,19 +442,8 @@ angular.module('testManager.controllers', [])
       //Poner el cuestionaro creado en array de cuestionarios
       menuFactory.save($scope.cuest);
       $ionicPlatform.ready(function () {
-        $cordovaLocalNotification.schedule({
-          id: 1,
-          title: "Cuestionario creado",
-          text: $scope.cuest.title
-        }).then(function () {
-          console.log('Cuestionario creado ' + $scope.cuest.title);
-        },
-          function () {
-            console.log('Failed to add Notification ');
-          });
-
         $cordovaToast
-          .show('New Quiz ' + $scope.cuest.title, 'long', 'center')
+          .show('Cuestionario ' + $scope.cuest.title + ' añadido', 'long', 'center')
           .then(function (success) {
             // success
           }, function (error) {
@@ -722,7 +655,7 @@ angular.module('testManager.controllers', [])
 
   }])
 
-  .controller('FavoritesController', ['$scope', 'menuFactory', 'favoriteFactory', 'baseURL', '$mdDialog', function ($scope, menuFactory, favoriteFactory, baseURL, $mdDialog) {
+  .controller('FavoritesController', ['$scope', '$ionicPlatform', '$cordovaToast', 'menuFactory', 'favoriteFactory', 'baseURL', '$mdDialog', function ($scope, $ionicPlatform, $cordovaToast, menuFactory, favoriteFactory, baseURL, $mdDialog) {
     $scope.$on("$ionicView.enter", function (event, data) {
       $scope.baseURL = baseURL;
       $scope.favoritos = favoriteFactory.query(
@@ -734,47 +667,21 @@ angular.module('testManager.controllers', [])
           $scope.message = "Error: " + response.status + " " + response.statusText;
         });
 
-
-      //Dialogo que muestra las opciones para cada cuestionario
-      $scope.showOptions = function (test) {
-        $mdDialog.show({
-          clickOutsideToClose: true,
-          scope: $scope,
-          preserveScope: true,
-          locals: {
-            test: test
-          },
-          template: '<md-dialog aria-label="List dialog">' +
-          '  <md-dialog-content>' +
-          '<md-content class="md-padding">' +
-          '<div class="list">' +
-          '<a class="item item-icon-left"  href="#/app/stats/{{test._id}}" ng-click="closeDialog()">' +
-          '<i class="icon ion-stats-bars"></i>' +
-          '{{\'STAT\' | translate}}' +
-          ' </a>' +
-          '<a class="item item-icon-left"  ng-click="removeFavorite(test);closeDialog()">' +
-          '<i class="icon ion-trash-a"></i>' +
-          '{{\'REMOVEQUIZ\' | translate}}' +
-          '</a>' +
-          '</div>' +
-          '</md-content>' +
-          '</md-dialog-content>' +
-          '</md-dialog>',
-          controller: function DialogController($scope, $mdDialog, test) {
-            $scope.test = test;
-            $scope.closeDialog = function () {
-              $mdDialog.hide();
-            }
-          }
-        });
-      }
-
       $scope.removeFavorite = function (test) {
         var index = $scope.favoritos.indexOf(test);
         if (index > -1) {
           $scope.favoritos.splice(index, 1);
         }
         favoriteFactory.remove(test);
+        $ionicPlatform.ready(function () {
+          $cordovaToast
+            .show('Favorito ' + test.title + ' borrado', 'long', 'center')
+            .then(function (success) {
+              // success
+            }, function (error) {
+              // error
+            });
+        });
       }
     });
 

@@ -1,17 +1,26 @@
 <ion-view view-title="{{'FAV' | translate}}">
     <ion-content>
-        <div class="list card" ng-repeat="test in favoritos">
-            <div class="item item-divider">
-                {{test.title}}
-                <div class="item-icon-right">
-                    <i class="icon ion-ios-more" ng-click="showOptions(test)"></i>
-                </div>
-            </div>
-            <a class="item item-thumbnail-left" ui-sref="app.testDetails({id: test._id})">
-                <img ng-src="{{baseURL+test.image}}">
-                <br>
-                <p>{{test.text}}</p>
-            </a>
-        </div>
+        <md-card ng-repeat="test in favoritos">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline card-text">{{test.title}}</span>
+                    <span class="md-subhead">{{test.text}}</span>
+                </md-card-title-text>
+                <md-card-title-media>
+                    <div class="md-media-sm card-media"></div>
+                </md-card-title-media>
+            </md-card-title>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-button aria-label="Test" class="md-icon-button" ui-sref="app.testDetails({id: test._id})">
+                    <md-icon class="fa fa-check-square-o fa-2x"></md-icon>
+                </md-button>
+                <md-button aria-label="Stats" class="md-icon-button" ui-sref="app.statDetails({id: test._id})">
+                    <md-icon class="fa fa-bar-chart fa-2x"></md-icon>
+                </md-button>
+                <md-button ng-click="removeFavorite(test)" aria-label="Remove Cuest" class="md-icon-button">
+                    <md-icon class="fa fa-trash-o fa-2x"></md-icon>
+                </md-button>
+            </md-card-actions>
+        </md-card>
     </ion-content>
 </ion-view>

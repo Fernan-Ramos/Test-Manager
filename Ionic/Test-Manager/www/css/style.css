@@ -7,6 +7,10 @@
     background-color:#257985 !important;
 }
 
+.pipas{
+   background: #b9f6ca;
+}
+
 .bs-callout {
     padding: 20px;
     margin: 20px 0;
@@ -74,4 +78,9 @@
     color: teal;
     text-align: center;
     font-size: 210%;
+}
+
+.card-text{
+    color:teal;
+    
 }

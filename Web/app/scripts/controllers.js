@@ -218,7 +218,7 @@ angular.module('testManagerApp')
         //Se obtiene las respuestas guardadas
         $scope.submitAnswer = function () {
             //Se guarda la fecha en la que se realiza el cuestionario
-            $scope.answer.date = $filter('date')(new Date(), 'd/M/yy');
+            $scope.answer.date = $filter('date')(new Date(), 'y/M/d');
             //Si la pregunta es de tipo múltiple se guarda el array de respuestas contestadas en cada pregunta.
             for (var i = 0; i < $scope.selected.length; i++) {
                 if ($scope.cuestionario.questions[i].tipo == "multiple")
