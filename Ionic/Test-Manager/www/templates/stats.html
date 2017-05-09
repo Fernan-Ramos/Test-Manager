@@ -1,7 +1,26 @@
 <ion-view view-title="{{'STAT' | translate}}">
   <ion-content>
     <div class="card">
-      <div class="item item-divider" translate>
+      <div class="item item-divider card-text" translate>
+        {{'CHARTTITLE1'}}
+      </div>
+      <div class="item item-text-wrap">
+        <ion-list>
+          <div ng-repeat="cuest in cuestionario">
+            <ion-item class="item-stable" ng-click="toggleTest(cuest);dialogo(cuest.tests)" ng-class="{active: isTestShown(cuest)}">
+              <i class="icon" ng-class="isTestShown(cuest) ? 'ion-minus' : 'ion-plus'"></i> {{cuest.title}}
+            </ion-item>
+            <ion-item class="item-accordion" ng-repeat="stat in cuest.stats" ng-show="isTestShown(cuest)">
+              <canvas id="line" class="chart chart-line" chart-data="stat.stats.data" chart-labels="stat.stats.labels" chart-series="stat.stats.series"
+                chart-colors="stat.stats.colors" chart-dataset-override="datasetOverride2" chart-options="options2">
+              </canvas>
+            </ion-item>
+          </div>
+        </ion-list>
+      </div>
+    </div>
+    <div class="card">
+      <div class="item item-divider card-text" translate>
         {{'STATSTITLE'}}
       </div>
       <div class="item item-text-wrap">
@@ -24,25 +43,6 @@
             <cite title="Source Title">{{test.date}}</cite>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="item item-divider" translate>
-        {{'CHARTTITLE1'}}
-      </div>
-      <div class="item item-text-wrap">
-        <ion-list>
-          <div ng-repeat="cuest in cuestionario">
-            <ion-item class="item-stable" ng-click="toggleTest(cuest);dialogo(cuest.tests)" ng-class="{active: isTestShown(cuest)}">
-              <i class="icon" ng-class="isTestShown(cuest) ? 'ion-minus' : 'ion-plus'"></i> {{cuest.title}}
-            </ion-item>
-            <ion-item class="item-accordion" ng-repeat="stat in cuest.stats" ng-show="isTestShown(cuest)">
-              <canvas id="line" class="chart chart-line" chart-data="stat.stats.data" chart-labels="stat.stats.labels" chart-series="stat.stats.series"
-                chart-colors="stat.stats.colors" chart-dataset-override="datasetOverride2" chart-options="options2">
-              </canvas>
-            </ion-item>
-          </div>
-        </ion-list>
       </div>
     </div>
   </ion-content>

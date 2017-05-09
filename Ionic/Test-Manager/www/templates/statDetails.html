@@ -1,12 +1,23 @@
 <ion-view view-title="{{'STAT' | translate}}">
   <ion-content>
     <div class="card">
-      <div class="item item-divider" translate>
+      <div class="item item-divider card-text" translate>
+        {{'CHARTITLE2'}}
+      </div>
+      <div class="item item-text-wrap">
+        <canvas id="line" class="chart chart-line" chart-data="cuestionario.stats[0].stats.data" chart-labels="cuestionario.stats[0].stats.labels"
+          chart-series="cuestionario.stats[0].stats.series" chart-colors="cuestionario.stats[0].stats.colors" chart-options="options1"
+          chart-dataset-override="datasetOverride1" chart-click="onClick">
+        </canvas>
+      </div>
+    </div>
+    <div class="card">
+      <div class="item item-divider card-text" translate>
         {{'STATSTITLE'}}
       </div>
       <div class="item item-text-wrap">
         <div class="item tabs">
-          <p translate> {{'SORT'}}  </p>
+          <p translate> {{'SORT'}} </p>
           <a class="tab-item " ng-click="filter(1)">
             <i class="icon ion-android-checkbox"></i>
           </a>
@@ -21,16 +32,6 @@
         </div>
       </div>
     </div>
-    <div class="card">
-      <div class="item item-divider" translate>
-        {{'CHARTITLE2'}}
-      </div>
-      <div class="item item-text-wrap">
-        <canvas id="line" class="chart chart-line" chart-data="cuestionario.stats[0].stats.data" chart-labels="cuestionario.stats[0].stats.labels"
-          chart-series="cuestionario.stats[0].stats.series" chart-colors="cuestionario.stats[0].stats.colors" chart-options="options1"
-          chart-dataset-override="datasetOverride1" chart-click="onClick">
-        </canvas>
-      </div>
-    </div>
+
   </ion-content>
 </ion-view>

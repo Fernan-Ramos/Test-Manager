@@ -1,6 +1,6 @@
 /* Empty. Add your own CSS if you like */
 .nav-teal{
-  background-color: #008080 !important;
+  background-color: teal !important;
   color:floralwhite
 }
 .nav-header{
@@ -81,6 +81,6 @@
 }
 
 .card-text{
-    color:teal;
+    color:#257985;
     
 }

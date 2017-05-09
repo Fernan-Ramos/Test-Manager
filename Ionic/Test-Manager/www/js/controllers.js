@@ -1,6 +1,6 @@
 angular.module('testManager.controllers', [])
 
-  .controller('AppCtrl', function ($scope, $rootScope, $ionicModal, $timeout, $ionicHistory, $state, $localStorage, AuthFactory) {
+  .controller('AppCtrl', function ($scope, $filter, $rootScope, $ionicModal, $timeout, $ionicHistory, $state, $localStorage, AuthFactory) {
 
     // With the new view caching in Ionic, Controllers are only called
     // when they are recreated or on app start, instead of every page change.
@@ -15,9 +15,11 @@ angular.module('testManager.controllers', [])
       $ionicHistory.nextViewOptions({
         disableBack: true
       });
-      //Si la vista es Estadisticas Individuales se vueleve a la vista menu
-      if ($ionicHistory.currentTitle() == "Estadisticas Ind")
+      var vista = $filter('translate')('STAT');
+      //Si la vista es Estadisticas se vueleve a la vista menu
+      if ($ionicHistory.currentTitle() == vista) {
         $state.go('app.menu');
+      }
       else
         $ionicHistory.goBack();
     };
