@@ -32,7 +32,7 @@ angular.module('testManager.controllers', [])
 
   })
 
-  .controller('MenuController', ['$scope', 'menuFactory', 'favoriteFactory', 'baseURL', '$mdDialog', '$ionicPlatform', '$cordovaLocalNotification', '$cordovaToast', function ($scope, menuFactory, favoriteFactory, baseURL, $mdDialog, $ionicPlatform, $cordovaLocalNotification, $cordovaToast) {
+  .controller('MenuController', ['$scope', '$filter', 'menuFactory', 'favoriteFactory', 'baseURL', '$mdDialog', '$ionicPlatform', '$cordovaLocalNotification', '$cordovaToast', function ($scope, $filter, menuFactory, favoriteFactory, baseURL, $mdDialog, $ionicPlatform, $cordovaLocalNotification, $cordovaToast) {
 
     $scope.$on("$ionicView.enter", function (event, data) {
       $scope.baseURL = baseURL;
@@ -66,9 +66,10 @@ angular.module('testManager.controllers', [])
         if (!isFav) {
           favoriteFactory.save(test);
           $scope.favoritos.push(test);
+          var add = $filter('translate')('ADDEDFAVORITE');
           $ionicPlatform.ready(function () {
             $cordovaToast
-              .show("{{'ADDEDFAVORITE\' | translate}}" + test.title, 'long', 'center')
+              .show(add + test.title, 'long', 'center')
               .then(function (success) {
                 // success
               }, function (error) {
@@ -385,7 +386,7 @@ angular.module('testManager.controllers', [])
   }])
 
 
-  .controller('MakerController', ['$scope', '$mdDialog', 'menuFactory', '$ionicPlatform', '$cordovaLocalNotification', '$cordovaToast', function ($scope, $mdDialog, menuFactory, $ionicPlatform, $cordovaLocalNotification, $cordovaToast) {
+  .controller('MakerController', ['$scope', '$filter', '$mdDialog', 'menuFactory', '$ionicPlatform', '$cordovaLocalNotification', '$cordovaToast', function ($scope, $filter, $mdDialog, menuFactory, $ionicPlatform, $cordovaLocalNotification, $cordovaToast) {
     $scope.form = {};
     $scope.showMaker = false;
     $scope.message = "Loading ...";
@@ -441,18 +442,6 @@ angular.module('testManager.controllers', [])
 
       //Poner el cuestionaro creado en array de cuestionarios
       menuFactory.save($scope.cuest);
-      $ionicPlatform.ready(function () {
-        $cordovaToast
-          .show('Cuestionario ' + $scope.cuest.title + ' añadido', 'long', 'center')
-          .then(function (success) {
-            // success
-          }, function (error) {
-            // error
-          });
-      });
-
-
-
       //Resetea el formulario a  pristine
       $scope.form.makerForm.$setPristine();
 
@@ -476,6 +465,16 @@ angular.module('testManager.controllers', [])
         stats: []
       };
 
+      var add = $filter('translate')('CREATEDQUIZ');
+      $ionicPlatform.ready(function () {
+        $cordovaToast
+          .show(add + $scope.cuest.title, 'long', 'center')
+          .then(function (success) {
+            // success
+          }, function (error) {
+            // error
+          });
+      });
     };
 
   }])
@@ -655,7 +654,7 @@ angular.module('testManager.controllers', [])
 
   }])
 
-  .controller('FavoritesController', ['$scope', '$ionicPlatform', '$cordovaToast', 'menuFactory', 'favoriteFactory', 'baseURL', '$mdDialog', function ($scope, $ionicPlatform, $cordovaToast, menuFactory, favoriteFactory, baseURL, $mdDialog) {
+  .controller('FavoritesController', ['$scope', '$filter', '$ionicPlatform', '$cordovaToast', 'menuFactory', 'favoriteFactory', 'baseURL', '$mdDialog', function ($scope, $filter, $ionicPlatform, $cordovaToast, menuFactory, favoriteFactory, baseURL, $mdDialog) {
     $scope.$on("$ionicView.enter", function (event, data) {
       $scope.baseURL = baseURL;
       $scope.favoritos = favoriteFactory.query(
@@ -673,9 +672,11 @@ angular.module('testManager.controllers', [])
           $scope.favoritos.splice(index, 1);
         }
         favoriteFactory.remove(test);
+        var del1 = $filter('translate')('DELETEDFAVORITE1');
+        var del2 = $filter('translate')('DELETEDFAVORITE2');
         $ionicPlatform.ready(function () {
           $cordovaToast
-            .show('Favorito ' + test.title + ' borrado', 'long', 'center')
+            .show(del1 + test.title + del2, 'long', 'center')
             .then(function (success) {
               // success
             }, function (error) {
@@ -703,7 +704,6 @@ angular.module('testManager.controllers', [])
 
     // Perform the login action when the user submits the login form
     $scope.doLogin = function () {
-      console.log('Doing login', $scope.loginData);
       $localStorage.storeObject('userinfo', $scope.loginData);
 
       AuthFactory.login($scope.loginData);
@@ -736,7 +736,6 @@ angular.module('testManager.controllers', [])
       $scope.registerform.hide();
     };
     $scope.doRegister = function () {
-      console.log('Doing registration', $scope.registration);
       $scope.loginData.username = $scope.registration.username;
       $scope.loginData.password = $scope.registration.password;
 
