@@ -114,6 +114,10 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             EXPORT: 'Exporta cuestionarios',
             EXPORT1: 'Guarda tus cuestionarios para poder compartirlos con quien quieras!',
             NOLOGIN: 'Login Incorrecto',
+            QUESTREGUNI:'Esta pregunta es de respuesta única',
+            QUESTREGMUL:'Esta pregunta es de respuesta multiple',
+            QUESTREGWEL:'Bienvenido',
+            QUESTREGDES:'Esto es cuestionario de prueba',
             /**REGISTER */
             REGISTTITLE: 'Registro',
             NAME: 'Nombre',
@@ -176,7 +180,7 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             CANCELREMOVE: 'Cancelar',
             /**TEST DETAILS */
             SELECTQUESTION: 'Selecciona una respuesta',
-            SELECTQUESTIONS: 'Selecciona una or varias respuestas',
+            SELECTQUESTIONS: 'Selecciona una o varias respuestas',
             READY: 'Listo !',
             RESULTTAB: 'Resultados',
             SUMMARYTAB: 'Sumario',
@@ -208,6 +212,10 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             EXPORT: 'Export quizs',
             EXPORT1: 'Save your quizs so you can share them with anyone!',
             NOLOGIN: 'Login Unsuccessful',
+            QUESTREGUNI:'This is a single-choice question',
+            QUESTREGMUL:'This is a multiple-choice question',
+            QUESTREGWEL:'Welcome!',
+            QUESTREDES:'This a welcome quiz',
             /**REGISTER */
             REGISTTITLE: 'Sign up',
             NAME: 'Name',
