@@ -1,18 +1,3 @@
-<html lang="en" ng-app="testManagerApp">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Test Manager</title>
-    <!-- Bootstrap -->
-    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
-    <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="css/mystyles.css" rel="stylesheet">
-    <link href="css/bootstrap-social.css" rel="stylesheet">
-</head>
-
 <body>
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container">
@@ -21,123 +6,134 @@
                     aria-controls="navbar">
                     <span class="sr-only">Toggle navigation</span>Menu <i class="fa fa-bars"></i>
                     </button>
-                    <a class="navbar-brand" href="#page-top">TestManager</a>
+                <a class="navbar-brand" href="#page-top">Test Manager</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="#about">About</a>
-                    </li>
-                    <li>
-                        <a href="#app">App</a>
+                        <a href="#!features" translate>FEATURES</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    <li><a ng-click=openRegister()><span class="glyphicon glyphicon-user"></span> {{'REGISTER' | translate}}</a></li>
+                    <li>
+                        <a type="button" ng-click="changeLanguage('es')">{{'BUTTON_LANG_ES' | translate}} <span class="flag flag-es"></span> </a>
+                    </li>
+                    <li>
+                        <a type="button" ng-click="changeLanguage('en')">{{'BUTTON_LANG_EN' | translate}} <span class="flag flag-gb"></a>
+
+                    </li>
+
                 </ul>
             </div>
-            <!--navbar-collapse -->
         </div>
-        <!-- container -->
     </nav>
-    <header class="jumbotron">
-        <!-- Main component for a primary marketing message or call to action -->
+
+
+    <header>
         <div class="container">
-            <div class="row row-header" ng-controller="carouselTest">
-                <!--<carousel interval="setInterval">
-                  <slide ng-repeat="slide in slides" active="slide.active">
-                      <img class="carousel-img" ng-src="{{slide.image}}">
-                      <div class="carousel-cont">
-                        <h2>{{slide.title}}</h2>
-                        <p>{{slide.text}}</p>
-                      </div>
-                  </slide>
-               
-              
-              </carousel>
-              
-              -->
-                <div class="col-xs-12 col-sm-7">
-                    <h1 id="homeHeading">TestManager</h1>
-                    <hr>
-                    <p>bablablaa</p>
+            <div class="row">
+                <div class="col-sm-7">
+                    <div class="header-content">
+                        <div class="header-content-inner">
+                            <h1 translate="INFO">Test Manager es una plataforma diseñada para la evaluación de cuestionarios</h1>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-xs-12 col-sm-5">
-                    <form>
-                        <br>
-                        <br>
-                        <input type="text" class="form-control" name="Username" placeholder="Username" required>
-                        <br>
-                        <input type="password" class="form-control" name="Password" placeholder="Password" required>
-                        <button type="submit" class="btn btn-lg btn-success btn-block">Login</button>
-                    </form>
+                <div class="col-sm-4">
+                    <div class="header-content">
+                        <div class="header-content-inner">
+                            <form ng-submit="doLogin()">
+                                <div class="form-group">
+                                    <label translate="USER" class="sr-only" for="username">Usuario</label>
+                                    <input type="text" class="form-control input-sm" id="username" placeholder="{{'USER'|translate}}" ng-model="loginData.username">
+                                </div>
+                                <div class="form-group">
+                                    <label class="sr-only" for="password">Contraseña</label>
+                                    <input type="password" class="form-control input-sm" id="password" placeholder="{{'PASS'|translate}}" ng-model="loginData.password">
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <button type="submit" translate class="btn btn-lg btn-success btn-block">{{'LOG'}}</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </header>
-    <!--
-    <div id="about" class="container">
-        <div class="row row-content">
+
+    <section id="features" class="features">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="section-heading">
+                        <h2 translate="FUN">Diviértete Aprendiendo</h2>
+                        <md-button translate="JOIN" md-colors="{background: 'teal'}" class="md-raised md-accent" ng-click=openRegister()>Únete a Test Manager</md-button>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="feature-item">
+                                    <i class="icon-graph text-primary"></i>
+                                    <h3 translate>{{'STATS'}}</h3>
+                                    <p translate class="text-muted">{{'STATS1'}}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-item">
+                                    <i class="icon-graduation text-primary"></i>
+                                    <h3 translate>{{'LEARN'}}</h3>
+                                    <p translate class="text-muted">{{'LEARN1'}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="feature-item">
+                                    <i class="icon-pencil text-primary"></i>
+                                    <h3 translate>{{'MAKE'}}</h3>
+                                    <p translate class="text-muted">{{'MAKE1'}}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-item">
+                                    <i class="icon-arrow-down-circle text-primary"></i>
+                                    <h3 translate>{{'EXPORT'}}</h3>
+                                    <p translate class="text-muted">{{'EXPORT1'}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="cta-content">
             <div class="container">
-                <div class="col-sm-4  text-center">
-                    <h2>Tipos</h2>
-                </div>
-                <div class="col-sm-4  text-center">
-                    <h2>Estadisticas</h2>
-                </div>
-                <div class="col-sm-4  text-center">
-                    <h2>Crea cuestionarios</h2>
+                <h2>Stop waiting.<br>Start building.</h2>
+            </div>
+        </div>
+        <div class="overlay"></div>
+    </section>
+</body>
+
+<footer class="text-center">
+    <div class="footer-below">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    Copyright &copy; Test Manager 2017
                 </div>
             </div>
         </div>
     </div>
-    <div id="app" class="container-fluid">
-        <div class="row row-content">
-            <div class="container">
-                <div class="col-sm-4">
-                    <img src="img/tablet.png" class="img-responsive">
-                </div>
-                <div class="col-sm-4 text-center">
-                    <h2>Multiplataforma</h2>
-                </div>
-                <div class="col-sm-4">
-                    <img src="img/iphone.png" class="img-responsive">
-                </div>
-            </div>
-        </div>
-    </div>-->
-    <!-- Footer -->
-    <footer class="text-center">
-        <div class="footer-above">
-            <div class="container">
-                <div class="row">
-                    <div class="footer-col col-md-4">
-                        <h3>Contenido</h3>
-                    </div>
-                    <div class="footer-col col-md-4">
-                        <h3>Contenido</h3>
-                    </div>
-                    <div class="footer-col col-md-4">
-                        <h3>Contenido</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="footer-below">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        Copyright &copy; Test Manager 2017
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="../bower_components/angular/angular.min.js"></script>
-    <script src="scripts/app.js"></script>
-    <script src="../node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
-</body>
-
-</html>
+</footer>

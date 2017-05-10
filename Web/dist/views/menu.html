@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="row row-content" ng-controller="MenuController">
+    <div class="row row-content">
         <div class="col-xs-12" ng-if="!showMenu">
             <h3>{{message}}</h3>
         </div>
@@ -18,7 +18,7 @@
                 </md-card-content>
                 <md-card-actions layout="row" layout-align="end center">
                     <md-button class="md-icon-button" aria-label="Favorite">
-                        <md-icon class="fa fa-heart fa-2x"></md-icon>
+                        <md-icon class="fa fa-heart fa-2x" ng-click="addFavorite(test)"></md-icon>
                     </md-button>
                 </md-card-actions>
                 <md-fab-toolbar md-direction="left">
@@ -36,12 +36,12 @@
                                 <md-icon class="fa fa-download fa-2x"></md-icon>
                             </md-button>
                             <md-button aria-label="Stats" class="md-icon-button">
-                                <a ui-sref="app.statDetails({id: test.id})">
+                                <a ui-sref="app.statDetails({id: test._id})">
                                     <md-icon class="fa fa-bar-chart fa-2x"></md-icon>
                                 </a>
                             </md-button>
                             <md-button aria-label="Test" class="md-icon-button">
-                                <a ui-sref="app.testDetails({id: test.id})">
+                                <a ui-sref="app.testDetails({id: test._id})">
                                     <md-icon class="fa fa-check-square-o fa-2x"></md-icon>
                                 </a>
                             </md-button>
