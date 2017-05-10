@@ -156,7 +156,10 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             FILEREC: 'Debes seleccionar un archivo en formato json',
             CLOSE: 'Cerrar',
             /**STATS */
-            SORT: 'Ordenar por :',
+            SORT: 'Ordenar por: ',
+            TITLE:'Título',
+            CAL: 'Calificación',
+            TIME: 'Fecha',
             CHARTTITLE1: 'Gráficas de estadisticas',
             CHARTITLE2: 'Gráfica de estadisticas',
             CHARTSTATS: 'Estadisticas',
@@ -248,7 +251,10 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             CLOSE: 'Close',
             /**STATS */
             STATSTITLE: 'Completed quizs',
-            SORT: 'Sort by :',
+            TITLE:'Title',
+            SORT: 'Sort by: ',
+            CAL: 'Rating',
+            TIME: 'Date',
             CHARTTITLE1: 'Graphs of statistics',
             CHARTITLE2: 'Graph of statistics',
             CHARTSTATS: 'Statistics',
@@ -277,9 +283,6 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             BUTTON_LANG_EN: 'English'
         };
         $translateProvider.translations('es', translationsES);
-        $translateProvider.translations('en-US', translationsEN);
-        $translateProvider.translations('en-GB', translationsEN);
-        $translateProvider.translations('en', translationsEN);
         $translateProvider.translations('en', translationsEN);
         $translateProvider.preferredLanguage('es');
         $translateProvider.fallbackLanguage('es');

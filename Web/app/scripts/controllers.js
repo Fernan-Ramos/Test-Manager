@@ -808,11 +808,11 @@ angular.module('testManagerApp')
 
         //Se detecta el lenguaje del navegador
         var language = $window.navigator.language || $window.navigator.userLanguage;
+        language = language.split("-")[0];
         //Se traduce al lenguaje predefinido en el navegador
-        if (language == 'es' || language == 'en' || language == 'en-US' || language == 'en-GB')
+        if (language == 'es' || language == 'en')
             $translate.use(language);
-
-        console.log(language)
+            
         $scope.loggedIn = false;
         $scope.username = '';
         $scope.changeLanguage = function (key) {
