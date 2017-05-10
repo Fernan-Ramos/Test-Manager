@@ -74,7 +74,7 @@ angular.module('testManagerApp')
         }
     }])
 
-    .factory('AuthFactory', ['$resource', '$http', '$localStorage', '$rootScope', '$window', 'baseURL', 'ngDialog', function ($resource, $http, $localStorage, $rootScope, $window, baseURL, ngDialog) {
+    .factory('AuthFactory', ['$resource', '$filter', '$http', '$localStorage', '$rootScope', '$window', 'baseURL', 'ngDialog', function ($resource, $filter, $http, $localStorage, $rootScope, $window, baseURL, ngDialog) {
 
         var authFac = {};
         var TOKEN_KEY = 'Token';
@@ -111,8 +111,38 @@ angular.module('testManagerApp')
             $localStorage.remove(TOKEN_KEY);
         }
 
-        authFac.login = function (loginData) {
-
+        authFac.login = function (loginData, register) {
+            var welcomeRe = $filter('translate')('QUESTREGWEL');
+            var descr = $filter('translate')('QUESTREGDES');
+            var pregUnica = $filter('translate')('QUESTREGUNI');
+            var pregMul = $filter('translate')('QUESTREGMUL');
+            var cuest = {
+                title: welcomeRe,
+                image: "img/libro.jpg",
+                text: descr,
+                questions: [{
+                    pregunta: pregUnica,
+                    image: "",
+                    tipo: "unica",
+                    r1: "1",
+                    r2: "2",
+                    r3: "3",
+                    r4: "4",
+                    rcorrect: "4"
+                },
+                {
+                    pregunta: pregMul,
+                    image: "",
+                    tipo: "multiple",
+                    r1: "A",
+                    r2: "B",
+                    r3: "C",
+                    r4: "D",
+                    rcorrect: "A"
+                }],
+                tests: [],
+                stats: []
+            };
             $resource(baseURL + "users/login")
                 .save(loginData,
                 function (response) {
@@ -121,6 +151,8 @@ angular.module('testManagerApp')
                         token: response.token
                     });
                     $rootScope.$broadcast('login:Successful');
+                    if (register == true)
+                        $resource(baseURL + "cuestionarios/:id").save(cuest);
                 },
                 function (response) {
                     isAuthenticated = false;
@@ -157,7 +189,7 @@ angular.module('testManagerApp')
                     authFac.login({
                         username: registerData.username,
                         password: registerData.password
-                    });
+                    }, true);
                     if (registerData.rememberMe) {
                         $localStorage.storeObject('userinfo', {
                             username: registerData.username,
