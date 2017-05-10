@@ -11,16 +11,11 @@ body{
 
 .row-content {
   margin: 0px auto;
-  padding: 50px 0px 300px;
+  padding: 50px 0px 30px;
   border-bottom: 1px ridge;
-  min-height: 400px;
+  min-height: 100%;
 }
 
-.row-footer {
-  margin: 0px auto;
-  padding: 30px 50px;
-  background-color: #5EA8A7;
-}
 
 header {
   position: relative;
@@ -95,9 +90,6 @@ header .device-container .screen img {
   }
 }
 
-.container-fluid {
-  --background-color: grey;
-}
 
 .navbar-default {
   background: #FFFFFF;
@@ -108,19 +100,6 @@ header .device-container .screen img {
     src: url('../fonts/Snowboarding Only.ttf');
 }
 
-.log {
-  background-image: url('../img/login.jpg');
-  margin: 0px auto;
-  padding: 170px 130px;
-  position: relative;
-  width: 100%;
-  min-height: auto;
-  background-size: cover;
-  color: lightgray;
-  background-color: lightgray;
-  background-position: center;
-  text-align: center;
-}
 
 .navbar-default .navbar-header .navbar-brand {
   color: #5EA8A7;
@@ -276,6 +255,12 @@ section.cta .overlay {
   left: 0;
 }
 
+.md-header-padding{
+  padding-bottom: 0px !important;
+}
+.md-title-padding{
+  padding-top: 0px !important;
+}
 footer {
   color: white;
 }
@@ -312,22 +297,6 @@ footer .footer-below {
   font-size: 16px;
   height: auto;
   padding: 10px;
-}
-
-input[type="text"] {
-  margin-bottom: 0px;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-input[type="password"] {
-  margin-bottom: 20px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-
-.card {
-  margin-bottom: 20px;
 }
 
 .bs-callout {
