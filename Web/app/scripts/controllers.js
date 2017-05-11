@@ -809,6 +809,15 @@ angular.module('testManagerApp')
         //Se detecta el lenguaje del navegador
         var language = $window.navigator.language || $window.navigator.userLanguage;
         language = language.split("-")[0];
+
+        $(document).ready(function (){
+            $("#click").click(function (){
+                $('html, body').animate({
+                    scrollTop: $("#features").offset().top
+                }, 2000);
+            });
+        });
+ 
         //Se traduce al lenguaje predefinido en el navegador
         if (language == 'es' || language == 'en')
             $translate.use(language);
