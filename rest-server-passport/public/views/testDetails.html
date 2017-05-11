@@ -11,14 +11,14 @@
                             <md-tab ng-repeat="preg in cuestionario.questions  track by $index" label="{{'QUESTION' | translate}} {{$index+1}}">
                                 <md-content class="md-padding">
                                     <md-card>
-                                        <md-card-header>
+                                        <md-card-header class="md-header-padding">
                                             <md-card-header-text>
                                                 <span class="md-title">{{preg.title}}</span>
                                                 <span class="md-subhead">{{ 'QUESTION' | translate}} {{ $index+1 }}</span>
                                             </md-card-header-text>
                                         </md-card-header>
                                         <img class="md-card-image" ng-src={{preg.image}} alt="">
-                                        <md-card-title>
+                                        <md-card-title class="md-title-padding">
                                             <md-card-title-text>
                                                 <span class="md-subhead"><strong>{{preg.pregunta}}</strong></span>
                                                 <span class="md-subhead" ng-if="preg.tipo=='unica'" translate>{{'SELECTQUESTION'}}</span>
@@ -29,10 +29,20 @@
                                         <md-card-content ng-if="preg.tipo=='unica'">
                                             <!-- Si es tipo única -->
                                             <md-radio-group ng-model="answer.questions[$index].r " required>
-                                                <md-radio-button value="{{preg.r1}}" class="md-primary">{{preg.r1}}</md-radio-button>
-                                                <md-radio-button value="{{preg.r2}}" class="md-primary">{{preg.r2}}</md-radio-button>
-                                                <md-radio-button value="{{preg.r3}}" class="md-primary">{{preg.r3}}</md-radio-button>
-                                                <md-radio-button value="{{preg.r4}}" class="md-primary">{{preg.r4}}</md-radio-button>
+                                                <ul class="list-group list-group-flush">
+                                                    <li class="list-group-item">
+                                                        <md-radio-button value="{{preg.r1}}" class="md-primary">{{preg.r1}}</md-radio-button>
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                        <md-radio-button value="{{preg.r2}}" class="md-primary">{{preg.r2}}</md-radio-button>
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                        <md-radio-button value="{{preg.r3}}" class="md-primary">{{preg.r3}}</md-radio-button>
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                        <md-radio-button value="{{preg.r4}}" class="md-primary">{{preg.r4}}</md-radio-button>
+                                                    </li>
+                                                </ul>
                                             </md-radio-group>
                                         </md-card-content>
 

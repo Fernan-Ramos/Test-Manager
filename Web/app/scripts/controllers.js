@@ -160,7 +160,6 @@ angular.module('testManagerApp')
                 function (response) {
                     $scope.showCuestionario = true;
                     $scope.cuestionario = response.cuestionarios[0];
-                    //console.log($scope.cuestionario)
                     //Se crea un objeto que contendra la respuestas
                     $scope.answer = {};
                     //Se crea un array dentro del objeto respuesta que contendrá la respuesta a cada pregunta
