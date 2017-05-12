@@ -4,7 +4,7 @@ angular.module('testManagerApp')
     .controller('MenuController', ['$scope', '$mdDialog', 'menuFactory', 'favoriteFactory', 'exportFactory', function ($scope, $mdDialog, menuFactory, favoriteFactory, exportFactory) {
 
         $scope.showMenu = false;
-        $scope.message = "Loading ...";
+        $scope.message;
         $scope.cuestionarios = menuFactory.query(
             function (response) {
                 $scope.cuestionarios = response[0].cuestionarios;
@@ -149,7 +149,7 @@ angular.module('testManagerApp')
     .controller('TestController', ['$scope', '$filter', '$stateParams', '$mdDialog', 'menuFactory', function ($scope, $filter, $stateParams, $mdDialog, menuFactory) {
         $scope.form = {};
         $scope.showCuestionario = false;
-        $scope.message = "Loading ...";
+        $scope.message;
 
         //Se obtiene el cuestionario 
         $scope.cuestionario =
@@ -398,7 +398,7 @@ angular.module('testManagerApp')
     .controller('MakerController', ['$scope', '$mdDialog', 'menuFactory', function ($scope, $mdDialog, menuFactory) {
         $scope.form = {};
         $scope.showMaker = false;
-        $scope.message = "Loading ...";
+        $scope.message;
 
         $scope.cuestionarios = menuFactory.query(
             function (response) {
@@ -424,9 +424,22 @@ angular.module('testManagerApp')
         };
 
         $scope.getNumber = function (num) {
-            return new Array(num);
+            return Array.apply(null, Array(num)).map(function (x, i) { return i; });
         };
 
+        /**Función que redimensiona una imagen a un ancho y largo proporcionado */
+        function imageToDataUri(img, width, height) {
+            // create an off-screen canvas
+            var canvas = document.createElement('canvas'),
+                ctx = canvas.getContext('2d');
+            // set its dimension to target size
+            canvas.width = width;
+            canvas.height = height;
+            // draw source image into the off-screen canvas:
+            ctx.drawImage(img, 0, 0, width, height);
+            // encode image to data-uri with base64 version of compressed image
+            return canvas.toDataURL();
+        }
 
         $scope.cuest = {
             title: "",
@@ -457,25 +470,7 @@ angular.module('testManagerApp')
                     var imga = document.createElement('img');
                     imga.src = $scope.cuest.questions[i].image;
                     var newDataUri = imageToDataUri(imga, 100, 100);
-                    function imageToDataUri(img, width, height) {
-
-                        // create an off-screen canvas
-                        var canvas = document.createElement('canvas'),
-                            ctx = canvas.getContext('2d');
-
-                        // set its dimension to target size
-                        canvas.width = width;
-                        canvas.height = height;
-
-                        // draw source image into the off-screen canvas:
-                        ctx.drawImage(img, 0, 0, width, height);
-
-                        // encode image to data-uri with base64 version of compressed image
-                        return canvas.toDataURL();
-                    }
-
                     $scope.cuest.questions[i].image = newDataUri;
-
                 }
                 //Cada pregunta tiene como titulo el mismo titulo del cuestionario
                 $scope.cuest.questions[i].title = $scope.cuest.title;
@@ -554,7 +549,7 @@ angular.module('testManagerApp')
 
     .controller('StatsControllerDetails', ['$scope', '$filter', '$stateParams', '$mdDialog', 'menuFactory', function ($scope, $filter, $stateParams, $mdDialog, menuFactory) {
         $scope.showStatInd = false;
-        $scope.message = "Loading ...";
+        $scope.message;
         $scope.cuestionario =
             menuFactory.get({
                 id: $stateParams.id
@@ -646,7 +641,7 @@ angular.module('testManagerApp')
     }])
     .controller('StatsController', ['$scope', '$stateParams', '$translate', '$mdDialog', '$filter', 'menuFactory', function ($scope, $stateParams, $translate, $mdDialog, $filter, menuFactory) {
         $scope.showStat = false;
-        $scope.message = "Loading ...";
+        $scope.message;
         $scope.cuestionario =
             menuFactory.query()
                 .$promise.then(
@@ -741,11 +736,37 @@ angular.module('testManagerApp')
     }])
 
 
-    .controller('FavoritesController', ['$scope', 'favoriteFactory', 'exportFactory', function ($scope, favoriteFactory, exportFactory) {
+    .controller('FavoritesController', ['$scope', '$mdDialog', 'favoriteFactory', 'exportFactory', function ($scope, $mdDialog, favoriteFactory, exportFactory) {
         $scope.showFavorites = false;
-        $scope.message = "Loading ...";
+        $scope.message;
         $scope.favoritos = favoriteFactory.query(
             function (response) {
+                if (typeof response[0] === "undefined") {
+                    $scope.showFavorites = true
+                    $mdDialog.show({
+                        clickOutsideToClose: true,
+                        scope: $scope,
+                        preserveScope: true,
+                        template: '<md-dialog aria-label="List dialog">' +
+                        '  <md-dialog-content>' +
+                        '<md-content class="md-padding">' +
+                        ' <h5 class="md-title" translate>No existen favoritos</h5>' +
+                        ' <p class="md-textContent" translate>Añade algun favorito desde la sección Mis Favoritos</p>' +
+                        '</md-content>      ' +
+                        '  </md-dialog-content>' +
+                        '  <md-dialog-actions>' +
+                        '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
+                        '      Menu' +
+                        '    </md-button>' +
+                        '  </md-dialog-actions>' +
+                        '</md-dialog>',
+                        controller: function DialogController($scope, $mdDialog) {
+                            $scope.closeDialog = function () {
+                                $mdDialog.hide();
+                            }
+                        }
+                    });
+                }
                 $scope.favoritos = response[0].favoritos;
                 $scope.showFavorites = true;
             },
@@ -805,22 +826,23 @@ angular.module('testManagerApp')
 
     .controller('LoginController', ['$window', '$state', '$scope', '$translate', 'ngDialog', '$rootScope', '$localStorage', 'AuthFactory', function ($window, $state, $scope, $translate, ngDialog, $rootScope, $localStorage, AuthFactory) {
 
-        //Se detecta el lenguaje del navegador
-        var language = $window.navigator.language || $window.navigator.userLanguage;
-        language = language.split("-")[0];
-
-        $(document).ready(function (){
-            $("#click").click(function (){
+        //Permite el scroll a la seccion de caracteristicas
+        $(document).ready(function () {
+            $("#click").click(function () {
                 $('html, body').animate({
                     scrollTop: $("#features").offset().top
                 }, 2000);
             });
         });
- 
+
+        //Se detecta el lenguaje del navegador
+        var language = $window.navigator.language || $window.navigator.userLanguage;
+        language = language.split("-")[0];
+
         //Se traduce al lenguaje predefinido en el navegador
         if (language == 'es' || language == 'en')
             $translate.use(language);
-            
+
         $scope.loggedIn = false;
         $scope.username = '';
         $scope.changeLanguage = function (key) {
