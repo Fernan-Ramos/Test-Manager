@@ -151,20 +151,20 @@ angular.module('testManagerApp')
                         token: response.token
                     });
                     $rootScope.$broadcast('login:Successful');
-                    if (register == true)
+                    if (register)
                         $resource(baseURL + "cuestionarios/:id").save(cuest);
                 },
                 function (response) {
                     isAuthenticated = false;
 
-                    var message = '\
-                <div class="ngdialog-message">\
-                <div><h3 translate>{{\'NOLOGIN\'}}</h3></div>' +
+                    var message = '<div class="ngdialog-message">' +
+                        '<div><h3 translate>{{\'NOLOGIN\'}}</h3></div>' +
                         '<div><p>' + response.data.err.message + '</p><p>' +
                         response.data.err.name + '</p></div>' +
-                        '<div class="ngdialog-buttons">\
-                    <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=confirm("OK")>OK</button>\
-                </div>'
+                        '<div class="ngdialog-buttons">' +
+                        '<button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=confirm("OK")>OK</button>' +
+                        '</div>';
+
 
                     ngDialog.openConfirm({
                         template: message,
@@ -177,7 +177,7 @@ angular.module('testManagerApp')
         };
 
         authFac.logout = function () {
-            $resource(baseURL + "users/logout").get(function (response) { });
+            $resource(baseURL + "users/logout").get(function () { /** */ });
             destroyUserCredentials();
         };
 
@@ -185,7 +185,7 @@ angular.module('testManagerApp')
 
             $resource(baseURL + "users/register")
                 .save(registerData,
-                function (response) {
+                function () {
                     authFac.login({
                         username: registerData.username,
                         password: registerData.password
@@ -201,11 +201,11 @@ angular.module('testManagerApp')
                 },
                 function (response) {
 
-                    var message = '\
-                <div class="ngdialog-message">\
-                <div><h3 translate>{{\'NOREGISTER\'}}</h3></div>' +
+                    var message = '<div class="ngdialog-message">' +
+                        '<div><h3 translate>{{\'NOREGISTER\'}}</h3></div>' +
                         '<div><p>' + response.data.err.message +
                         '</p><p>' + response.data.err.name + '</p></div>';
+
 
                     ngDialog.openConfirm({
                         template: message,
