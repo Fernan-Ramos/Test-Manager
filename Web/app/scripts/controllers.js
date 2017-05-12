@@ -750,8 +750,8 @@ angular.module('testManagerApp')
                         template: '<md-dialog aria-label="List dialog">' +
                         '  <md-dialog-content>' +
                         '<md-content class="md-padding">' +
-                        ' <h5 class="md-title" translate>No existen favoritos</h5>' +
-                        ' <p class="md-textContent" translate>Añade algun favorito desde la sección Mis Favoritos</p>' +
+                        ' <h5 class="md-title" translate>{{\'NOEXISTFAV\'}}</h5>' +
+                        ' <p class="md-textContent" translate>{{\'NOEXISTADDFAVORITE\'}}</p>' +
                         '</md-content>      ' +
                         '  </md-dialog-content>' +
                         '  <md-dialog-actions>' +

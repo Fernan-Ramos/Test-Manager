@@ -3,7 +3,7 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
     .config(function ($stateProvider, $urlRouterProvider, $translateProvider) {
         $stateProvider
 
-            //ruta para login
+            //ruta para menu
             .state('app', {
                 url: '/',
                 views: {
@@ -23,7 +23,7 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             })
 
 
-            //ruta para menu
+            //ruta para login
             .state('login', {
                 url: '/login',
                 views: {
@@ -114,10 +114,10 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             EXPORT: 'Exporta cuestionarios',
             EXPORT1: 'Guarda tus cuestionarios para poder compartirlos con quien quieras!',
             NOLOGIN: 'Login Incorrecto',
-            QUESTREGUNI:'Esta pregunta es de respuesta única',
-            QUESTREGMUL:'Esta pregunta es de respuesta multiple',
-            QUESTREGWEL:'Bienvenido',
-            QUESTREGDES:'Esto es cuestionario de prueba',
+            QUESTREGUNI: 'Esta pregunta es de respuesta única',
+            QUESTREGMUL: 'Esta pregunta es de respuesta multiple',
+            QUESTREGWEL: 'Bienvenido',
+            QUESTREGDES: 'Esto es cuestionario de prueba',
             /**REGISTER */
             REGISTTITLE: 'Registro',
             NAME: 'Nombre',
@@ -161,7 +161,7 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             CLOSE: 'Cerrar',
             /**STATS */
             SORT: 'Ordenar por: ',
-            TITLE:'Título',
+            TITLE: 'Título',
             CAL: 'Calificación',
             TIME: 'Fecha',
             CHARTTITLE1: 'Gráficas de estadisticas',
@@ -188,6 +188,9 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             PARCIAL1: 'La respuesta',
             PARCIAL2: 'es correcta parcialmente.',
             INCORRECT: 'Vaya! La respuesta correcta no es : ',
+            /**FAVORITES */
+            NOEXISTFAV: 'No existen favoritos',
+            NOEXISTADDFAVORITE: 'Añade un favorito desde la sección Mis Favoritos',
             DATE: '{{date|date:\'short\'}}',
             BUTTON_LANG_ES: 'Español',
             BUTTON_LANG_EN: 'Inglés'
@@ -212,10 +215,10 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             EXPORT: 'Export quizs',
             EXPORT1: 'Save your quizs so you can share them with anyone!',
             NOLOGIN: 'Login Unsuccessful',
-            QUESTREGUNI:'This is a single-choice question',
-            QUESTREGMUL:'This is a multiple-choice question',
-            QUESTREGWEL:'Welcome!',
-            QUESTREDES:'This a welcome quiz',
+            QUESTREGUNI: 'This is a single-choice question',
+            QUESTREGMUL: 'This is a multiple-choice question',
+            QUESTREGWEL: 'Welcome!',
+            QUESTREDES: 'This a welcome quiz',
             /**REGISTER */
             REGISTTITLE: 'Sign up',
             NAME: 'Name',
@@ -259,7 +262,7 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             CLOSE: 'Close',
             /**STATS */
             STATSTITLE: 'Completed quizs',
-            TITLE:'Title',
+            TITLE: 'Title',
             SORT: 'Sort by: ',
             CAL: 'Rating',
             TIME: 'Date',
@@ -286,6 +289,9 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             PARCIAL1: 'The answer',
             PARCIAL2: 'is partially correct.',
             INCORRECT: 'Wow! The correct answer is not :',
+            /**FAVORITES */
+            NOEXISTFAV: 'No favorites',
+            NOEXISTADDFAVORITE: 'Add a favorite from the My Favorites section',
             DATE: '{{date|date:\'medium\'}}',
             BUTTON_LANG_ES: 'Spanish',
             BUTTON_LANG_EN: 'English'
