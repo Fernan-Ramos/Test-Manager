@@ -2,6 +2,9 @@
     <div class="row row-content">
         <div class="col-xs-12" ng-if="!showFavorites">
             <h3>{{message}}</h3>
+            <div layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular md-mode="indeterminate" class="md-warn md-hue-3" md-diameter="70">
+            </div>
         </div>
         <div ng-repeat="test in favoritos" class="col-xs-12 col-sm-6 col-md-4 col-lg-4" ng-if="showFavorites">
             <md-card>

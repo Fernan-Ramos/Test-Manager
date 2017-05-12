@@ -134,10 +134,20 @@
                                                 <md-card-content ng-if="cuest.questions[$index].tipo=='unica'">
                                                     <!-- Si es tipo única -->
                                                     <md-radio-group>
-                                                        <md-radio-button value="R1" class="md-primary">{{cuest.questions[$index].r1}}</md-radio-button>
-                                                        <md-radio-button value="R2" class="md-primary">{{cuest.questions[$index].r2}}</md-radio-button>
-                                                        <md-radio-button value="R3" class="md-primary">{{cuest.questions[$index].r3}}</md-radio-button>
-                                                        <md-radio-button value="R4" class="md-primary">{{cuest.questions[$index].r4}}</md-radio-button>
+                                                        <ul class="list-group list-group-flush">
+                                                            <li class="list-group-item">
+                                                                <md-radio-button value="R1" class="md-primary">{{cuest.questions[$index].r1}}</md-radio-button>
+                                                            </li>
+                                                            <li class="list-group-item">
+                                                                <md-radio-button value="R2" class="md-primary">{{cuest.questions[$index].r2}}</md-radio-button>
+                                                            </li>
+                                                            <li class="list-group-item">
+                                                                <md-radio-button value="R3" class="md-primary">{{cuest.questions[$index].r3}}</md-radio-button>
+                                                            </li>
+                                                            <li class="list-group-item">
+                                                                <md-radio-button value="R4" class="md-primary">{{cuest.questions[$index].r4}}</md-radio-button>
+                                                            </li>
+                                                        </ul>
                                                     </md-radio-group>
                                                 </md-card-content>
                                                 <md-card-content ng-if="cuest.questions[$index].tipo=='multiple'">
