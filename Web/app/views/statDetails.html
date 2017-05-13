@@ -7,21 +7,29 @@
             </div>
         </div>
         <div class="col-xs-12">
-            <div class="panel panel-default">
-                <div translate class="panel-heading">{{'CHARTITLE2'}}</div>
-                <div class="panel-body">
+            <md-card>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-title" style="color:teal" translate>{{'CHARTITLE2'}}</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
                     <canvas id="line" class="chart chart-line" chart-data="cuestionario.stats[0].stats.data" chart-labels="cuestionario.stats[0].stats.labels"
                         chart-series="cuestionario.stats[0].stats.series" chart-colors="cuestionario.stats[0].stats.colors" chart-options="options1"
                         chart-dataset-override="datasetOverride1" chart-click="onClick">
                     </canvas>
-                </div>
-            </div>
+                </md-card-content>
+            </md-card>
         </div>
         <div class="row row-content">
             <div class="col-xs-12" ng-if="showStatInd">
-                <div class="panel panel-default">
-                    <div translate class="panel-heading">{{'STATSTITLE'}}</div>
-                    <div class="panel-body">
+                <md-card>
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-title" style="color:teal" translate>{{'STATSTITLE'}}</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-content>
                         <i translate>{{'SORT'}}</i>
                         <md-button ng-click="filter(1)" aria-label="Cal">
                             <strong translate> {{'CAL'}}</strong>
@@ -34,9 +42,8 @@
                             <p><strong><em>{{test.cal | number : 2}}%</em></strong></p>
                             <cite title="Source Title">{{test.date}}</cite>
                         </div>
-
-                    </div>
-                </div>
+                    </md-card-content>
+                </md-card>
             </div>
         </div>
     </div>

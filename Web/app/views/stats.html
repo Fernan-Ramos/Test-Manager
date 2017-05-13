@@ -7,52 +7,55 @@
             </div>
         </div>
         <div class="col-xs-12">
-            <h2 translate>{{'CHARTTITLE1'}}</h2>
-            <br>
-            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                <div class="panel panel-default" ng-repeat="cuest in cuestionario">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            <a role="button" ng-click="dialogo(cuest.tests)" data-toggle="collapse" data-parent="#accordion" data-target="#{{cuest._id}}"
-                                aria-expanded="true" aria-controls="{{cuest._id}}">{{cuest.title}} <small translate>{{'CHARTSTATS'}}</small></a>
-                        </h3>
-                    </div>
-                    <div role="tabpanel" class="panel-collapse collapse" id="{{cuest._id}}">
-                        <div class="panel-body" ng-repeat="stat in cuest.stats">
-                            <canvas id="line" class="chart chart-line" chart-data="stat.stats.data" chart-labels="stat.stats.labels" chart-series="stat.stats.series"
-                                chart-colors="stat.stats.colors" chart-dataset-override="datasetOverride2" chart-options="options2">
-                            </canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <md-card>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-title" style="color:teal" translate>{{'CHARTTITLE1'}}</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <md-content class="md-padding">
+                        <md-tabs md-dynamic-height md-border-bottom>
+                            <md-tab ng-repeat="cuest in cuestionario" ng-disabled="tab.disabled" label="{{cuest.title}}">
+                                <md-content class="md-padding" ng-repeat="stat in cuest.stats">
+                                    <canvas id="line" class="chart chart-line" chart-data="stat.stats.data" chart-labels="stat.stats.labels" chart-series="stat.stats.series"
+                                        chart-colors="stat.stats.colors" chart-dataset-override="datasetOverride2" chart-options="options2">
+                                    </canvas>
+                                </md-content>
+                            </md-tab>
+                        </md-tabs>
+                    </md-content>
+                </md-card-content>
+            </md-card>
         </div>
-        <div class="row row-content">
-            <div class="col-xs-12" ng-if="showStat">
-                <div class="panel panel-default">
-                    <div translate class="panel-heading">{{'STATSTITLE'}}</div>
-                    <div class="panel-body">
-                        <i translate>{{'SORT'}}</i>
-                        <md-button ng-click="filter(1)" aria-label="Title">
-                            <strong translate> {{'TITLE'}}</strong>
-                            <md-icon class="fa fa-font fa-2x"></md-icon>
-                        </md-button>
-                        <md-button ng-click="filter(2)" aria-label="Cal">
-                            <strong translate> {{'CAL'}}</strong>
-                            <md-icon class="fa fa-check-square-o fa-2x"></md-button>
-                        <md-button ng-click="filter(3)" aria-label="Date">
-                            <strong translate> {{'TIME'}}</strong>
-                            <md-icon class="fa fa-calendar-o fa-2x"></md-button>
-                        <div ng-repeat="cuest in cuestionario">
-                            <div ng-repeat="test in cuest.tests | orderBy:filtText" ng-class="{'bs-callout bs-callout-success':test.cal>=70,'bs-callout bs-callout-warning': test.cal>=50 && test.cal<70,'bs-callout bs-callout-danger':test.cal<50}">
-                                <h4>{{cuest.title}}</h4>
-                                <p><strong><em>{{test.cal | number : 2}}%</em></strong></p>
-                                <cite title="Source Title">{{test.date}}</cite>
-                            </div>
+        <div class="col-xs-12" ng-if="showStat">
+            <md-card>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-title" style="color:teal" translate>{{'STATSTITLE'}}</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <i translate>{{'SORT'}}</i>
+                    <md-button ng-click="filter(1)" aria-label="Title">
+                        <strong translate> {{'TITLE'}}</strong>
+                        <md-icon class="fa fa-font fa-2x"></md-icon>
+                    </md-button>
+                    <md-button ng-click="filter(2)" aria-label="Cal">
+                        <strong translate> {{'CAL'}}</strong>
+                        <md-icon class="fa fa-check-square-o fa-2x"></md-button>
+                    <md-button ng-click="filter(3)" aria-label="Date">
+                        <strong translate> {{'TIME'}}</strong>
+                        <md-icon class="fa fa-calendar-o fa-2x"></md-button>
+                    <div ng-repeat="cuest in cuestionario">
+                        <div ng-repeat="test in cuest.tests | orderBy:filtText" ng-class="{'bs-callout bs-callout-success':test.cal>=70,'bs-callout bs-callout-warning': test.cal>=50 && test.cal<70,'bs-callout bs-callout-danger':test.cal<50}">
+                            <h4>{{cuest.title}}</h4>
+                            <p><strong><em>{{test.cal | number : 2}}%</em></strong></p>
+                            <cite title="Source Title">{{test.date}}</cite>
                         </div>
                     </div>
-                </div>
-            </div>
+                </md-card-content>
+            </md-card>
         </div>
     </div>
 </div>
