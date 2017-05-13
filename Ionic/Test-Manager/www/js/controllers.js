@@ -333,7 +333,7 @@ angular.module('testManager.controllers', [])
 
         controller: function DialogController($scope, $mdDialog) {
           //Atributos para el char
-          $scope.labels = ["Correctas", "Incorrectas", "Parcial"];
+          $scope.labels = [$filter('translate')('LABELCORRECT'), $filter('translate')('LABELINCORRECT'), $filter('translate')('LABELPARCIAL')];
           $scope.data = [$scope.cuestionario.tests[$scope.cuestionario.tests.length - 1].correctas, $scope.cuestionario.tests[$scope.cuestionario.tests.length - 1].incorrectas, $scope.cuestionario.tests[$scope.cuestionario.tests.length - 1].parcial];
           $scope.colors = ['#D1E5B3', '#F08080', '#f7d3a0'];
           //Función que cierra el dialogo

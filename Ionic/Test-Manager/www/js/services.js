@@ -1,6 +1,6 @@
 'use strict';
 angular.module('testManager.services', ['ngResource', 'ngMaterial', 'chart.js'])
-    .constant("baseURL", "http://192.168.1.35:3000/")
+    .constant("baseURL", "https://test-managerr.herokuapp.com/")
 
     .factory('menuFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
 
