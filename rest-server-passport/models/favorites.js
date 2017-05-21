@@ -14,6 +14,9 @@ var favoritoSchema = new Schema({
     text: {
         type: String,
     },
+    type: {
+        type: String,
+    },
     questions: [],
     tests: [],
     stats: [],

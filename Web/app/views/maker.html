@@ -25,6 +25,16 @@
                                             ng-model="cuest.text">
                                     </div>
                                 </div>
+                                <br>
+                                <div class="form-group">
+                                    <label translate for="type" class="col-sm-2 control-label">{{'TYPECAL'}}</label>
+                                    <div class="col-sm-10">
+                                        <md-radio-group ng-model="cuest.type" required>
+                                            <md-radio-button value="pos" class="md-primary">{{'CALPOSITIVE' | translate}}</md-radio-button>
+                                            <md-radio-button value="neg">{{'CALNEGATIVE' | translate}}</md-radio-button>
+                                        </md-radio-group>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label translate for="questions" class="col-sm-2 control-label">{{'NQUESTIONS'}}</label>
                                     <div class="col-sm-10">
@@ -35,7 +45,6 @@
                                                 </md-option>
                                             </md-optgroup>
                                         </md-select>
-
                                     </div>
                                 </div>
                                 <div ng-repeat="n in getNumber(number) track by $index">
@@ -111,11 +120,6 @@
                                                     </md-select>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <div class="col-sm-offset-2 col-sm-10">
-                                                    <md-button translate="CREATE" type="submit" class="md-raised md-primary" ng-disabled="form.makerForm.$invalid">Crear</md-button>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-3">
                                             <md-card>
@@ -169,6 +173,11 @@
                                                 </md-card-content>
                                             </md-card>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <md-button translate="CREATE" type="submit" class="md-raised md-primary" ng-disabled="form.makerForm.$invalid">Crear</md-button>
                                     </div>
                                 </div>
                             </form>
