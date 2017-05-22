@@ -1,0 +1,44 @@
+<div class="container">
+    <div class="row row-content">
+        <div class="col-xs-12" ng-if="!showCloud">
+            <h3>{{message}}</h3>
+            <div layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular md-mode="indeterminate" class="md-warn md-hue-3" md-diameter="70">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-8">
+                <div id="imaginary_container">
+                    <div class="input-group stylish-input-group">
+                        <input type="text" class="form-control" placeholder="{{'SEARCH' | translate}}" ng-model="filtText">
+                        <span class="input-group-addon">
+                        <button type="submit">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div ng-repeat="test in cuestionarios | filter:filtText" class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+            <md-card>
+                <md-card-title>
+                    <md-card-title-text-media class="md-media-sm">
+                        <span class="md-headline">{{test.title}}</span>
+                    </md-card-title-text-media>
+                </md-card-title>
+                <md-card-content>
+                    <p>{{test.text}}</p>
+                    <em>{{test.author}}</em>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="end center">
+                    <cite title="Source Title">{{test.createdAt | date : 'y/M/dd'}} </cite>
+                    <md-button class="md-icon-button" aria-label="Favorite">
+                        <md-icon class="fa fa-floppy-o fa-2x" ng-click="addtoMenu(test)"></md-icon>
+                    </md-button>
+                </md-card-actions>
+            </md-card>
+        </div>
+    </div>
+</div>
