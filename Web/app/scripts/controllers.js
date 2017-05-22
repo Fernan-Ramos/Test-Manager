@@ -411,7 +411,26 @@ angular.module('testManagerApp')
         }
     }])
 
-    .controller('MakerController', ['$scope', '$mdDialog', 'menuFactory', function ($scope, $mdDialog, menuFactory) {
+
+    .controller('CloudController', ['$scope', 'cloudFactory', 'menuFactory', function ($scope, cloudFactory, menuFactory) {
+        $scope.showCloud = false;
+        $scope.cuestionarios = cloudFactory.query(
+            function (response) {
+                $scope.cuestionarios = response;
+                $scope.showCloud = true;
+            },
+            function (response) {
+                $scope.message = "Error: " + response.status + " " + response.statusText;
+            }
+        );
+
+        $scope.addtoMenu = function (test) {
+            menuFactory.save(test);
+        }
+
+    }])
+
+    .controller('MakerController', ['$scope', '$mdDialog', 'menuFactory', 'cloudFactory', function ($scope, $mdDialog, menuFactory, cloudFactory) {
         $scope.form = {};
         $scope.showMaker = false;
         $scope.message;
@@ -477,8 +496,9 @@ angular.module('testManagerApp')
             stats: []
         };
 
-
+        $scope.cuestCloud = "";
         $scope.submitTest = function () {
+
             for (var i = 0; i < $scope.cuest.questions.length; i++) {
                 if (!$scope.cuest.questions[i].image) {
                     $scope.cuest.questions[i].image = "";
@@ -494,6 +514,8 @@ angular.module('testManagerApp')
 
             //Poner el cuestionaro creado en array de cuestionarios
             menuFactory.save($scope.cuest);
+            if ($scope.cuestCloud == "yes")
+                cloudFactory.save($scope.cuest);
 
             //Resetea el formulario a  pristine
             $scope.form.makerForm.$setPristine();
