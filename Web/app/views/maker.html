@@ -176,6 +176,15 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <br>
+                                    <label translate for="type" class="col-sm-4 control-label">{{'SAVETOCLOUD'}}</label>
+                                    <div class="col-sm-4">
+                                        <md-radio-group ng-model="cuestCloud" required>
+                                            <md-radio-button value="yes" class="md-primary">{{'YES' | translate}}</md-radio-button>
+                                            <md-radio-button value="no">{{'NO' | translate}}</md-radio-button>
+                                        </md-radio-group>
+                                    </div>
+
                                     <div class="col-sm-offset-2 col-sm-10">
                                         <md-button translate="CREATE" type="submit" class="md-raised md-primary" ng-disabled="form.makerForm.$invalid">Crear</md-button>
                                     </div>
