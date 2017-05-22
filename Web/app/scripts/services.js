@@ -11,6 +11,16 @@ angular.module('testManagerApp')
 
     }])
 
+     .factory('cloudFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
+
+        return $resource(baseURL + "clouds/:id", null, {
+            'update': {
+                method: 'PUT'
+            }
+        });
+
+    }])
+
     .factory('favoriteFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
 
         return $resource(baseURL + "favorites/:id", null, {
