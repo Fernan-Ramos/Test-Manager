@@ -35,6 +35,18 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             })
 
 
+
+            //ruta para nube
+            .state('app.cloud', {
+                url: 'cloud',
+                views: {
+                    'content@': {
+                        templateUrl: 'views/cloud.html',
+                        controller: 'CloudController'
+                    }
+                }
+            })
+
             //ruta para testDetails
             .state('app.testDetails', {
                 url: 'menu/:id',
