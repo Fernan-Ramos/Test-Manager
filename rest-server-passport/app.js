@@ -20,7 +20,6 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var cuestRouter = require('./routes/cuestRouter');
 var favoriteRouter = require('./routes/favoriteRouter');
-var cloudRouter = require('./routes/cloudRouter');
 
 
 var app = express();
@@ -46,7 +45,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/clouds', cloudRouter);
 app.use('/cuestionarios', cuestRouter);
 app.use('/favorites', favoriteRouter);
 

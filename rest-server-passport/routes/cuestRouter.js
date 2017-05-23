@@ -69,7 +69,18 @@ cuestRouter.route('/')
             });
     });
 
-/* Route '/:cuestId' */
+/* Route '/cloud' */
+
+cuestRouter.route('/cloud')
+
+    .get(verify.verifyOrdinaryUser, function (req, res, next) {
+        Cuestionarios.find(req.query)
+            .exec(function (err, cuest) {
+                if (err) return next(err);
+                res.json(cuest);
+            });
+    });
+
 
 cuestRouter.route('/:cuestId')
     .get(verify.verifyOrdinaryUser, function (req, res, next) {

@@ -18,12 +18,18 @@ var cuestionarioSchema = new Schema({
     type: {
         type: String,
     },
+    cuestCloud: {
+        type: Boolean,
+    },
+    author: {
+        type: String,
+    },
     questions: [],
     tests: [],
     stats: [],
 }, {
-    timestamps: true
-});
+        timestamps: true
+    });
 
 var cuestionariosSchema = new Schema({
     postedBy: {
