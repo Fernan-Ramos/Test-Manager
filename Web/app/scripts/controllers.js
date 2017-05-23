@@ -424,13 +424,21 @@ angular.module('testManagerApp')
             }
         );
 
+        /**
+         * Función que añade un cuestionario de la nube al menu
+         * Se borra su identifador para evitar conflictos en la base de datos
+         * @param {Object} test Cuestionario a añadir
+         */
         $scope.addtoMenu = function (test) {
-            menuFactory.save(test);
+            var cuest = test;
+            delete cuest._id;
+            cuest.cuestCloud = false;
+            menuFactory.save(cuest);
         }
 
     }])
 
-    .controller('MakerController', ['$scope', '$mdDialog', 'menuFactory', 'cloudFactory', function ($scope, $mdDialog, menuFactory, cloudFactory) {
+    .controller('MakerController', ['$scope', '$mdDialog', 'menuFactory', 'AuthFactory', function ($scope, $mdDialog, menuFactory, AuthFactory) {
         $scope.form = {};
         $scope.showMaker = false;
         $scope.message;
@@ -481,6 +489,8 @@ angular.module('testManagerApp')
             image: "img/libro.jpg",
             text: "",
             type: "",
+            cuestCloud: "",
+            author: "",
             questions: [{
                 title: "",
                 pregunta: "",
@@ -496,7 +506,7 @@ angular.module('testManagerApp')
             stats: []
         };
 
-        $scope.cuestCloud = "";
+
         $scope.submitTest = function () {
 
             for (var i = 0; i < $scope.cuest.questions.length; i++) {
@@ -511,12 +521,10 @@ angular.module('testManagerApp')
                 //Cada pregunta tiene como titulo el mismo titulo del cuestionario
                 $scope.cuest.questions[i].title = $scope.cuest.title;
             }
-
-            //Poner el cuestionaro creado en array de cuestionarios
+            //El autor del cuestionario se obtiene del nombre de usuario
+            $scope.cuest.author = AuthFactory.getUsername();
+            //Se guarda el objeto cuestionario en el menu
             menuFactory.save($scope.cuest);
-            if ($scope.cuestCloud == "yes")
-                cloudFactory.save($scope.cuest);
-
             //Resetea el formulario a  pristine
             $scope.form.makerForm.$setPristine();
 
@@ -526,6 +534,8 @@ angular.module('testManagerApp')
                 image: "img/libro.jpg",
                 text: "",
                 type: "",
+                cuestCloud: "",
+                author: "",
                 questions: [{
                     title: "",
                     pregunta: "",
