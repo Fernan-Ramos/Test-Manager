@@ -12,9 +12,9 @@
     "LEARN": "Learning",
     "LEARN1": "Increase your learning thanks to feedback!",
     "MAKE": "Create your own quizzes",
-    "MAKE1": "You can create quizs in a very simple way!",
-    "EXPORT": "Export quizs",
-    "EXPORT1": "Save your quizs so you can share them with anyone!",
+    "MAKE1": "You can create quizzes in a very simple way!",
+    "EXPORT": "Export quizzes",
+    "EXPORT1": "Save your quizzes so you can share them with anyone!",
     "NOLOGIN": "Login Unsuccessful",
     "QUESTREGUNI": "This is a single-choice question",
     "QUESTREGMUL": "This is a multiple-choice question",
@@ -65,7 +65,7 @@
     "FILENOTVALID": "Invalid file",
     "FILEREC": "You must select a file in json format",
     "CLOSE": "Close",
-    "STATSTITLE": "Completed quizs",
+    "STATSTITLE": "Completed quizzes",
     "TITLE": "Title",
     "SORT": "Sort by: ",
     "CAL": "Rating",
@@ -95,5 +95,7 @@
     "NOEXISTADDFAVORITE": "Add a favorite from the My Favorites section",
     "DATE": "{{date|date:\"medium\"}}",
     "BUTTON_LANG_ES": "Spanish",
-    "BUTTON_LANG_EN": "English"
+    "BUTTON_LANG_EN": "English",
+    "PDFTITLE1": "Graph of statistics:",
+    "PDFTITLE2": "Completed quizzes:"
 }

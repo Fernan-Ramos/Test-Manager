@@ -95,5 +95,7 @@
     "NOEXISTADDFAVORITE": "Añade un favorito desde la sección Mis Favoritos",
     "DATE": "{{date|date:\"short\"}}",
     "BUTTON_LANG_ES": "Español",
-    "BUTTON_LANG_EN": "Inglés"
+    "BUTTON_LANG_EN": "Inglés",
+    "PDFTITLE1":"Gráfica de estadísticas:",
+    "PDFTITLE2":"Cuestionarios realizados:"
   }

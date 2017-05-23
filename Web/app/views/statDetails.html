@@ -12,6 +12,11 @@
                     <md-card-title-text>
                         <span class="md-title" style="color:teal" translate>{{'CHARTITLE2'}}</span>
                     </md-card-title-text>
+                    <md-card-title-media>
+                        <md-button ng-click="exportPDF(cuestionario,cuestionario.title)" aria-label="Export Cuest" class="md-icon-button">
+                            <md-icon class="fa fa-download fa-2x"></md-icon>
+                        </md-button>
+                    </md-card-title-media>
                 </md-card-title>
                 <md-card-content>
                     <canvas id="line" class="chart chart-line" chart-data="cuestionario.stats[0].stats.data" chart-labels="cuestionario.stats[0].stats.labels"
@@ -37,14 +42,16 @@
                         <md-button ng-click="filter(2)" aria-label="Date">
                             <strong translate> {{'TIME'}}</strong>
                             <md-icon class="fa fa-calendar-o fa-2x"></md-button>
-                        <div ng-repeat="test in cuestionario.tests | orderBy:filtText" ng-class="{'bs-callout bs-callout-success':test.cal>=70,'bs-callout bs-callout-warning': test.cal>=50 && test.cal<70,'bs-callout bs-callout-danger':test.cal<50}">
-                            <h4>{{cuestionario.title}}</h4>
-                            <p><strong><em>{{test.cal | number : 2}}%</em></strong></p>
-                            <cite title="Source Title">{{test.date}}</cite>
+                        <div id="pipas">
+                            <div ng-repeat="test in cuestionario.tests | orderBy:filtText" ng-class="{'bs-callout bs-callout-success':test.cal>=70,'bs-callout bs-callout-warning': test.cal>=50 && test.cal<70,'bs-callout bs-callout-danger':test.cal<50}">
+                                <h4>{{cuestionario.title}}</h4>
+                                <p><strong><em>{{test.cal | number : 2}}%</em></strong></p>
+                                <cite title="Source Title">{{test.date}}</cite>
+                            </div>
                         </div>
                     </md-card-content>
                 </md-card>
             </div>
         </div>
     </div>
-</div>
+</div>Z

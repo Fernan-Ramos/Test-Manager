@@ -613,6 +613,43 @@ angular.module('testManagerApp')
                     break;
             }
         };
+
+        function convertCanvasToImage(canvas) {
+            var image = new Image();
+            image.src = canvas.toDataURL("image/png");
+            return image.src;
+        }
+
+        $scope.exportPDF = function (cuest, filename) {
+            var doc = new jsPDF({
+                orientation: 'landscape'
+
+            });
+
+            var specialElementHandlers = {
+                '#editor': function (element, renderer) {
+                    return true;
+                }
+            };
+            doc.setFontSize(40);
+            doc.setTextColor(0, 128, 128);
+            doc.text(150, 40, cuest.title, null, null, 'center');
+            doc.setFontSize(20);
+            doc.setTextColor(0, 0, 0);
+            doc.setFontType("italic");
+
+            doc.setTextColor(0, 128, 128);
+            doc.text(20, 60, $filter('translate')('PDFTITLE1'));
+            doc.addImage(convertCanvasToImage(document.getElementById("line")), 'PNG', 50, 80, 200, 100);
+            doc.addPage();
+            doc.text(20, 20, $filter('translate')('PDFTITLE2'));
+            doc.fromHTML($("#pipas").get(0), 30, 40, {
+                'width': 170,
+                'elementHandlers': specialElementHandlers
+            });
+            doc.save(filename + '.pdf');
+        }
+
         //Atributos para chart
         $scope.options1 = {
             responsive: true,
