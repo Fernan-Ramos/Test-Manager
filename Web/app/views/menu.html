@@ -8,10 +8,9 @@
         </div>
         <div ng-repeat="test in cuestionarios" class="col-xs-12 col-sm-6 col-md-4 col-lg-4" ng-if="showMenu">
             <md-card>
-                <img ng-src="{{test.image}}" class="md-card-image">
                 <md-card-title>
                     <md-card-title-text-media class="md-media-sm">
-                        <span class="md-headline">{{test.title}}</span>
+                        <a  ui-sref="app.testDetails({id: test._id})"><span class="md-headline card-text" >{{test.title}}</span></a>
                     </md-card-title-text-media>
                 </md-card-title>
                 <md-card-content>
