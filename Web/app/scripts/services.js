@@ -1,7 +1,7 @@
 'use strict';
 angular.module('testManagerApp')
     .constant("baseURL", "http://localhost:3000/")
-    .service('menuFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
+    .factory('menuFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
 
         return $resource(baseURL + "cuestionarios/:id", null, {
             'update': {
@@ -11,19 +11,9 @@ angular.module('testManagerApp')
 
     }])
 
-     .factory('cloudFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
+    .factory('cloudFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
 
-        return $resource(baseURL + "clouds/:id", null, {
-            'update': {
-                method: 'PUT'
-            }
-        });
-
-    }])
-
-    .factory('favoriteFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
-
-        return $resource(baseURL + "favorites/:id", null, {
+        return $resource(baseURL + "cuestionarios/cloud", null, {
             'update': {
                 method: 'PUT'
             }
@@ -130,6 +120,9 @@ angular.module('testManagerApp')
                 title: welcomeRe,
                 image: "img/libro.jpg",
                 text: descr,
+                type: "pos",
+                cuestCloud: false,
+                author: "",
                 questions: [{
                     pregunta: pregUnica,
                     image: "",
