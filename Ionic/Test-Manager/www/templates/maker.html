@@ -11,6 +11,15 @@
           <span class="input-label" translate>{{'QUIZDESCR'}}</span>
           <input type="text" placeholder="{{'QUIZDESCRPLACE' | translate}}" ng-model="cuest.text" required>
         </label>
+        <div class="row">
+          <div class="col" style="color:#003333" translate><br>{{'TYPECAL'}}</div>
+          <div class="col col-75">
+            <md-radio-group ng-model="cuest.type" required>
+              <md-radio-button value="pos" class="md-primary">{{'CALPOSITIVE' | translate}}</md-radio-button>
+              <md-radio-button value="neg">{{'CALNEGATIVE' | translate}}</md-radio-button>
+            </md-radio-group>
+          </div>
+        </div>
         <label class="item item-input item-stacked-label" ng-class="{ 'has-error' : form.makerForm.n.$error.required && !form.makerForm.n.$pristine }">
           <span class="input-label" translate>{{'NQUESTIONS'}}</span>
           <input type="tel"  id="n" name="n"  placeholder="{{'MAXQUESTPLACE' | translate}}" ng-model="number" required>

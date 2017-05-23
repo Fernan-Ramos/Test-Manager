@@ -213,26 +213,42 @@ angular.module('testManager.controllers', [])
         );
 
     //Función que calcula la calificación para preguntas de tipo multiple
-    function multiple(j, respuestas) {
+    function calmultiple(j, respuestas, type) {
       var correct = 0;
+      var incorrect = 0;
       for (var z = 0; z < respuestas.length; z++) {
         if (($scope.answer.questions[j].rcorrect.includes(respuestas[z]) && $scope.answer.questions[j].r.includes(respuestas[z])) || (!$scope.answer.questions[j].rcorrect.includes(respuestas[z]) && !$scope.answer.questions[j].r.includes(respuestas[z])))
           correct++;
+        else
+          incorrect++;
       }
-      $scope.answer.questions[j].estado = correct / respuestas.length;
-      if ($scope.answer.questions[j].estado == 0) {
+      if (type == "pos")
+        $scope.answer.questions[j].estado = correct / respuestas.length;
+
+      if (type == "neg")
+        $scope.answer.questions[j].estado = (correct - incorrect) / respuestas.length;
+      console.log($scope.answer.questions[j].estado)
+      calEstado($scope.answer.questions[j].estado);
+    }
+
+    function calEstado(estado) {
+      if (estado < 0) {
+        $scope.negativas = $scope.negativas + estado;
         $scope.incorrectas++;
-      } else if ($scope.answer.questions[j].estado < 1 && $scope.answer.questions[j].estado > 0) {
-        $scope.parciales = $scope.parciales + $scope.answer.questions[j].estado;
+      }
+      else if (estado == 0) {
+        $scope.incorrectas++;
+      } else if (estado < 1 && estado > 0) {
+        $scope.parciales = $scope.parciales + estado;
         $scope.parcial++;
-      } else if ($scope.answer.questions[j].estado == 1) {
+      } else if (estado == 1) {
         $scope.correctas++;
       }
 
     }
 
     //Se obtiene las respuestas guardadas
-    $scope.submitAnswer = function (ev) {
+    $scope.submitAnswer = function () {
       //Se guarda la fecha en la que se realiza el cuestionario
       $scope.answer.date = $filter('date')(new Date(), 'y/M/d');
       //Si la pregunta es de tipo múltiple se guarda el array de respuestas contestadas en cada pregunta.
@@ -246,6 +262,7 @@ angular.module('testManager.controllers', [])
       $scope.parcial = 0;
       var respuestas = [];
       $scope.parciales = 0;
+      $scope.negativas = 0;
       //Se recorre el array de preguntas 
       for (var j = 0; j < $scope.answer.questions.length; j++) {
         //Si la pregunta es de tipo unica y la respuesta dada corresponde con la respuesta correcta
@@ -254,10 +271,10 @@ angular.module('testManager.controllers', [])
           //Determina que la respuesta es correcta
           $scope.answer.questions[j].estado = 1;
         }
-        //Si la pregunta es de tipo múltiple y la respuesta no es vacía se calcula la calificación parcial
-        else if ($scope.cuestionario.questions[j].tipo == "multiple" && $scope.answer.questions[j].r.length != 0) {
+        //Si la pregunta es de tipo múltiple
+        else if ($scope.cuestionario.questions[j].tipo == "multiple") {
           respuestas.push($scope.cuestionario.questions[j].r1, $scope.cuestionario.questions[j].r2, $scope.cuestionario.questions[j].r3, $scope.cuestionario.questions[j].r4);
-          multiple(j, respuestas);
+          calmultiple(j, respuestas, $scope.cuestionario.type);
         } else {
           $scope.incorrectas++;
           //Determina que la respuesta es incorrecta
@@ -273,7 +290,7 @@ angular.module('testManager.controllers', [])
       //Se guarda las respuestas parcialmente correctas
       $scope.answer.parcial = $scope.parcial;
       //Se guarda la calificación obtenida
-      $scope.answer.cal = (($scope.answer.correctas + $scope.parciales) / $scope.answer.questions.length) * 100;
+      $scope.answer.cal = (($scope.answer.correctas + $scope.parciales + $scope.negativas) / $scope.answer.questions.length) * 100;
 
       $scope.cuestionario.tests.push($scope.answer);
       //Se guarda la respuesta al cuestionario en el array de respuestas a cuestionarios
@@ -309,7 +326,7 @@ angular.module('testManager.controllers', [])
         '<h4><em>{{\'QUESTION\'| translate}} {{$index+1}} : {{preg.pregunta}}</em></h4>' +
         '<p translate>{{\'CORRECT\'}} </p> <strong class="text-success">{{preg.rcorrect}}</strong>' +
         '</div>' +
-        '<div ng-if="preg.estado==0" class="bs-callout bs-callout-danger">' +
+        '<div ng-if="preg.estado<=0" class="bs-callout bs-callout-danger">' +
         '<h4><em>{{\'QUESTION\'| translate}} {{$index+1}} : {{preg.pregunta}}</em></h4>' +
         '<p translate>{{\'INCORRECT\'}} </p> <strong class="text-danger">{{preg.r}} </strong>' +
         ' </div>' +
@@ -424,6 +441,9 @@ angular.module('testManager.controllers', [])
       title: "",
       image: "img/libro.jpg",
       text: "",
+      type: "",
+      cuestCloud: "",
+      author: "",
       questions: [{
         title: "",
         pregunta: "",
@@ -452,6 +472,9 @@ angular.module('testManager.controllers', [])
         title: "",
         image: "img/libro.jpg",
         text: "",
+        type: "",
+        cuestCloud: "",
+        author: "",
         questions: [{
           title: "",
           pregunta: "",
@@ -538,26 +561,12 @@ angular.module('testManager.controllers', [])
         }
       };
       //Atributos para chart
-      $scope.datasetOverride1 = [{
-        yAxisID: 'y-axis-1'
-      }];
       $scope.options1 = {
-        scales: {
-          yAxes: [{
-            ticks: {
-              max: 100,
-              min: 0,
-              stepSize: 20
-            },
-            id: 'y-axis-1',
-            type: 'linear',
-            display: true,
-            position: 'left'
-          },
-
-          ]
-        }
+        responsive: true,
+        scaleBeginAtZero: false,
+        barBeginAtOrigin: true
       };
+      
     });
   }])
   .controller('StatsController', ['$scope', '$filter', '$stateParams', '$mdDialog', 'menuFactory', function ($scope, $filter, $stateParams, $mdDialog, menuFactory) {
@@ -616,24 +625,10 @@ angular.module('testManager.controllers', [])
         }
       }
       //Atributos para chart
-      $scope.datasetOverride2 = [{
-        yAxisID: 'y-axis-1'
-      }];
       $scope.options2 = {
-        scales: {
-          yAxes: [{
-            ticks: {
-              max: 100,
-              min: 0,
-              stepSize: 20
-            },
-            id: 'y-axis-1',
-            type: 'linear',
-            display: true,
-            position: 'left'
-          }
-          ]
-        }
+        responsive: true,
+        scaleBeginAtZero: false,
+        barBeginAtOrigin: true
       };
 
       //Función que ordena los cuestionarios por titulo , por calificación o por fecha .
