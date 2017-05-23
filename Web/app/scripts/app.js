@@ -92,17 +92,6 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
                 }
             })
 
-            //ruta para favorites
-            .state('app.favorites', {
-                url: 'favorites',
-                views: {
-                    'content@': {
-                        templateUrl: 'views/favorites.html',
-                        controller: 'FavoritesController'
-                    }
-                }
-            });
-
 
         $urlRouterProvider.otherwise('/login');
         $translateProvider

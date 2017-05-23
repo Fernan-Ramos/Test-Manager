@@ -1,7 +1,7 @@
 'use strict';
 angular.module('testManagerApp')
 
-    .controller('MenuController', ['$scope', '$mdDialog', 'menuFactory', 'favoriteFactory', 'exportFactory', function ($scope, $mdDialog, menuFactory, favoriteFactory, exportFactory) {
+    .controller('MenuController', ['$scope', '$mdDialog', 'menuFactory', 'exportFactory', function ($scope, $mdDialog, menuFactory, exportFactory) {
 
         $scope.showMenu = false;
         $scope.message;
@@ -14,86 +14,10 @@ angular.module('testManagerApp')
                 $scope.message = "Error: " + response.status + " " + response.statusText;
             });
 
-        $scope.favoritos = favoriteFactory.query(
-            function (response) {
-                $scope.favoritos = response[0].favoritos;
-            },
-            function (response) {
-                $scope.message = "Error: " + response.status + " " + response.statusText;
-            });
-
-
         //Función que exporta un cuestionario a fichero en formato json
         $scope.exportCuest = function (cuest, filename) {
             exportFactory.exportTest(cuest, filename);
         };
-
-        //Función que añade un cuestionario a la sección de favoritos
-        $scope.addFavorite = function (test) {
-            test.tests = [];
-            test.stats = [];
-            //Se comprueba si existe ya ese favorito de dicho cuestionario
-            var isFav = $scope.favoritos.some(function (element) {
-                return element._id == test._id;
-            });
-            if (!isFav) {
-                favoriteFactory.save(test);
-                $scope.favoritos.push(test);
-                $mdDialog.show({
-                    clickOutsideToClose: true,
-                    scope: $scope,
-                    locals: {
-                        test: test
-                    },
-                    preserveScope: true,
-                    template: '<md-dialog aria-label="List dialog">' +
-                    '  <md-dialog-content>' +
-                    '<md-content class="md-padding">' +
-                    ' <h5 class="md-title" translate="ADDFAVORITE">Añadido favorito</h5> <em>{{test.title}}</em>' +
-                    '</md-content>      ' +
-                    '  </md-dialog-content>' +
-                    '  <md-dialog-actions>' +
-                    '    <md-button translate="FAVORITEBUTTON" ui-sref="app.favorites" ng-click="closeDialog()" class="md-primary">' +
-                    '      Favoritos' +
-                    '    </md-button>' +
-                    '  </md-dialog-actions>' +
-                    '</md-dialog>',
-                    controller: function DialogController($scope, $mdDialog, test) {
-                        $scope.test = test;
-                        $scope.closeDialog = function () {
-                            $mdDialog.hide();
-                        }
-                    }
-                });
-            } else {
-                $mdDialog.show({
-                    clickOutsideToClose: true,
-                    scope: $scope,
-                    locals: {
-                        test: test
-                    },
-                    preserveScope: true,
-                    template: '<md-dialog aria-label="List dialog">' +
-                    '  <md-dialog-content>' +
-                    '<md-content class="md-padding">' +
-                    ' <h5  translate="EXISTFAVORITE" class="md-title">Ya existe el favorito</h5> <em>{{test.title}}</em>' +
-                    '</md-content>      ' +
-                    '  </md-dialog-content>' +
-                    '  <md-dialog-actions>' +
-                    '    <md-button translate="FAVORITEBUTTON" ui-sref="app.favorites" ng-click="closeDialog()" class="md-primary">' +
-                    '      Favoritos' +
-                    '    </md-button>' +
-                    '  </md-dialog-actions>' +
-                    '</md-dialog>',
-                    controller: function DialogController($scope, $mdDialog, test) {
-                        $scope.test = test;
-                        $scope.closeDialog = function () {
-                            $mdDialog.hide();
-                        }
-                    }
-                });
-            }
-        }
 
         //Función que permite borrar un cuestionario
         $scope.removeCuest = function (cuest) {
@@ -123,15 +47,6 @@ angular.module('testManagerApp')
                         var index = $scope.cuestionarios.indexOf(cuest);
                         if (index > -1) {
                             $scope.cuestionarios.splice(index, 1);
-                        }
-
-                        //Se comprueba si existe favorito de dicho cuestionario
-                        var isFav = $scope.favoritos.some(function (element) {
-                            return element._id == cuest._id;
-                        });
-                        //Se elimina el favorito del cuestionario a borrar si existe dicho favorito
-                        if (isFav) {
-                            favoriteFactory.remove(cuest);
                         }
                         menuFactory.remove(cuest);
                     }
@@ -784,60 +699,6 @@ angular.module('testManagerApp')
         };
     }])
 
-
-    .controller('FavoritesController', ['$scope', '$mdDialog', 'favoriteFactory', 'exportFactory', function ($scope, $mdDialog, favoriteFactory, exportFactory) {
-        $scope.showFavorites = false;
-        $scope.message;
-        $scope.favoritos = favoriteFactory.query(
-            function (response) {
-                if (typeof response[0] === "undefined") {
-                    $scope.showFavorites = true
-                    $mdDialog.show({
-                        clickOutsideToClose: true,
-                        scope: $scope,
-                        preserveScope: true,
-                        template: '<md-dialog aria-label="List dialog">' +
-                        '  <md-dialog-content>' +
-                        '<md-content class="md-padding">' +
-                        ' <h5 class="md-title" translate>{{\'NOEXISTFAV\'}}</h5>' +
-                        ' <p class="md-textContent" translate>{{\'NOEXISTADDFAVORITE\'}}</p>' +
-                        '</md-content>      ' +
-                        '  </md-dialog-content>' +
-                        '  <md-dialog-actions>' +
-                        '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
-                        '      Menu' +
-                        '    </md-button>' +
-                        '  </md-dialog-actions>' +
-                        '</md-dialog>',
-                        controller: function DialogController($scope, $mdDialog) {
-                            $scope.closeDialog = function () {
-                                $mdDialog.hide();
-                            }
-                        }
-                    });
-                }
-                $scope.favoritos = response[0].favoritos;
-                $scope.showFavorites = true;
-            },
-            function (response) {
-                $scope.message = "Error: " + response.status + " " + response.statusText;
-            });
-
-        //Función que exporta un cuestionario a fichero en formato json
-        $scope.exportFavorite = function (cuest, filename) {
-            exportFactory.exportTest(cuest, filename);
-        };
-
-        $scope.removeFavorite = function (test) {
-            var index = $scope.favoritos.indexOf(test);
-            if (index > -1) {
-                $scope.favoritos.splice(index, 1);
-            }
-            favoriteFactory.remove(test);
-        }
-
-
-    }])
     .controller('HeaderController', ['$scope', '$translate', '$state', '$rootScope', 'ngDialog', 'AuthFactory', function ($scope, $translate, $state, $rootScope, ngDialog, AuthFactory) {
 
         $scope.loggedIn = false;
