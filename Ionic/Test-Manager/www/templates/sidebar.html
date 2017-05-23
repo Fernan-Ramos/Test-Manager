@@ -18,21 +18,26 @@
       <ion-list>
         <ion-item menu-close href="#/app/menu">
           {{'QUIZS' | translate}}
+          <i class="fa fa-check-square-o placeholder-icon"></i>
+        </ion-item>
+        <ion-item menu-close href="#/app/cloud">
+          {{'CLOUD' | translate}}
+          <i class="fa fa-cloud-download placeholder-icon"></i>
         </ion-item>
         <ion-item menu-close href="#/app/maker">
           {{'MAKER' | translate}}
+           <i class="icon ion-edit placeholder-icon"></i>
         </ion-item>
         <ion-item menu-close href="#/app/stats">
           {{'STAT' | translate}}
-        </ion-item>
-        <ion-item menu-close href="#/app/favorites">
-          {{'FAV' | translate}}
+          <i class="icon ion-stats-bars placeholder-icon"></i>
         </ion-item>
         <ion-item class="item-divider">
           {{'SERVICE' | translate}}
         </ion-item>
         <ion-item menu-close ng-click="logOut()">
           {{'EXIT' | translate}}
+           <i class="fa fa-sign-out placeholder-icon"></i>
         </ion-item>
       </ion-list>
     </ion-content>

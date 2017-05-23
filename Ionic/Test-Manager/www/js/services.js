@@ -8,9 +8,13 @@ angular.module('testManager.services', ['ngResource', 'ngMaterial', 'chart.js'])
 
     }])
 
-    .factory('favoriteFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
+    .factory('cloudFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
 
-        return $resource(baseURL + "favorites/:id", null, { 'update': { method: 'PUT' } });
+        return $resource(baseURL + "cuestionarios/cloud", null, {
+            'update': {
+                method: 'PUT'
+            }
+        });
 
     }])
 

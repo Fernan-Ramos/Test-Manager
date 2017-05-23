@@ -13,7 +13,6 @@ angular.module('testManagerApp')
             function (response) {
                 $scope.message = "Error: " + response.status + " " + response.statusText;
             });
-
         //Función que exporta un cuestionario a fichero en formato json
         $scope.exportCuest = function (cuest, filename) {
             exportFactory.exportTest(cuest, filename);
@@ -327,7 +326,17 @@ angular.module('testManagerApp')
     }])
 
 
-    .controller('CloudController', ['$scope', 'cloudFactory', 'menuFactory', function ($scope, cloudFactory, menuFactory) {
+    .controller('CloudController', ['$scope', '$mdDialog', 'cloudFactory', 'menuFactory', function ($scope, $mdDialog, cloudFactory, menuFactory) {
+
+        $scope.menu = menuFactory.query(
+            function (response) {
+                $scope.menu = response[0].cuestionarios;
+                $scope.showMenu = true;
+            },
+            function (response) {
+                $scope.message = "Error: " + response.status + " " + response.statusText;
+            });
+
         $scope.showCloud = false;
         $scope.cuestionarios = cloudFactory.query(
             function (response) {
@@ -345,10 +354,46 @@ angular.module('testManagerApp')
          * @param {Object} test Cuestionario a añadir
          */
         $scope.addtoMenu = function (test) {
-            var cuest = test;
-            delete cuest._id;
-            cuest.cuestCloud = false;
-            menuFactory.save(cuest);
+            var isFav = $scope.menu.some(function (element) {
+                return element._id == test._id;
+            });
+            if (!isFav) {
+                //Se borran las estadisticas
+                test.stats = [];
+                test.tests = [];
+                //cuestCloud se declara como false de forma que no haya cuestionarios públicos repetidos
+                test.cuestCloud = false;
+                menuFactory.save(test);
+            } else {
+                $mdDialog.show({
+                    clickOutsideToClose: true,
+                    scope: $scope,
+                    locals: {
+                        test: test
+                    },
+                    preserveScope: true,
+                    template: '<md-dialog aria-label="List dialog">' +
+                    '  <md-dialog-content>' +
+                    '<md-content class="md-padding">' +
+                    ' <h5  translate="EXISTFAVORITE" class="md-title">Ya existe el favorito</h5> <em>{{test.title}}</em>' +
+                    '</md-content>      ' +
+                    '  </md-dialog-content>' +
+                    '  <md-dialog-actions>' +
+                    '    <md-button  ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
+                    '      Menu' +
+                    '    </md-button>' +
+                    '  </md-dialog-actions>' +
+                    '</md-dialog>',
+                    controller: function DialogController($scope, $mdDialog, test) {
+                        $scope.test = test;
+                        $scope.closeDialog = function () {
+                            $mdDialog.hide();
+                        }
+                    }
+                });
+            }
+
+
         }
 
     }])

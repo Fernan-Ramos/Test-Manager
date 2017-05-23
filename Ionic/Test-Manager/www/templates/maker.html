@@ -88,6 +88,15 @@
           </label>
           </div>
         </div>
+        <div class="row">
+          <div class="col" style="color:#003333" translate><br>{{'SAVETOCLOUD'}}</div>
+          <div class="col col-75">
+            <md-radio-group ng-model="cuest.cuestCloud" required>
+              <md-radio-button value="true" class="md-primary">{{'YES' | translate}}</md-radio-button>
+              <md-radio-button value="false">{{'NO' | translate}}</md-radio-button>
+            </md-radio-group>
+          </div>
+        </div>
         <label class="item">
           <button class="button button-block nav-teal" ng-disabled="form.makerForm.$invalid" translate="MAKERTAB1">Crear </button>
         </label>

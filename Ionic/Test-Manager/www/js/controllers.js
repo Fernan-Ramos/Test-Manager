@@ -34,7 +34,7 @@ angular.module('testManager.controllers', [])
 
   })
 
-  .controller('MenuController', ['$scope', '$filter', 'menuFactory', 'favoriteFactory', 'baseURL', '$mdDialog', '$ionicPlatform', '$cordovaLocalNotification', '$cordovaToast', function ($scope, $filter, menuFactory, favoriteFactory, baseURL, $mdDialog, $ionicPlatform, $cordovaLocalNotification, $cordovaToast) {
+  .controller('MenuController', ['$scope', '$mdDialog', 'menuFactory', 'baseURL', function ($scope, $mdDialog, menuFactory, baseURL, ) {
 
     $scope.$on("$ionicView.enter", function (event, data) {
       $scope.baseURL = baseURL;
@@ -43,71 +43,13 @@ angular.module('testManager.controllers', [])
       $scope.cuestionarios = menuFactory.query(
         function (response) {
           $scope.cuestionarios = response[0].cuestionarios;
+          console.log($scope.cuestionarios)
           $scope.showMenu = true;
         },
         function (response) {
           $scope.message = "Error: " + response.status + " " + response.statusText;
         });
 
-      $scope.favoritos = favoriteFactory.query(
-        function (response) {
-          $scope.favoritos = response[0].favoritos;
-        },
-        function (response) {
-          $scope.message = "Error: " + response.status + " " + response.statusText;
-        });
-
-
-      $scope.addFavorite = function (test) {
-        test.tests = [];
-        test.stats = [];
-        //Se comprueba si existe ya ese favorito de dicho cuestionario
-        var isFav = $scope.favoritos.some(function (element) {
-          return element._id == test._id;
-        });
-        if (!isFav) {
-          favoriteFactory.save(test);
-          $scope.favoritos.push(test);
-          var add = $filter('translate')('ADDEDFAVORITE');
-          $ionicPlatform.ready(function () {
-            $cordovaToast
-              .show(add + test.title, 'long', 'center')
-              .then(function (success) {
-                // success
-              }, function (error) {
-                // error
-              });
-          });
-        } else {
-          $mdDialog.show({
-            clickOutsideToClose: true,
-            scope: $scope,
-            locals: {
-              test: test
-            },
-            preserveScope: true,
-            template: '<md-dialog aria-label="List dialog">' +
-            '  <md-dialog-content>' +
-            '<md-content class="md-padding">' +
-            ' <h5  translate="EXISTFAVORITE" class="md-title">Ya existe el favorito</h5> <em>{{test.title}}</em>' +
-            '</md-content>      ' +
-            '  </md-dialog-content>' +
-            '  <md-dialog-actions>' +
-            '    <md-button translate="FAVORITEBUTTON" ui-sref="app.favorites" ng-click="closeDialog()" class="md-primary">' +
-            '      Favoritos' +
-            '    </md-button>' +
-            '  </md-dialog-actions>' +
-            '</md-dialog>',
-            controller: function DialogController($scope, $mdDialog, test) {
-              $scope.test = test;
-              $scope.closeDialog = function () {
-                $mdDialog.hide();
-              }
-            }
-          });
-        }
-
-      }
 
       //Función que permite borrar un cuestionario
       $scope.removeCuest = function (cuest) {
@@ -138,18 +80,8 @@ angular.module('testManager.controllers', [])
               if (index > -1) {
                 $scope.cuestionarios.splice(index, 1);
               }
-              //Se comprueba si existe favorito de dicho cuestionario
-              var isFav = $scope.favoritos.some(function (element) {
-                return element._id == cuest._id;
-              });
-              //Se elimina el favorito del cuestionario a borrar si existe dicho favorito
-              if (isFav) {
-                favoriteFactory.remove(cuest);
-              }
-
               menuFactory.remove(cuest);
             }
-
             $scope.closeDialog = function () {
               $mdDialog.hide();
             }
@@ -227,7 +159,6 @@ angular.module('testManager.controllers', [])
 
       if (type == "neg")
         $scope.answer.questions[j].estado = (correct - incorrect) / respuestas.length;
-      console.log($scope.answer.questions[j].estado)
       calEstado($scope.answer.questions[j].estado);
     }
 
@@ -404,8 +335,91 @@ angular.module('testManager.controllers', [])
 
   }])
 
+  .controller('CloudController', ['$scope', '$mdDialog', '$filter', '$ionicPlatform', 'cloudFactory', 'menuFactory', function ($scope, $mdDialog, $filter, $ionicPlatform, cloudFactory, menuFactory) {
+    $scope.$on("$ionicView.enter", function (event, data) {
+      $scope.showCloud = false;
 
-  .controller('MakerController', ['$scope', '$filter', '$mdDialog', 'menuFactory', '$ionicPlatform', '$cordovaLocalNotification', '$cordovaToast', function ($scope, $filter, $mdDialog, menuFactory, $ionicPlatform, $cordovaLocalNotification, $cordovaToast) {
+      $scope.menu = menuFactory.query(
+        function (response) {
+          $scope.menu = response[0].cuestionarios;
+          $scope.showMenu = true;
+        },
+        function (response) {
+          $scope.message = "Error: " + response.status + " " + response.statusText;
+        });
+
+      $scope.cuestionarios = cloudFactory.query(
+        function (response) {
+          $scope.cuestionarios = response;
+          $scope.showCloud = true;
+        },
+        function (response) {
+          $scope.message = "Error: " + response.status + " " + response.statusText;
+        }
+      );
+
+      /**
+       * Función que añade un cuestionario de la nube al menu
+       * Se borra su identifador para evitar conflictos en la base de datos
+       * @param {Object} test Cuestionario a añadir
+       */
+      $scope.addtoMenu = function (test) {
+        //delete cuest._id;
+
+        var isFav = $scope.menu.some(function (element) {
+          return element._id == test._id;
+        });
+        if (!isFav) {
+          //Se borran las estadisticas
+          test.stats = [];
+          test.tests = [];
+          //cuestCloud se declara como false de forma que no haya cuestionarios públicos repetidos
+          test.cuestCloud = false;
+          menuFactory.save(test);
+          //Notificación
+          var add = $filter('translate')('ADDEDFAVORITE');
+          $ionicPlatform.ready(function () {
+            $cordovaToast
+              .show(add + test.title, 'long', 'center')
+              .then(function (success) {
+                // success
+              }, function (error) {
+                // error
+              });
+          });
+        } else {
+          $mdDialog.show({
+            clickOutsideToClose: true,
+            scope: $scope,
+            locals: {
+              test: test
+            },
+            preserveScope: true,
+            template: '<md-dialog aria-label="List dialog">' +
+            '  <md-dialog-content>' +
+            '<md-content class="md-padding">' +
+            ' <h5  translate="EXISTFAVORITE" class="md-title">Ya existe el favorito</h5> <em>{{test.title}}</em>' +
+            '</md-content>      ' +
+            '  </md-dialog-content>' +
+            '  <md-dialog-actions>' +
+            '    <md-button ui-sref="app.menu" ng-click="closeDialog()" class="md-primary">' +
+            '      Menu' +
+            '    </md-button>' +
+            '  </md-dialog-actions>' +
+            '</md-dialog>',
+            controller: function DialogController($scope, $mdDialog, test) {
+              $scope.test = test;
+              $scope.closeDialog = function () {
+                $mdDialog.hide();
+              }
+            }
+          });
+        }
+      }
+
+    });
+  }])
+  .controller('MakerController', ['$scope', '$filter', 'menuFactory', 'AuthFactory', '$ionicPlatform', '$cordovaLocalNotification', '$cordovaToast', function ($scope, $filter, menuFactory, AuthFactory, $ionicPlatform, $cordovaLocalNotification, $cordovaToast) {
     $scope.form = {};
     $scope.showMaker = false;
     $scope.message = "Loading ...";
@@ -418,11 +432,6 @@ angular.module('testManager.controllers', [])
         $scope.message = "Error: " + response.status + " " + response.statusText;
       });
 
-    $scope.quests = [];
-    for (var i = 1; i <= 20; i++) {
-      $scope.quests.push(i);
-    }
-
     $scope.number;
 
     $scope.max = function (n) {
@@ -433,7 +442,7 @@ angular.module('testManager.controllers', [])
       if (num != null)
         num = parseInt(num, 10);
       if (Number.isInteger(num) && num <= 30)
-        return new Array(num);
+        return Array.apply(null, Array(num)).map(function (x, i) { return i; });
     };
 
 
@@ -462,7 +471,9 @@ angular.module('testManager.controllers', [])
 
     $scope.submitTest = function (cuest) {
 
-      //Poner el cuestionaro creado en array de cuestionarios
+      //El autor del cuestionario se obtiene del nombre de usuario
+      $scope.cuest.author = AuthFactory.getUsername();
+      //Se guarda el objeto cuestionario en el menu
       menuFactory.save($scope.cuest);
       //Resetea el formulario a  pristine
       $scope.form.makerForm.$setPristine();
@@ -566,7 +577,7 @@ angular.module('testManager.controllers', [])
         scaleBeginAtZero: false,
         barBeginAtOrigin: true
       };
-      
+
     });
   }])
   .controller('StatsController', ['$scope', '$filter', '$stateParams', '$mdDialog', 'menuFactory', function ($scope, $filter, $stateParams, $mdDialog, menuFactory) {
@@ -651,39 +662,6 @@ angular.module('testManager.controllers', [])
 
   }])
 
-  .controller('FavoritesController', ['$scope', '$filter', '$ionicPlatform', '$cordovaToast', 'menuFactory', 'favoriteFactory', 'baseURL', '$mdDialog', function ($scope, $filter, $ionicPlatform, $cordovaToast, menuFactory, favoriteFactory, baseURL, $mdDialog) {
-    $scope.$on("$ionicView.enter", function (event, data) {
-      $scope.baseURL = baseURL;
-      $scope.favoritos = favoriteFactory.query(
-        function (response) {
-          $scope.favoritos = response[0].favoritos;
-          $scope.showMenu = true;
-        },
-        function (response) {
-          $scope.message = "Error: " + response.status + " " + response.statusText;
-        });
-
-      $scope.removeFavorite = function (test) {
-        var index = $scope.favoritos.indexOf(test);
-        if (index > -1) {
-          $scope.favoritos.splice(index, 1);
-        }
-        favoriteFactory.remove(test);
-        var del1 = $filter('translate')('DELETEDFAVORITE1');
-        var del2 = $filter('translate')('DELETEDFAVORITE2');
-        $ionicPlatform.ready(function () {
-          $cordovaToast
-            .show(del1 + test.title + del2, 'long', 'center')
-            .then(function (success) {
-              // success
-            }, function (error) {
-              // error
-            });
-        });
-      }
-    });
-
-  }])
 
   .controller('LoginController', ['$state', '$scope', '$rootScope', '$ionicModal', '$localStorage', 'AuthFactory', function ($state, $scope, $rootScope, $ionicModal, $localStorage, AuthFactory) {
 

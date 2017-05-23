@@ -4,13 +4,13 @@
       <ion-slide-box delegate-handle="img-viewer">
         <ion-slide ng-repeat="preg in cuestionario.questions  track by $index" ng-init="updateSlider()">
           <md-card>
-            <md-card-header>
+            <md-card-header class="md-header-padding">
               <md-card-header-text>
                 <span class="md-subhead">{{ 'QUESTION' | translate}} {{$index+1}}</span>
               </md-card-header-text>
             </md-card-header>
             <img class="md-card-image"  ng-if="preg.image" ng-src={{preg.image}}>
-            <md-card-title>
+            <md-card-title class="md-title-padding">
               <md-card-title-text>
                 <span class="md-headline">{{preg.pregunta}}</span>
                 <span class="md-subhead" ng-if="preg.tipo=='unica'" translate>{{'SELECTQUESTION'}}</span>

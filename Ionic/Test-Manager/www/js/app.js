@@ -53,6 +53,16 @@ angular.module('testManager', ['ionic', 'ngCordova', 'testManager.controllers', 
         }
       })
 
+      .state('app.cloud', {
+        url: '/cloud',
+        views: {
+          'mainContent': {
+            templateUrl: 'templates/cloud.html',
+            controller: 'CloudController'
+          }
+        }
+      })
+
       .state('app.testDetails', {
         url: '/menu/:id',
         views: {
@@ -92,18 +102,9 @@ angular.module('testManager', ['ionic', 'ngCordova', 'testManager.controllers', 
             controller: 'StatsController'
           }
         }
-      })
-
-      .state('app.favorites', {
-        url: '/favorites',
-        views: {
-          'mainContent': {
-            templateUrl: 'templates/favorites.html',
-            controller: 'FavoritesController'
-          }
-        }
       });
 
+   
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/login');
