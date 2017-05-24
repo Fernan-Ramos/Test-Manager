@@ -27,7 +27,7 @@
     "QUIZS": "Mis Cuestionarios",
     "MAKER": "Crear Cuestionario",
     "STAT": "Estadisticas",
-    "FAV": "Mis Favoritos",
+    "CLOUD": "Nube",
     "EXIT": "Salir",
     "SEARCH": "Buscar",
     "MAKERTAB1": "Crear",
@@ -96,6 +96,7 @@
     "DATE": "{{date|date:\"short\"}}",
     "BUTTON_LANG_ES": "Español",
     "BUTTON_LANG_EN": "Inglés",
+    "AUTHOR":"Autor",
     "PDFTITLE1":"Gráfica de estadísticas:",
     "PDFTITLE2":"Cuestionarios realizados:"
   }

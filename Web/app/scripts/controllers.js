@@ -201,9 +201,9 @@ angular.module('testManagerApp')
                 template:
 
                 '<md-dialog aria-label="Respuestas">' +
-                '<md-toolbar>' +
+                '<md-toolbar class="nav-teal">' +
                 '<div class="md-toolbar-tools" >' +
-                '<h2>{{cuestionario.title}}</h2>' +
+                '<h2 style="color:floralwhite">{{cuestionario.title}}</h2>' +
                 '<span flex></span>' +
                 '</div>' +
                 ' </md-toolbar>' +
@@ -215,6 +215,7 @@ angular.module('testManagerApp')
                 '</md-content>' +
                 '<md-content class="md-padding">' +
                 '<canvas id="doughnut" class="chart chart-doughnut" chart-data="data" chart-labels="labels" chart-colors="colors">' +
+                '</canvas>'+
                 '</md-content>' +
                 '</md-tab>' +
                 '<md-tab label="{{\'SUMMARYTAB\' | translate}}">' +

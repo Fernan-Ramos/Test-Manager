@@ -27,7 +27,7 @@
     "QUIZS": "Quizzes",
     "MAKER": "Quiz Maker",
     "STAT": "Statistics",
-    "FAV": "My Favorites",
+    "CLOUD": "Cloud",
     "EXIT": "Log out",
     "SEARCH": "Search",
     "MAKERTAB1": "Create",
@@ -96,6 +96,7 @@
     "DATE": "{{date|date:\"medium\"}}",
     "BUTTON_LANG_ES": "Spanish",
     "BUTTON_LANG_EN": "English",
+    "AUTHOR": "Author",
     "PDFTITLE1": "Graph of statistics:",
     "PDFTITLE2": "Completed quizzes:"
 }

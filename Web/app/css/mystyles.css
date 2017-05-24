@@ -16,6 +16,10 @@ body{
   min-height: 100%;
 }
 
+.nav-teal{
+  background-color: teal !important;
+  color:floralwhite
+}
 
 header {
   position: relative;
