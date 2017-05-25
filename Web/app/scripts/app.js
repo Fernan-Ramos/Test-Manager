@@ -96,7 +96,7 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
         $urlRouterProvider.otherwise('/login');
         $translateProvider
             .useStaticFilesLoader({
-                prefix: 'scripts/locale-',
+                prefix: 'traductions/locale-',
                 suffix: '.json'
             })
         $translateProvider.preferredLanguage('es');
