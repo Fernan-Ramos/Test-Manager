@@ -42,7 +42,7 @@
                         <md-button ng-click="filter(2)" aria-label="Date">
                             <strong translate> {{'TIME'}}</strong>
                             <md-icon class="fa fa-calendar-o fa-2x"></md-button>
-                        <div id="pipas">
+                        <div id="tests">
                             <div ng-repeat="test in cuestionario.tests | orderBy:filtText" ng-class="{'bs-callout bs-callout-success':test.cal>=70,'bs-callout bs-callout-warning': test.cal>=50 && test.cal<70,'bs-callout bs-callout-danger':test.cal<50}">
                                 <h4>{{cuestionario.title}}</h4>
                                 <p><strong><em>{{test.cal | number : 2}}%</em></strong></p>
@@ -54,4 +54,4 @@
             </div>
         </div>
     </div>
-</div>Z
+</div>

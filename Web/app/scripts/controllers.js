@@ -621,7 +621,7 @@ angular.module('testManagerApp')
             return image.src;
         }
 
-        $scope.exportPDF = function (cuest, filename) {
+        $scope.exportPDF = function (cuest) {
             var doc = new jsPDF({
                 orientation: 'landscape'
 
@@ -644,11 +644,11 @@ angular.module('testManagerApp')
             doc.addImage(convertCanvasToImage(document.getElementById("line")), 'PNG', 50, 80, 200, 100);
             doc.addPage();
             doc.text(20, 20, $filter('translate')('PDFTITLE2'));
-            doc.fromHTML($("#pipas").get(0), 30, 40, {
+            doc.fromHTML($("#tests").get(0), 30, 40, {
                 'width': 170,
                 'elementHandlers': specialElementHandlers
             });
-            doc.save(filename + '.pdf');
+            doc.save(cuest.title + '.pdf');
         }
 
         //Atributos para chart
