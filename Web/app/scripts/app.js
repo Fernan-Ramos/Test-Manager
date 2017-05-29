@@ -1,9 +1,16 @@
+/**
+ * @author Fernán Ramos Saiz
+ * @version 1.0
+ * @description Fichero que almacena la configuración de la aplicación
+ */
 'use strict';
 angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngResource', 'ngDialog', 'pascalprecht.translate'])
     .config(function ($stateProvider, $urlRouterProvider, $translateProvider) {
         $stateProvider
 
-            //ruta para menu
+            /**
+             * Estado principal de la aplicacion
+             */
             .state('app', {
                 url: '/',
                 views: {
@@ -14,16 +21,15 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
                     'content': {
                         templateUrl: 'views/menu.html',
                         controller: 'MenuController'
-                    },
-                    'footer': {
-                        templateUrl: 'views/footer.html',
                     }
                 }
 
             })
 
 
-            //ruta para login
+            /**
+             * Estado login, 
+             */
             .state('login', {
                 url: '/login',
                 views: {
@@ -92,17 +98,23 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
                 }
             })
 
-
+        //Si no se puede acceder a ninguna ruta por defecto se accede a la ruta /login
         $urlRouterProvider.otherwise('/login');
+
+        /**
+         * Se obtienen las traducciones de los ficheros locales .json
+         */
         $translateProvider
             .useStaticFilesLoader({
                 prefix: 'traductions/locale-',
                 suffix: '.json'
             })
+        /**
+         * Se establece español como idioma predifinido
+         */
         $translateProvider.preferredLanguage('es');
         $translateProvider.fallbackLanguage('es');
         $translateProvider.useSanitizeValueStrategy('escapeParameters');
         $translateProvider.forceAsyncReload(true);
-
 
     });

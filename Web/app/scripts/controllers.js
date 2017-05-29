@@ -1,10 +1,27 @@
+/**
+ * @author Fernán Ramos Saiz <frs0012@alu.ubu.es>
+ * @version 1.0
+ * @description Fichero que almacena los controlladores utilizados en la aplicación
+ */
 'use strict';
 angular.module('testManagerApp')
-
-    .controller('MenuController', ['$scope', '$mdDialog', 'menuFactory', 'exportFactory', function ($scope, $mdDialog, menuFactory, exportFactory) {
+    /**
+     * @ngdoc controller 
+     * @name testManagerApp.controller:MenuController
+     * @description
+     * Controlador que gestiona la operaciones de la vista menu
+     * Se realizan las operaciones:
+     *  Obtener cuestionarios- GET
+     *  Exportar cuestionarios
+     *  Eliminar cuestionarios- DELETE
+     */
+    .controller('MenuController', ['$scope', '$mdDialog', 'menuFactory', function ($scope, $mdDialog, menuFactory) {
 
         $scope.showMenu = false;
         $scope.message;
+        /**
+         * Se obtiene los cuestionarios de la base de datos
+         */
         $scope.cuestionarios = menuFactory.query(
             function (response) {
                 $scope.cuestionarios = response[0].cuestionarios;
@@ -13,32 +30,73 @@ angular.module('testManagerApp')
             function (response) {
                 $scope.message = "Error: " + response.status + " " + response.statusText;
             });
-        //Función que exporta un cuestionario a fichero en formato json
-        $scope.exportCuest = function (cuest, filename) {
-            exportFactory.exportTest(cuest, filename);
+
+        /**
+         * @ngdoc method
+         * @name exportCuest
+         * @methodOf testManagerApp.controller:MenuController
+         * @scope
+         * @description
+         * Función que exporta un cuestionario a fichero en formato json
+         * @param {Object} cuest cuestionario a exportar
+         */
+        $scope.exportCuest = function (cuest) {
+            var filename = cuest.title + '.json';
+            //Se resetea el id, las respuestas y las estadisticas
+            delete cuest._id;
+            cuest.tests = [];
+            cuest.stats = [];
+            if (typeof cuest === 'object') {
+                cuest = JSON.stringify(cuest, undefined, 2);
+            }
+            var blob = new Blob([cuest], {
+                type: 'text/json'
+            });
+
+            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveOrOpenBlob(blob, filename);
+            } else {
+                var e = document.createEvent('MouseEvents'),
+                    a = document.createElement('a');
+
+                a.download = filename;
+                a.href = window.URL.createObjectURL(blob);
+                a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
+                e.initEvent('click', true, false, window,
+                    0, 0, 0, 0, 0, false, false, false, false, 0, null);
+                a.dispatchEvent(e);
+            }
         };
 
-        //Función que permite borrar un cuestionario
+        /**
+         * @ngdoc method
+         * @name removeCuest
+         * @methodOf testManagerApp.controller:MenuController
+         * @scope
+         * @description
+         * Función que permite borrar un cuestionario
+         * @param {Object} cuestionario a borrar
+         */
         $scope.removeCuest = function (cuest) {
             $mdDialog.show({
                 clickOutsideToClose: true,
                 scope: $scope,
                 preserveScope: true,
                 template: '<md-dialog aria-label="List dialog">' +
-                '  <md-dialog-content>' +
-                '<md-content class="md-padding">' +
-                ' <h5 translate="REMOVEQUESTION" class="md-title">Estas seguro de eliminar este cuestionario</h5>' +
-                '</md-content>      ' +
-                '  </md-dialog-content>' +
-                '  <md-dialog-actions>' +
-                '    <md-button translate="REMOVEQUIZ" ui-sref="app" ng-click="remove()" class="md-primary">' +
-                '      Eliminar' +
-                '    </md-button>' +
-                '    <md-button translate="CANCELREMOVE" ng-click="closeDialog()" class="md-primary">' +
-                '      Cancelar' +
-                '    </md-button>' +
-                '  </md-dialog-actions>' +
-                '</md-dialog>',
+                    '  <md-dialog-content>' +
+                    '<md-content class="md-padding">' +
+                    ' <h5 translate="REMOVEQUESTION" class="md-title">Estas seguro de eliminar este cuestionario</h5>' +
+                    '</md-content>      ' +
+                    '  </md-dialog-content>' +
+                    '  <md-dialog-actions>' +
+                    '    <md-button translate="REMOVEQUIZ" ui-sref="app" ng-click="remove()" class="md-primary">' +
+                    '      Eliminar' +
+                    '    </md-button>' +
+                    '    <md-button translate="CANCELREMOVE" ng-click="closeDialog()" class="md-primary">' +
+                    '      Cancelar' +
+                    '    </md-button>' +
+                    '  </md-dialog-actions>' +
+                    '</md-dialog>',
 
                 controller: function DialogController($scope, $mdDialog) {
                     $scope.remove = function () {
@@ -60,17 +118,28 @@ angular.module('testManagerApp')
 
     }])
 
+    /**
+     * @ngdoc controller
+     * @name testManagerApp.controller:TestController
+     * @description 
+     * Controlador que gestiona las operaciones de la vista testDetails
+     * Se realizan las operaciones:
+     *  Obtener cuestionario por id- GET
+     *  Guardar estadísticas del cuestioanrio- PUT
+     */
     .controller('TestController', ['$scope', '$filter', '$stateParams', '$mdDialog', 'menuFactory', function ($scope, $filter, $stateParams, $mdDialog, menuFactory) {
         $scope.form = {};
         $scope.showCuestionario = false;
         $scope.message;
 
-        //Se obtiene el cuestionario 
+        /**
+         * Se obtiene el cuestionario por su id de la base de datos
+         */
         $scope.cuestionario =
             menuFactory.get({
                 id: $stateParams.id
             })
-                .$promise.then(
+            .$promise.then(
                 function (response) {
                     $scope.showCuestionario = true;
                     $scope.cuestionario = response.cuestionarios[0];
@@ -90,7 +159,15 @@ angular.module('testManagerApp')
                     for (var j = 0; j < $scope.cuestionario.questions.length; j++) {
                         $scope.selected.push([]);
                     }
-                    //Función que añade o elimina una respuesta al array de respuestas
+                    /**
+                     * @ngdoc method
+                     * @name exists
+                     * @methodOf testManagerApp.controller:TestController
+                     * @description
+                     * Función que añade o elimina una respuesta al array de respuestas
+                     * @param {Object} item Respuesta 
+                     * @param {Array} list array de respuestas de la pregunta
+                     */
                     $scope.toggle = function (item, list) {
                         var idx = list.indexOf(item);
                         if (idx > -1) {
@@ -99,7 +176,16 @@ angular.module('testManagerApp')
                             list.push(item);
                         }
                     };
-                    //Función que comprueba si el elemento existe en el array de respuestas
+                    /**
+                     * @ngdoc method
+                     * @name exists
+                     * @methodOf testManagerApp.controller:TestController
+                     * @description
+                     * Función que comprueba si el elemento existe en el array de respuestas
+                     * @param {Object} item Elemento 
+                     * @param {Array} list array de respuestas de la pregunta
+                     * @returns {Boolean} true si existe, false si no exite
+                     */
                     $scope.exists = function (item, list) {
                         return list.indexOf(item) > -1;
                     };
@@ -107,9 +193,18 @@ angular.module('testManagerApp')
                 function (response) {
                     $scope.message = "Error: " + response.status + " " + response.statusText;
                 }
-                );
+            );
 
-        //Función que calcula la calificación para preguntas de tipo multiple
+        /**
+         * @ngdoc method
+         * @name calmultiple
+         * @methodOf testManagerApp.controller:TestController
+         * @description
+         * Función que calcula la calificación para preguntas de tipo multiple
+         * @param {Integer} j índice 
+         * @param {Array} respuestas array de respuestas de la pregunta
+         * @param {String} type tipo de calificación múltiple
+         */
         function calmultiple(j, respuestas, type) {
             var correct = 0;
             var incorrect = 0;
@@ -128,12 +223,19 @@ angular.module('testManagerApp')
             calEstado($scope.answer.questions[j].estado);
         }
 
+        /**
+         * @ngdoc method
+         * @name calEstado
+         * @methodOf testManagerApp.controller:TestController
+         * @description
+         * Función que determina el tipo de respuesta: correcta, incorrecta o parcial
+         * @param {Integer} estado calificación de la pregunta
+         */
         function calEstado(estado) {
             if (estado < 0) {
                 $scope.negativas = $scope.negativas + estado;
                 $scope.incorrectas++;
-            }
-            else if (estado == 0) {
+            } else if (estado == 0) {
                 $scope.incorrectas++;
             } else if (estado < 1 && estado > 0) {
                 $scope.parciales = $scope.parciales + estado;
@@ -143,7 +245,15 @@ angular.module('testManagerApp')
             }
 
         }
-        //Se obtiene las respuestas guardadas
+
+        /**
+         * @ngdoc method
+         * @name submitAnswer
+         * @methodOf testManagerApp.controller:TestController
+         * @scope
+         * @description
+         * Función que permite guardar los resultados obtenidos del cuestionario
+         */
         $scope.submitAnswer = function () {
             //Se guarda la fecha en la que se realiza el cuestionario
             $scope.answer.date = $filter('date')(new Date(), 'y/M/d');
@@ -193,58 +303,58 @@ angular.module('testManagerApp')
             menuFactory.update({
                 id: $stateParams.id
             }, $scope.cuestionario);
-
+            //Diálogo que muestra los resultados del cuestionario realizado
             $mdDialog.show({
                 clickOutsideToClose: false,
                 scope: $scope,
                 preserveScope: true,
                 template:
 
-                '<md-dialog aria-label="Respuestas">' +
-                '<md-toolbar class="nav-teal">' +
-                '<div class="md-toolbar-tools" >' +
-                '<h2 style="color:floralwhite">{{cuestionario.title}}</h2>' +
-                '<span flex></span>' +
-                '</div>' +
-                ' </md-toolbar>' +
-                '  <md-dialog-content>' +
-                '<md-tabs md-dynamic-height md-border-bottom>' +
-                '<md-tab label="{{\'RESULTTAB\' | translate}}">' +
-                '<md-content class="md-padding">' +
-                '<h5 class="md-display-1" style="text-align:center"><em>{{cuestionario.tests[cuestionario.tests.length-1].cal | number:2}}%</em></h5>' +
-                '</md-content>' +
-                '<md-content class="md-padding">' +
-                '<canvas id="doughnut" class="chart chart-doughnut" chart-data="data" chart-labels="labels" chart-colors="colors">' +
-                '</canvas>'+
-                '</md-content>' +
-                '</md-tab>' +
-                '<md-tab label="{{\'SUMMARYTAB\' | translate}}">' +
-                ' <md-content class="md-padding" ng-repeat="preg in cuestionario.tests[cuestionario.tests.length-1].questions  track by $index">' +
-                '<div ng-if="preg.estado==1" class="bs-callout bs-callout-success">' +
-                '<h4><em>{{\'QUESTION\'| translate}} {{ $index+1 }} : {{preg.pregunta}}</em></h4>' +
-                '<p translate>{{\'CORRECT\'}} </p> <strong class="text-success">{{preg.rcorrect}}</strong> ' +
-                '</div>' +
-                '<div ng-if="preg.estado==0" class="bs-callout bs-callout-danger">' +
-                '<h4><em>{{\'QUESTION\'| translate}} {{ $index+1 }} : {{preg.pregunta}}</em></h4>' +
-                '<p translate>{{\'INCORRECT\'}} </p> <strong class="text-danger">{{preg.r}} </strong> ' +
-                ' </div>' +
-                '<div ng-if="preg.estado>0 && preg.estado<1 " class="bs-callout bs-callout-warning">' +
-                '<h4><em>{{\'QUESTION\'| translate}} {{ $index+1 }} : {{preg.pregunta}}</em></h4>' +
-                '<p translate>{{\'PARCIAL1\'}}</p> <strong class="text-warning">{{preg.r}} </strong> <p translate>{{\'PARCIAL2\'}}</p>' +
-                ' </div>' +
-                '</md-content>' +
-                '</md-tab>' +
-                '</md-tabs>' +
-                '  </md-dialog-content>' +
-                '  <md-dialog-actions>' +
-                '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
-                '      Menu' +
-                '    </md-button>' +
-                '    <md-button translate="STAT" ui-sref="app.statDetails({id: cuestionario._id})" ng-click="closeDialog()" class="md-primary">' +
-                '      Estadisticas' +
-                '    </md-button>' +
-                '  </md-dialog-actions>' +
-                '</md-dialog>',
+                    '<md-dialog aria-label="Respuestas">' +
+                    '<md-toolbar class="nav-teal">' +
+                    '<div class="md-toolbar-tools" >' +
+                    '<h2 style="color:floralwhite">{{cuestionario.title}}</h2>' +
+                    '<span flex></span>' +
+                    '</div>' +
+                    ' </md-toolbar>' +
+                    '  <md-dialog-content>' +
+                    '<md-tabs md-dynamic-height md-border-bottom>' +
+                    '<md-tab label="{{\'RESULTTAB\' | translate}}">' +
+                    '<md-content class="md-padding">' +
+                    '<h5 class="md-display-1" style="text-align:center"><em>{{cuestionario.tests[cuestionario.tests.length-1].cal | number:2}}%</em></h5>' +
+                    '</md-content>' +
+                    '<md-content class="md-padding">' +
+                    '<canvas id="doughnut" class="chart chart-doughnut" chart-data="data" chart-labels="labels" chart-colors="colors">' +
+                    '</canvas>' +
+                    '</md-content>' +
+                    '</md-tab>' +
+                    '<md-tab label="{{\'SUMMARYTAB\' | translate}}">' +
+                    ' <md-content class="md-padding" ng-repeat="preg in cuestionario.tests[cuestionario.tests.length-1].questions  track by $index">' +
+                    '<div ng-if="preg.estado==1" class="bs-callout bs-callout-success">' +
+                    '<h4><em>{{\'QUESTION\'| translate}} {{ $index+1 }} : {{preg.pregunta}}</em></h4>' +
+                    '<p translate>{{\'CORRECT\'}} </p> <strong class="text-success">{{preg.rcorrect}}</strong> ' +
+                    '</div>' +
+                    '<div ng-if="preg.estado==0" class="bs-callout bs-callout-danger">' +
+                    '<h4><em>{{\'QUESTION\'| translate}} {{ $index+1 }} : {{preg.pregunta}}</em></h4>' +
+                    '<p translate>{{\'INCORRECT\'}} </p> <strong class="text-danger">{{preg.r}} </strong> ' +
+                    ' </div>' +
+                    '<div ng-if="preg.estado>0 && preg.estado<1 " class="bs-callout bs-callout-warning">' +
+                    '<h4><em>{{\'QUESTION\'| translate}} {{ $index+1 }} : {{preg.pregunta}}</em></h4>' +
+                    '<p translate>{{\'PARCIAL1\'}}</p> <strong class="text-warning">{{preg.r}} </strong> <p translate>{{\'PARCIAL2\'}}</p>' +
+                    ' </div>' +
+                    '</md-content>' +
+                    '</md-tab>' +
+                    '</md-tabs>' +
+                    '  </md-dialog-content>' +
+                    '  <md-dialog-actions>' +
+                    '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
+                    '      Menu' +
+                    '    </md-button>' +
+                    '    <md-button translate="STAT" ui-sref="app.statDetails({id: cuestionario._id})" ng-click="closeDialog()" class="md-primary">' +
+                    '      Estadisticas' +
+                    '    </md-button>' +
+                    '  </md-dialog-actions>' +
+                    '</md-dialog>',
 
                 controller: function DialogController($scope, $mdDialog) {
                     //Atributos para el char
@@ -258,8 +368,7 @@ angular.module('testManagerApp')
                 }
             });
 
-            //Si el conjunto de respuestas tiene alguna respuesta a algún cuestionario , se obtiene el titulo  del cuestionario , el nº de respuestas correctas y la fecha en la que se hizo.
-            //Se obtiene el titulo , la calificación y la fecha de cuestionario
+            //Se obtiene el titulo, la calificación y la fecha de cuestionario
             $scope.title = $scope.cuestionario.title;
             $scope.respuestas = $scope.cuestionario.tests[$scope.cuestionario.tests.length - 1].cal;
             $scope.fecha = $scope.cuestionario.tests[$scope.cuestionario.tests.length - 1].date;
@@ -279,7 +388,7 @@ angular.module('testManagerApp')
                 return obj.title == $scope.title;
             });
 
-            //Si no está el cuestionario reflejado se guarda la fecha , el titulo y el resultado || Si si que esta reflejado solamente se guarda la fecha y el resultado
+            //Si no está el cuestionario reflejado se guarda la fecha, el titulo y el resultado || Si sí que esta reflejado solamente se guarda la fecha y el resultado
             if (result.length == 0) {
                 $scope.stat.title = $scope.title;
                 $scope.stat.stats.labels = [$scope.fecha];
@@ -306,7 +415,13 @@ angular.module('testManagerApp')
 
     }])
 
-    //Directiva para poder cargar una imagen
+    /**
+     * @ngdoc directive
+     * @name testManagerApp.directive:fileread
+     * @scope
+     * @description
+     * Directiva que permite cargar una imagen en formato base64
+     */
     .directive("fileread", [function () {
         return {
             scope: {
@@ -326,9 +441,20 @@ angular.module('testManagerApp')
         }
     }])
 
-
+    /**
+     * @ngdoc controller
+     * @name testManagerApp.controller:CloudController
+     * @description
+     * Controlador que gestiona las operaciones de la vista cloud
+     * Se realizan las operaciones:
+     *  Obtener todos los cuestionarios privados- GET
+     *  Obtener todos los cuestionarios públicos- GET
+     *  Guardar cuestionario público como privado- POST
+     */
     .controller('CloudController', ['$scope', '$mdDialog', 'cloudFactory', 'menuFactory', function ($scope, $mdDialog, cloudFactory, menuFactory) {
-
+        /**
+         * Se obtiene los cuestionarios privados
+         */
         $scope.menu = menuFactory.query(
             function (response) {
                 $scope.menu = response[0].cuestionarios;
@@ -339,6 +465,9 @@ angular.module('testManagerApp')
             });
 
         $scope.showCloud = false;
+        /**
+         * Se obtiene los cuestionarios públicos
+         */
         $scope.cuestionarios = cloudFactory.query(
             function (response) {
                 $scope.cuestionarios = response;
@@ -350,11 +479,17 @@ angular.module('testManagerApp')
         );
 
         /**
+         * @ngdoc method
+         * @name addtoMenu
+         * @methodOf testManagerApp.controller:CloudController
+         * @scope
+         * @description
          * Función que añade un cuestionario de la nube al menu
          * Se borra su identifador para evitar conflictos en la base de datos
          * @param {Object} test Cuestionario a añadir
          */
         $scope.addtoMenu = function (test) {
+            //Se comprueba si el cuestionario a añadir ya existe como cuestionario privado
             var isFav = $scope.menu.some(function (element) {
                 return element._id == test._id;
             });
@@ -366,6 +501,7 @@ angular.module('testManagerApp')
                 test.cuestCloud = false;
                 menuFactory.save(test);
             } else {
+                //Diálogo que indica que el cuestionario ya existe en el menu
                 $mdDialog.show({
                     clickOutsideToClose: true,
                     scope: $scope,
@@ -374,17 +510,17 @@ angular.module('testManagerApp')
                     },
                     preserveScope: true,
                     template: '<md-dialog aria-label="List dialog">' +
-                    '  <md-dialog-content>' +
-                    '<md-content class="md-padding">' +
-                    ' <h5  translate="EXISTFAVORITE" class="md-title">Ya existe el favorito</h5> <em>{{test.title}}</em>' +
-                    '</md-content>      ' +
-                    '  </md-dialog-content>' +
-                    '  <md-dialog-actions>' +
-                    '    <md-button  ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
-                    '      Menu' +
-                    '    </md-button>' +
-                    '  </md-dialog-actions>' +
-                    '</md-dialog>',
+                        '  <md-dialog-content>' +
+                        '<md-content class="md-padding">' +
+                        ' <h5  translate="EXISTFAVORITE" class="md-title">Ya existe el favorito</h5> <em>{{test.title}}</em>' +
+                        '</md-content>      ' +
+                        '  </md-dialog-content>' +
+                        '  <md-dialog-actions>' +
+                        '    <md-button  ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
+                        '      Menu' +
+                        '    </md-button>' +
+                        '  </md-dialog-actions>' +
+                        '</md-dialog>',
                     controller: function DialogController($scope, $mdDialog, test) {
                         $scope.test = test;
                         $scope.closeDialog = function () {
@@ -398,12 +534,22 @@ angular.module('testManagerApp')
         }
 
     }])
-
+    /**
+     * @ngdoc controller
+     * @name testManagerApp.controller:MakerController
+     * @description
+     * Controlador que gestiona las operaciones de la vista maker
+     * Se realizan las operaciones:
+     *  Obtener todos los cuestionarios- GET
+     *  Guardar el cuestionario creado- POST
+     */
     .controller('MakerController', ['$scope', '$mdDialog', 'menuFactory', 'AuthFactory', function ($scope, $mdDialog, menuFactory, AuthFactory) {
         $scope.form = {};
         $scope.showMaker = false;
         $scope.message;
-
+        /**
+         * Se obtiene los cuestionarios privados
+         */
         $scope.cuestionarios = menuFactory.query(
             function (response) {
                 $scope.cuestionarios = response[0].cuestionarios;
@@ -415,23 +561,54 @@ angular.module('testManagerApp')
 
 
         $scope.quests = [];
+        //Se determina un número máximo de 100 preguntas
         for (var i = 1; i <= 100; i++) {
             $scope.quests.push(i);
         }
 
         $scope.selectedQuest;
+
+        /**
+         * @ngdoc method
+         * @name getSelectedQuest
+         * @methodOf testManagerApp.controller:MakerController
+         * @scope
+         * @description
+         * Función que asocia una seleccion a una variable $scope
+         * @returns {Integer} Número seleccionado
+         */
         $scope.getSelectedQuest = function () {
             if ($scope.selectedQuest !== undefined) {
                 $scope.number = $scope.selectedQuest;
                 return $scope.selectedQuest;
             }
         };
-
+        /**
+         * @ngdoc method
+         * @name getNumber
+         * @methodOf testManagerApp.controller:MakerController
+         * @scope
+         * @description
+         * Función que genera un array de longuitud num
+         * @param {Integer} num longuitud del array  
+         */
         $scope.getNumber = function (num) {
-            return Array.apply(null, Array(num)).map(function (x, i) { return i; });
+            return Array.apply(null, Array(num)).map(function (x, i) {
+                return i;
+            });
         };
 
-        /**Función que redimensiona una imagen a un ancho y largo proporcionado */
+        /**
+         * @ngdoc method
+         * @name imageToDataUri
+         * @methodOf testManagerApp.controller:MakerController
+         * @description
+         * Función que redimensiona una imagen a un ancho y largo proporcionado
+         * @param {String} img imagen en formaro base64
+         * @param {String} width ancho 
+         * @param {String} height largo
+         * @returns {String} imagen redimensionada
+         */
         function imageToDataUri(img, width, height) {
             // create an off-screen canvas
             var canvas = document.createElement('canvas'),
@@ -467,13 +644,23 @@ angular.module('testManagerApp')
             stats: []
         };
 
-
+        /**
+         * @ngdoc method
+         * @name submitTest
+         * @methodOf testManagerApp.controller:MakerController
+         * @scope
+         * @description
+         * Función que guarda un cuestionario creado en el menu
+         */
         $scope.submitTest = function () {
-
+            //Se recorre el array de preguntas del cuestionario a crear
             for (var i = 0; i < $scope.cuest.questions.length; i++) {
+                //Si la pregunta no contiene imagen  el atributo imagen se estableces como vacío
                 if (!$scope.cuest.questions[i].image) {
                     $scope.cuest.questions[i].image = "";
-                } else {
+                }
+                // Si se que contiene, se redimensiona
+                else {
                     var imga = document.createElement('img');
                     imga.src = $scope.cuest.questions[i].image;
                     var newDataUri = imageToDataUri(imga, 100, 100);
@@ -486,7 +673,7 @@ angular.module('testManagerApp')
             $scope.cuest.author = AuthFactory.getUsername();
             //Se guarda el objeto cuestionario en el menu
             menuFactory.save($scope.cuest);
-            //Resetea el formulario a  pristine
+            //Resetea el formulario a pristine
             $scope.form.makerForm.$setPristine();
 
             //Resetea el objeto JavaScript una vez que el cuestionario ha sido creado
@@ -515,36 +702,43 @@ angular.module('testManagerApp')
         };
 
         $scope.fichero = {};
-        //Función que importa un cuestionario desde un fichero en formato .json
+        /**
+         * @ngdoc method
+         * @name import
+         * @methodOf testManagerApp.controller:MakerController
+         * @scope
+         * @description
+         * Función que importa un cuestionario desde un fichero en formato .json
+         */
         $scope.import = function () {
 
             $.getJSON($scope.fichero.fic, function (data) {
-                //Se resetea las respuestas y las estadisticas 
-                data.tests = []
-                data.stats = []
-                $scope.cuestionarios.push(data);
-                //Se guarda el nuevo cuestionario en el array de cuestionarios
-                menuFactory.save(data);
-            })
-                //Si el archivo no es un archivo de tipo json
+                    //Se resetea las respuestas y las estadisticas 
+                    data.tests = []
+                    data.stats = []
+                    $scope.cuestionarios.push(data);
+                    //Se guarda el nuevo cuestionario en el array de cuestionarios
+                    menuFactory.save(data);
+                })
+                //Si el archivo no es un archivo de tipo json se muestra un diálogo indicándolo
                 .fail(function () {
                     $mdDialog.show({
                         clickOutsideToClose: true,
                         scope: $scope,
                         preserveScope: true,
                         template: '<md-dialog aria-label="File invalid">' +
-                        '  <md-dialog-content>' +
-                        '<md-content class="md-padding">' +
-                        ' <h5 translate="FILENOTVALID" class="md-title">Archivo no válido</h5>' +
-                        ' <p translate="FILEREC" class="md-textContent">Debes seleccionar un archivo en formato json</p>' +
-                        '</md-content>      ' +
-                        '  </md-dialog-content>' +
-                        '  <md-dialog-actions>' +
-                        '    <md-button translate="CLOSE" ng-click="closeDialog()" class="md-primary">' +
-                        '      Cerrar' +
-                        '    </md-button>' +
-                        '  </md-dialog-actions>' +
-                        '</md-dialog>',
+                            '  <md-dialog-content>' +
+                            '<md-content class="md-padding">' +
+                            ' <h5 translate="FILENOTVALID" class="md-title">Archivo no válido</h5>' +
+                            ' <p translate="FILEREC" class="md-textContent">Debes seleccionar un archivo en formato json</p>' +
+                            '</md-content>      ' +
+                            '  </md-dialog-content>' +
+                            '  <md-dialog-actions>' +
+                            '    <md-button translate="CLOSE" ng-click="closeDialog()" class="md-primary">' +
+                            '      Cerrar' +
+                            '    </md-button>' +
+                            '  </md-dialog-actions>' +
+                            '</md-dialog>',
 
                         controller: function DialogController($scope, $mdDialog) {
                             $scope.closeDialog = function () {
@@ -557,14 +751,26 @@ angular.module('testManagerApp')
 
     }])
 
+    /**
+     * @ngdoc controller
+     * @name testManagerApp.controller:StatsControllerDetails
+     * @description
+     * Controlador que gestiona las operaciones de la vista statDetails
+     * Se realizan las operaciones:
+     *  Obtener el cuestionario del que se desean mostrar las estadísticas- GET
+     *  
+     */
     .controller('StatsControllerDetails', ['$scope', '$filter', '$stateParams', '$mdDialog', 'menuFactory', function ($scope, $filter, $stateParams, $mdDialog, menuFactory) {
         $scope.showStatInd = false;
         $scope.message;
+        /**
+         * Se obtiene el cuestionario por id 
+         */
         $scope.cuestionario =
             menuFactory.get({
                 id: $stateParams.id
             })
-                .$promise.then(
+            .$promise.then(
                 function (response) {
                     $scope.cuestionario = response.cuestionarios[0];
                     $scope.showStatInd = true;
@@ -575,18 +781,18 @@ angular.module('testManagerApp')
                             scope: $scope,
                             preserveScope: true,
                             template: '<md-dialog aria-label="List dialog">' +
-                            '  <md-dialog-content>' +
-                            '<md-content class="md-padding">' +
-                            ' <h5 class="md-title" translate>{{\'STATDIALOGTEXT\'}}</h5>' +
-                            ' <p class="md-textContent" translate>{{\'STATDIALOGTEXT\'}}</p>' +
-                            '</md-content>      ' +
-                            '  </md-dialog-content>' +
-                            '  <md-dialog-actions>' +
-                            '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
-                            '      Menu' +
-                            '    </md-button>' +
-                            '  </md-dialog-actions>' +
-                            '</md-dialog>',
+                                '  <md-dialog-content>' +
+                                '<md-content class="md-padding">' +
+                                ' <h5 class="md-title" translate>{{\'STATDIALOGTEXT\'}}</h5>' +
+                                ' <p class="md-textContent" translate>{{\'STATDIALOGTEXT\'}}</p>' +
+                                '</md-content>      ' +
+                                '  </md-dialog-content>' +
+                                '  <md-dialog-actions>' +
+                                '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
+                                '      Menu' +
+                                '    </md-button>' +
+                                '  </md-dialog-actions>' +
+                                '</md-dialog>',
 
                             controller: function DialogController($scope, $mdDialog) {
                                 $scope.closeDialog = function () {
@@ -599,9 +805,17 @@ angular.module('testManagerApp')
                 function (response) {
                     $scope.message = "Error: " + response.status + " " + response.statusText;
                 }
-                );
+            );
 
-        //Función que ordena los cuestionarios por titulo , por calificación o por fecha .
+        /**
+         * @ngdoc method
+         * @name filter
+         * @methodOf testManagerApp.controller:StatsControllerDetails
+         * @scope
+         * @description
+         * Función que ordena los cuestionarios por titulo , por calificación o por fecha.
+         * @param {Integer} value valor númerico
+         */
         $scope.filter = function (value) {
             switch (value) {
                 case 1:
@@ -615,20 +829,37 @@ angular.module('testManagerApp')
             }
         };
 
+        /**
+         * @ngdoc method
+         * @name convertCanvasToImage
+         * @methodOf testManagerApp.controller:StatsControllerDetails
+         * @description
+         * Función que convierte un elemento canvas a formato base64
+         * @param {any} canvas elemento canvas a convertir
+         * @returns {String} imagen con formato base64
+         */
         function convertCanvasToImage(canvas) {
             var image = new Image();
             image.src = canvas.toDataURL("image/png");
             return image.src;
         }
 
+        /**
+         * @ngdoc method
+         * @name exportPDF
+         * @methodOf testManagerApp.controller:StatsControllerDetails
+         * @scope
+         * @description
+         * Función que exporta las estadísticas de un cuestionario en formato PDF
+         * @param {Objetc} cuest objeto cuestionario
+         */
         $scope.exportPDF = function (cuest) {
+            //Determina la orientación del documento PDF
             var doc = new jsPDF({
                 orientation: 'landscape'
-
             });
-
             var specialElementHandlers = {
-                '#editor': function (element, renderer) {
+                '#editor': function () {
                     return true;
                 }
             };
@@ -659,12 +890,25 @@ angular.module('testManagerApp')
         };
 
     }])
+
+    /**
+     * @ngdoc controller
+     * @name testManagerApp.controller:StatsController
+     * @description
+     * Controlador que gestiona las operaciones de la vista stats
+     * Se realiza las operaciones:
+     * Se obtiene todos los cuestionarios para mostrar las estadisticas de todos ellos- GET
+     * 
+     */
     .controller('StatsController', ['$scope', '$stateParams', '$translate', '$mdDialog', '$filter', 'menuFactory', function ($scope, $stateParams, $translate, $mdDialog, $filter, menuFactory) {
         $scope.showStat = false;
         $scope.message;
+        /**
+         * Se obtiene todos los cuestionarios 
+         */
         $scope.cuestionario =
             menuFactory.query()
-                .$promise.then(
+            .$promise.then(
                 function (response) {
                     $scope.cuestionario = response[0].cuestionarios;
                     $scope.showStat = true;
@@ -672,9 +916,17 @@ angular.module('testManagerApp')
                 function (response) {
                     $scope.message = "Error: " + response.status + " " + response.statusText;
                 }
-                );
+            );
 
-        //Dialogo que aparece cuando no se ha realizado un cuestionario pasado por parámetro
+        /**
+         * @ngdoc method
+         * @name dialogo
+         * @methodOf testManagerApp.controller:StatsController
+         * @scope
+         * @description
+         * Funcion que muestra un dialogo cuando no se ha realizado un cuestionario pasado por parámetro
+         * @param {Object} cuest cuestionario
+         */
         $scope.dialogo = function (cuest) {
             if (cuest.length == 0) {
                 $mdDialog.show({
@@ -682,18 +934,18 @@ angular.module('testManagerApp')
                     scope: $scope,
                     preserveScope: true,
                     template: '<md-dialog aria-label="List dialog">' +
-                    '  <md-dialog-content>' +
-                    '<md-content class="md-padding">' +
-                    ' <h5 class="md-title" translate>{{\'STATSDIALOGTITLE\'}}</h5>' +
-                    ' <p class="md-textContent" translate>{{\'STATSDIALOGTEXT\'}}</p>' +
-                    '</md-content>      ' +
-                    '  </md-dialog-content>' +
-                    '  <md-dialog-actions>' +
-                    '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
-                    '      Menu' +
-                    '    </md-button>' +
-                    '  </md-dialog-actions>' +
-                    '</md-dialog>',
+                        '  <md-dialog-content>' +
+                        '<md-content class="md-padding">' +
+                        ' <h5 class="md-title" translate>{{\'STATSDIALOGTITLE\'}}</h5>' +
+                        ' <p class="md-textContent" translate>{{\'STATSDIALOGTEXT\'}}</p>' +
+                        '</md-content>      ' +
+                        '  </md-dialog-content>' +
+                        '  <md-dialog-actions>' +
+                        '    <md-button ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
+                        '      Menu' +
+                        '    </md-button>' +
+                        '  </md-dialog-actions>' +
+                        '</md-dialog>',
                     controller: function DialogController($scope, $mdDialog) {
                         $scope.closeDialog = function () {
                             $mdDialog.hide();
@@ -710,7 +962,15 @@ angular.module('testManagerApp')
 
         };
 
-        //Función que ordena los cuestionarios por titulo , por calificación o por fecha .
+        /**
+         * @ngdoc method
+         * @name filter
+         * @methodOf testManagerApp.controller:StatsController
+         * @scope
+         * @description
+         * Función que ordena los cuestionarios por titulo , por calificación o por fecha.
+         * @param {Integer} value valor númerico
+         */
         $scope.filter = function (value) {
             switch (value) {
                 case 1:
@@ -728,30 +988,57 @@ angular.module('testManagerApp')
         };
     }])
 
+    /**
+     * @ngdoc controller
+     * @name testManagerApp.controller:HeaderController
+     * @description
+     * Controlador que gestiona las operaciones de la vista header
+     */
     .controller('HeaderController', ['$scope', '$translate', '$state', '$rootScope', 'ngDialog', 'AuthFactory', function ($scope, $translate, $state, $rootScope, ngDialog, AuthFactory) {
 
         $scope.loggedIn = false;
         $scope.username = '';
+        /**
+         * @ngdoc method
+         * @name changeLanguage
+         * @methodOf testManagerApp.controller:HeaderController
+         * @scope
+         * @description
+         * Función que permite cambiar de idioma
+         * @param {String} key string que determina el idioma
+         */
         $scope.changeLanguage = function (key) {
             $translate.use(key);
         };
+
         if (AuthFactory.isAuthenticated()) {
             $scope.loggedIn = true;
             $scope.username = AuthFactory.getUsername();
         }
-
+        /**
+         * @ngdoc method
+         * @name logOut
+         * @methodOf testManagerApp.controller:HeaderController
+         * @description
+         * Función que finaliza sesión en la aplicación
+         */
         $scope.logOut = function () {
             AuthFactory.logout();
             $scope.loggedIn = false;
             $scope.username = '';
             $state.go('login');
         };
-
+        /**
+         * 
+         * Función que comprueba si el acceso es satisfactorio
+         */
         $rootScope.$on('login:Successful', function () {
             $scope.loggedIn = AuthFactory.isAuthenticated();
             $scope.username = AuthFactory.getUsername();
         });
-
+        /**
+         * Función que comprueba si el registro es satisfactorio
+         */
         $rootScope.$on('registration:Successful', function () {
             $scope.loggedIn = AuthFactory.isAuthenticated();
             $scope.username = AuthFactory.getUsername();
@@ -763,6 +1050,13 @@ angular.module('testManagerApp')
 
     }])
 
+    /**
+     * @ngdoc controller
+     * @name testManagerApp.controller:LoginController
+     * @description
+     * Controlador que gestiona las operaciones de la vista home, vista principal que aparece antes de acceder a la aplicación
+     * Permite realizar el acceso a un usuario en la aplicación
+     */
     .controller('LoginController', ['$window', '$state', '$scope', '$translate', 'ngDialog', '$rootScope', '$localStorage', 'AuthFactory', function ($window, $state, $scope, $translate, ngDialog, $rootScope, $localStorage, AuthFactory) {
 
         //Permite el scroll a la seccion de caracteristicas
@@ -784,6 +1078,15 @@ angular.module('testManagerApp')
 
         $scope.loggedIn = false;
         $scope.username = '';
+        /**
+         * @ngdoc method
+         * @name changeLanguage
+         * @methodOf testManagerApp.controller:LoginController
+         * @scope
+         * @description
+         * Función que permite cambiar de idioma
+         * @param {String} key string que determina el idioma
+         */
         $scope.changeLanguage = function (key) {
             $translate.use(key);
         };
@@ -794,18 +1097,30 @@ angular.module('testManagerApp')
         }
         $scope.loginData = $localStorage.getObject('userinfo', '{}');
 
+        /**
+         * @ngdoc method
+         * @name doLogin
+         * @methodOf testManagerApp.controller:LoginController
+         * @scope
+         * @description
+         * Función que realiza el logueo de un usuario en la aplicación
+         */
         $scope.doLogin = function () {
             if ($scope.rememberMe)
                 $localStorage.storeObject('userinfo', $scope.loginData);
             AuthFactory.login($scope.loginData);
         };
-
+        /**
+         * Función que comprueba si el acceso es satisfactorio
+         */
         $rootScope.$on('login:Successful', function () {
             $scope.loggedIn = AuthFactory.isAuthenticated();
             $scope.username = AuthFactory.getUsername();
             $state.go('app');
         });
-
+        /**
+         * Función que comprueba si el acceso es satisfactorio
+         */
         $rootScope.$on('registration:Successful', function () {
             $scope.loggedIn = AuthFactory.isAuthenticated();
             $scope.username = AuthFactory.getUsername();
@@ -814,7 +1129,14 @@ angular.module('testManagerApp')
         $scope.stateis = function (curstate) {
             return $state.is(curstate);
         };
-
+        /**
+         * @ngdoc method
+         * @name openRegister
+         * @methodOf testManagerApp.controller:LoginController
+         * @scope
+         * @description
+         * Función que crea un dialógo para realizar el registro
+         */
         $scope.openRegister = function () {
             ngDialog.open({
                 template: 'views/register.html',
@@ -826,15 +1148,27 @@ angular.module('testManagerApp')
 
     }])
 
+    /**
+     * @ngdoc controller
+     * @name testManagerApp.controller:RegisterController
+     * @description
+     * Controlador que gestiona las operaciones de la vista register
+     * Permite registrar un usuario en la aplicación
+     */
     .controller('RegisterController', ['$scope', 'ngDialog', '$localStorage', 'AuthFactory', function ($scope, ngDialog, $localStorage, AuthFactory) {
 
         $scope.register = {};
         $scope.loginData = {};
-
+        /**
+         * @ngdoc method
+         * @name doRegister
+         * @methodOf testManagerApp.controller:RegisterController
+         * @scope
+         * @description
+         * Función que realiza el registro de un usuario
+         */
         $scope.doRegister = function () {
-
             AuthFactory.register($scope.registration);
-
             ngDialog.close();
 
         };
