@@ -161,7 +161,7 @@ angular.module('testManagerApp')
                     }
                     /**
                      * @ngdoc method
-                     * @name exists
+                     * @name toggle
                      * @methodOf testManagerApp.controller:TestController
                      * @description
                      * Función que añade o elimina una respuesta al array de respuestas

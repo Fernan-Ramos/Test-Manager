@@ -42,7 +42,9 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
 
 
 
-            //ruta para nube
+            /**
+             * Estado cloud, 
+             */
             .state('app.cloud', {
                 url: 'cloud',
                 views: {
@@ -53,7 +55,9 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
                 }
             })
 
-            //ruta para testDetails
+            /**
+             * Estado testDetails, 
+             */
             .state('app.testDetails', {
                 url: 'menu/:id',
                 views: {
@@ -64,7 +68,9 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
                 }
             })
 
-            //ruta para maker
+            /**
+             * Estado maker, 
+             */
             .state('app.maker', {
                 url: 'maker',
                 views: {
@@ -75,7 +81,9 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
                 }
             })
 
-            //ruta para statDetails
+            /**
+             * Estado statDetails, 
+             */
             .state('app.statDetails', {
                 url: 'stats/:id',
                 views: {
@@ -87,7 +95,9 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
             })
 
 
-            //ruta para stats
+            /**
+             * Estado stats, 
+             */
             .state('app.stats', {
                 url: 'stats',
                 views: {
@@ -98,7 +108,7 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
                 }
             })
 
-        //Si no se puede acceder a ninguna ruta por defecto se accede a la ruta /login
+        //Si no se puede acceder a ninguna ruta, por defecto se accede a la ruta /login
         $urlRouterProvider.otherwise('/login');
 
         /**

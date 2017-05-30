@@ -12,8 +12,9 @@ var gulp = require('gulp'),
       changed = require('gulp-changed'),
       rev = require('gulp-rev'),
       browserSync = require('browser-sync'),
-      del = require('del');
-
+      del = require('del'),
+      ngdocs = require('gulp-ngdocs'),
+      connect = require('gulp-connect');
 var ngannotate = require('gulp-ng-annotate');
 
 gulp.task('jshint', function () {
@@ -29,7 +30,7 @@ gulp.task('clean', function () {
 
 // Default task
 gulp.task('default', ['clean'], function () {
-      gulp.start('usemin', 'imagemin', 'copyfonts');
+      gulp.start('usemin', 'imagemin', 'copyfonts', 'ngdocs', 'connect_ngdocs');
 });
 
 gulp.task('usemin', ['jshint'], function () {
@@ -63,6 +64,30 @@ gulp.task('copyfonts', ['clean'], function () {
       gulp.src('app/fonts/**/*.{ttf,woff,eof,svg}*')
             .pipe(gulp.dest('./dist/fonts'));
 });
+
+
+gulp.task('ngdocs', [], function () {
+      var options = {
+            html5Mode: false
+      };
+
+      return gulp.src(['app/scripts/**/*.js'])
+            .pipe(ngdocs.process(options))
+            .pipe(gulp.dest('./docs'))
+            .on('error', function (err) {
+                  console.log('Error from ngdocs: ', err);
+            });
+});
+
+gulp.task('connect_ngdocs', function () {
+      connect.server({
+            root: 'docs',
+            livereload: false,
+            fallback: 'docs/index.html',
+            port: 8083
+      });
+});
+
 
 // Watch
 gulp.task('watch', ['browser-sync'], function () {
