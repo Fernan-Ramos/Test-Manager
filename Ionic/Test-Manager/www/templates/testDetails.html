@@ -1,6 +1,6 @@
 <ion-view view-title="{{'QUIZ'| translate}}"  cache-view="false">
   <ion-content>
-    <form class="form-horizontal" role="form" name="form.testForm" ng-submit="submitAnswer($event)" novalidate>
+    <form class="form-horizontal" role="form" name="form.testForm" ng-submit="submitAnswer()" novalidate>
       <ion-slide-box delegate-handle="img-viewer">
         <ion-slide ng-repeat="preg in cuestionario.questions  track by $index" ng-init="updateSlider()">
           <md-card>

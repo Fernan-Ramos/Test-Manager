@@ -4,9 +4,14 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
+/**
+ * @author Fernán Ramos Saiz
+ * @version 1.0
+ * @description Fichero que almacena la configuración de la aplicación
+ */
 angular.module('testManager', ['ionic', 'ngCordova', 'testManager.controllers', 'testManager.services', 'pascalprecht.translate'])
 
-  .run(function ($ionicPlatform, $cordovaSplashscreen, $timeout) {
+  .run(function ($ionicPlatform, $cordovaSplashscreen, $timeout, $translate) {
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -19,7 +24,17 @@ angular.module('testManager', ['ionic', 'ngCordova', 'testManager.controllers', 
         // org.apache.cordova.statusbar required
         StatusBar.styleDefault();
       }
-
+      //Se detecta el idioma predifinido en el dispostivo y realiza la traducción a dicho idioma
+      if (typeof navigator.globalization !== "undefined") {
+        navigator.globalization.getPreferredLanguage(function (language) {
+          $translate.use((language.value).split("-")[0]).then(function () {
+            //Success
+          }, function () {
+            //Error
+          });
+        }, null);
+      }
+      //Se establece un tiempo para cerrar el SplashScreen
       $timeout(function () {
         $cordovaSplashscreen.hide();
       }, 1000);
@@ -30,6 +45,9 @@ angular.module('testManager', ['ionic', 'ngCordova', 'testManager.controllers', 
   .config(function ($stateProvider, $urlRouterProvider, $translateProvider) {
     $stateProvider
 
+      /**
+       * Estado principal de la aplicacion
+       */
       .state('app', {
         url: '/app',
         abstract: true,
@@ -37,12 +55,17 @@ angular.module('testManager', ['ionic', 'ngCordova', 'testManager.controllers', 
         controller: 'AppCtrl'
       })
 
+      /**
+       * Estado login, 
+       */
       .state('login', {
         url: '/login',
         templateUrl: 'templates/login.html',
         controller: 'LoginController'
       })
-
+      /**
+       * Estado menu, 
+       */
       .state('app.menu', {
         url: '/menu',
         views: {
@@ -52,7 +75,9 @@ angular.module('testManager', ['ionic', 'ngCordova', 'testManager.controllers', 
           }
         }
       })
-
+      /**
+       * Estado cloud, 
+       */
       .state('app.cloud', {
         url: '/cloud',
         views: {
@@ -62,7 +87,9 @@ angular.module('testManager', ['ionic', 'ngCordova', 'testManager.controllers', 
           }
         }
       })
-
+      /**
+       * Estado testDetails, 
+       */
       .state('app.testDetails', {
         url: '/menu/:id',
         views: {
@@ -72,7 +99,9 @@ angular.module('testManager', ['ionic', 'ngCordova', 'testManager.controllers', 
           }
         }
       })
-
+      /**
+       * Estado maker, 
+       */
       .state('app.maker', {
         url: '/maker',
         views: {
@@ -82,7 +111,9 @@ angular.module('testManager', ['ionic', 'ngCordova', 'testManager.controllers', 
           }
         }
       })
-
+      /**
+       * Estado statDetails, 
+       */
       .state('app.statDetails', {
         url: '/stats/:id',
         views: {
@@ -93,7 +124,9 @@ angular.module('testManager', ['ionic', 'ngCordova', 'testManager.controllers', 
         }
       })
 
-
+      /**
+       * Estado stats, 
+       */
       .state('app.stats', {
         url: '/stats',
         views: {
@@ -104,30 +137,19 @@ angular.module('testManager', ['ionic', 'ngCordova', 'testManager.controllers', 
         }
       });
 
-   
 
-    // if none of the above states are matched, use this as the fallback
+
+    //Si no se puede acceder a ninguna ruta, por defecto se accede a la ruta /login
     $urlRouterProvider.otherwise('/login');
+    /**
+     * Se obtienen las traducciones de los ficheros locales .json
+     */
     $translateProvider
       .useStaticFilesLoader({
-        prefix: 'js/locale-',
+        prefix: 'traductions/locale-',
         suffix: '.json'
       })
     $translateProvider.preferredLanguage('es');
     $translateProvider.fallbackLanguage('es');
     $translateProvider.useSanitizeValueStrategy('escapeParameters');
-  })
-
-  .run(function ($ionicPlatform, $translate) {
-    $ionicPlatform.ready(function () {
-      if (typeof navigator.globalization !== "undefined") {
-        navigator.globalization.getPreferredLanguage(function (language) {
-          $translate.use((language.value).split("-")[0]).then(function (data) {
-            console.log("SUCCESS -> " + data);
-          }, function (error) {
-            console.log("ERROR -> " + error);
-          });
-        }, null);
-      }
-    });
   });
