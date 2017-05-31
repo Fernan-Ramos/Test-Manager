@@ -13,7 +13,7 @@ mongoose.connect(config.mongoUrl);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
-    console.log("Connected correctly to server");
+    //Connected correctly to server
 });
 
 var routes = require('./routes/index');
@@ -27,9 +27,12 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(logger('dev'));
-app.use(bodyParser.json({ limit: '1024mb' }));
+app.use(bodyParser.json({
+    limit: '1024mb'
+}));
 app.use(bodyParser.urlencoded({
-    limit: '1024mb', extended: false
+    limit: '1024mb',
+    extended: false
 }));
 app.use(cookieParser());
 
@@ -53,7 +56,7 @@ app.use(function (req, res, next) {
 });
 
 if (app.get('env') === 'development') {
-    app.use(function (err, req, res, next) {
+    app.use(function (err, req, res) {
         res.status(err.status || 500);
         res.render('error', {
             message: err.message,
@@ -62,7 +65,7 @@ if (app.get('env') === 'development') {
     });
 }
 
-app.use(function (err, req, res, next) {
+app.use(function (err, req, res) {
     res.status(err.status || 500);
     res.render('error', {
         message: err.message,
