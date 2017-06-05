@@ -46,6 +46,8 @@ angular.module('testManagerApp')
             delete cuest._id;
             cuest.tests = [];
             cuest.stats = [];
+            //Se establece el cuestionario como privado
+            cuest.cuestCloud = false;
             if (typeof cuest === 'object') {
                 cuest = JSON.stringify(cuest, undefined, 2);
             }
