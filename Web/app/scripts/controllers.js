@@ -41,17 +41,20 @@ angular.module('testManagerApp')
          * @param {Object} cuest cuestionario a exportar
          */
         $scope.exportCuest = function (cuest) {
-            var filename = cuest.title + '.json';
+            //Se copia el cuestionario a exportar
+            $scope.cuestExport = angular.copy(cuest);
+            //Se determina el nombre del fichero
+            var filename = $scope.cuestExport.title + '.json';
             //Se resetea el id, las respuestas y las estadisticas
-            delete cuest._id;
-            cuest.tests = [];
-            cuest.stats = [];
+            delete $scope.cuestExport._id;
+            $scope.cuestExport.tests = [];
+            $scope.cuestExport.stats = [];
             //Se establece el cuestionario como privado
-            cuest.cuestCloud = false;
-            if (typeof cuest === 'object') {
-                cuest = JSON.stringify(cuest, undefined, 2);
+            $scope.cuestExport.cuestCloud = false;
+            if (typeof $scope.cuestExport === 'object') {
+                $scope.cuestExport = JSON.stringify($scope.cuestExport, undefined, 2);
             }
-            var blob = new Blob([cuest], {
+            var blob = new Blob([$scope.cuestExport], {
                 type: 'text/json'
             });
 
