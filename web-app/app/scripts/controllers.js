@@ -219,10 +219,10 @@ angular.module('testManagerApp')
                 else
                     incorrect++;
             }
-            if (type == "pos")
+            if (type === "pos")
                 $scope.answer.questions[j].estado = correct / respuestas.length;
 
-            if (type == "neg")
+            if (type === "neg")
                 $scope.answer.questions[j].estado = (correct - incorrect) / respuestas.length;
 
             calEstado($scope.answer.questions[j].estado);
@@ -240,12 +240,12 @@ angular.module('testManagerApp')
             if (estado < 0) {
                 $scope.negativas = $scope.negativas + estado;
                 $scope.incorrectas++;
-            } else if (estado == 0) {
+            } else if (estado === 0) {
                 $scope.incorrectas++;
             } else if (estado < 1 && estado > 0) {
                 $scope.parciales = $scope.parciales + estado;
                 $scope.parcial++;
-            } else if (estado == 1) {
+            } else if (estado === 1) {
                 $scope.correctas++;
             }
 
@@ -264,7 +264,7 @@ angular.module('testManagerApp')
             $scope.answer.date = $filter('date')(new Date(), 'y/M/d');
             //Si la pregunta es de tipo múltiple se guarda el array de respuestas contestadas en cada pregunta.
             for (var i = 0; i < $scope.selected.length; i++) {
-                if ($scope.cuestionario.questions[i].tipo == "multiple")
+                if ($scope.cuestionario.questions[i].tipo === "multiple")
                     $scope.answer.questions[i].r = $scope.selected[i];
             }
 
@@ -277,13 +277,13 @@ angular.module('testManagerApp')
             //Se recorre el array de preguntas 
             for (var j = 0; j < $scope.answer.questions.length; j++) {
                 //Si la pregunta es de tipo unica y la respuesta dada corresponde con la respuesta correcta
-                if ($scope.cuestionario.questions[j].tipo == "unica" && $scope.answer.questions[j].rcorrect == $scope.answer.questions[j].r) {
+                if ($scope.cuestionario.questions[j].tipo === "unica" && $scope.answer.questions[j].rcorrect === $scope.answer.questions[j].r) {
                     $scope.correctas++;
                     //Determina que la respuesta es correcta
                     $scope.answer.questions[j].estado = 1;
                 }
                 //Si la pregunta es de tipo múltiple
-                else if ($scope.cuestionario.questions[j].tipo == "multiple") {
+                else if ($scope.cuestionario.questions[j].tipo === "multiple") {
                     respuestas.push($scope.cuestionario.questions[j].r1, $scope.cuestionario.questions[j].r2, $scope.cuestionario.questions[j].r3, $scope.cuestionario.questions[j].r4);
                     calmultiple(j, respuestas, $scope.cuestionario.type);
                 } else {
@@ -385,16 +385,16 @@ angular.module('testManagerApp')
                 stats: {
                     labels: [],
                     series: [],
-                    data: [],
+                    data: []
                 }
             };
             //Filtra cada objeto estadisticas por titulo 
             var result = $scope.cuestionario.stats.filter(function (obj) {
-                return obj.title == $scope.title;
+                return obj.title === $scope.title;
             });
 
             //Si no está el cuestionario reflejado se guarda la fecha, el titulo y el resultado || Si sí que esta reflejado solamente se guarda la fecha y el resultado
-            if (result.length == 0) {
+            if (result.length === 0) {
                 $scope.stat.title = $scope.title;
                 $scope.stat.stats.labels = [$scope.fecha];
                 $scope.stat.stats.series = [$scope.title];
@@ -496,7 +496,7 @@ angular.module('testManagerApp')
         $scope.addtoMenu = function (test) {
             //Se comprueba si el cuestionario a añadir ya existe como cuestionario privado
             var isFav = $scope.menu.some(function (element) {
-                return element._id == test._id;
+                return element._id === test._id;
             });
             if (!isFav) {
                 //Se borran las estadisticas
@@ -680,7 +680,33 @@ angular.module('testManagerApp')
             menuFactory.save($scope.cuest);
             //Resetea el formulario a pristine
             $scope.form.makerForm.$setPristine();
+            $mdDialog.show({
+                clickOutsideToClose: true,
+                scope: $scope,
+                preserveScope: true,
+                template: '<md-dialog aria-label="File add">' +
+                    '  <md-dialog-content>' +
+                    '<md-content class="md-padding">' +
+                    ' <h5 translate="IMPORTSUCCESS1" class="md-title"></h5>' +
+                    ' <p translate="IMPORTSUCCESS2" class="md-textContent"></p>' +
+                    '</md-content>' +
+                    '  </md-dialog-content>' +
+                    '  <md-dialog-actions>' +
+                    '    <md-button translate="MENU" ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
+                    '      Menu' +
+                    '    </md-button>' +
+                    '    <md-button translate="CLOSE" ng-click="closeDialog()" class="md-primary">' +
+                    '      Cerrar' +
+                    '    </md-button>' +
+                    '  </md-dialog-actions>' +
+                    '</md-dialog>',
 
+                controller: function DialogController($scope, $mdDialog) {
+                    $scope.closeDialog = function () {
+                        $mdDialog.hide();
+                    }
+                }
+            });
             //Resetea el objeto JavaScript una vez que el cuestionario ha sido creado
             $scope.cuest = {
                 title: "",
@@ -839,7 +865,7 @@ angular.module('testManagerApp')
                     $scope.cuestionario = response.cuestionarios[0];
                     $scope.showStatInd = true;
                     //Dialogo que aparece cuando no hay cuestionarios completados
-                    if ($scope.cuestionario.stats.length == 0) {
+                    if ($scope.cuestionario.stats.length === 0) {
                         $mdDialog.show({
                             clickOutsideToClose: true,
                             scope: $scope,
