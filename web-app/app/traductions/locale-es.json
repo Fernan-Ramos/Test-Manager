@@ -60,6 +60,10 @@
     "CREATE": "Crear ",
     "MAKERTAB2": "Importar",
     "IMPORTITLE": "Importa un cuestionario",
+    "IMPORTSUCCESS1": "Cuestionario añadido con éxito!",
+    "IMPORTSUCCESS2": "Puedes ver el cuestionario añadido en el menu",
+    "IMPORTERROR1": "Cuestionario no añadido!",
+    "IMPORTERROR2": "El archivo añadido no tiene la estructura de un cuestionario de Test-Manager",
     "IMPORTALERT": "el archivo debe estar en formato .json",
     "IMPORTBUTTON": "Importar",
     "FILENOTVALID": "Archivo no válido",
@@ -96,7 +100,7 @@
     "DATE": "{{date|date:\"short\"}}",
     "BUTTON_LANG_ES": "Español",
     "BUTTON_LANG_EN": "Inglés",
-    "AUTHOR":"Autor",
-    "PDFTITLE1":"Gráfica de estadísticas:",
-    "PDFTITLE2":"Cuestionarios realizados:"
+    "AUTHOR": "Autor",
+    "PDFTITLE1": "Gráfica de estadísticas:",
+    "PDFTITLE2": "Cuestionarios realizados:"
   }
