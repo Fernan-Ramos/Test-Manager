@@ -723,7 +723,66 @@ angular.module('testManagerApp')
                     data.stats = []
                     $scope.cuestionarios.push(data);
                     //Se guarda el nuevo cuestionario en el array de cuestionarios
-                    menuFactory.save(data);
+                    menuFactory.save(data).$promise.then(
+                        //success
+                        function (value) {
+                            $mdDialog.show({
+                                clickOutsideToClose: true,
+                                scope: $scope,
+                                preserveScope: true,
+                                template: '<md-dialog aria-label="File add">' +
+                                    '  <md-dialog-content>' +
+                                    '<md-content class="md-padding">' +
+                                    ' <h5 translate="IMPORTSUCCESS1" class="md-title"></h5>' +
+                                    ' <p translate="IMPORTSUCCESS2" class="md-textContent"></p>' +
+                                    '</md-content>' +
+                                    '  </md-dialog-content>' +
+                                    '  <md-dialog-actions>' +
+                                    '    <md-button translate="MENU" ui-sref="app" ng-click="closeDialog()" class="md-primary">' +
+                                    '      Menu' +
+                                    '    </md-button>' +
+                                    '    <md-button translate="CLOSE" ng-click="closeDialog()" class="md-primary">' +
+                                    '      Cerrar' +
+                                    '    </md-button>' +
+                                    '  </md-dialog-actions>' +
+                                    '</md-dialog>',
+
+                                controller: function DialogController($scope, $mdDialog) {
+                                    $scope.closeDialog = function () {
+                                        $mdDialog.hide();
+                                    }
+                                }
+                            });
+                        },
+                        //error
+                        function (error) {
+                            $mdDialog.show({
+                                clickOutsideToClose: true,
+                                scope: $scope,
+                                preserveScope: true,
+                                template: '<md-dialog aria-label="File invalid">' +
+                                    '  <md-dialog-content>' +
+                                    '<md-content class="md-padding">' +
+                                    ' <h5 translate="IMPORTERROR1" class="md-title text-danger"></h5>' +
+                                    ' <p translate="IMPORTERROR2" class="md-textContent"></p>' +
+                                    '</md-content>' +
+                                    '  </md-dialog-content>' +
+                                    '  <md-dialog-actions>' +
+                                    '    <md-button translate="CLOSE" ng-click="closeDialog()" class="md-primary">' +
+                                    '      Cerrar' +
+                                    '    </md-button>' +
+                                    '  </md-dialog-actions>' +
+                                    '</md-dialog>',
+
+                                controller: function DialogController($scope, $mdDialog) {
+                                    $scope.closeDialog = function () {
+                                        $mdDialog.hide();
+                                    }
+                                }
+                            });
+                        }
+                    )
+
                 })
                 //Si el archivo no es un archivo de tipo json se muestra un diálogo indicándolo
                 .fail(function () {
@@ -1062,7 +1121,7 @@ angular.module('testManagerApp')
      * Controlador que gestiona las operaciones de la vista home, vista principal que aparece antes de acceder a la aplicación
      * Permite realizar el acceso a un usuario en la aplicación
      */
-    .controller('LoginController', ['$window', '$state', '$scope', '$translate', 'ngDialog', '$rootScope', '$localStorage', 'AuthFactory', function ($window, $state, $scope, $translate, ngDialog, $rootScope, $localStorage, AuthFactory) {
+    .controller('LoginController', ['$state', '$scope', '$translate', 'ngDialog', '$rootScope', '$localStorage', 'AuthFactory', function ($state, $scope, $translate, ngDialog, $rootScope, $localStorage, AuthFactory) {
 
         //Permite el scroll a la seccion de caracteristicas
         $(document).ready(function () {
@@ -1072,14 +1131,6 @@ angular.module('testManagerApp')
                 }, 2000);
             });
         });
-
-        //Se detecta el lenguaje del navegador
-        var language = $window.navigator.language || $window.navigator.userLanguage;
-        language = language.split("-")[0];
-
-        //Se traduce al lenguaje predefinido en el navegador
-        if (language == 'es' || language == 'en')
-            $translate.use(language);
 
         $scope.loggedIn = false;
         $scope.username = '';
