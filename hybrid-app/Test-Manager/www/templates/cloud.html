@@ -16,7 +16,7 @@
                     </md-card-title>
                     <md-card-content>
                         <p>{{test.text}}</p>
-                        <em>{{test.author}}</em>
+                        <p>{{'AUTHOR' | translate}}:<strong><em> {{test.author}}</em></strong></p>
                     </md-card-content>
                     <md-card-actions layout="row" layout-align="end center">
                         <cite title="Source Title">{{test.createdAt | date : 'y/M/dd'}} </cite>
