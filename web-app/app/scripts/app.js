@@ -5,6 +5,18 @@
  */
 'use strict';
 angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngResource', 'ngDialog', 'pascalprecht.translate'])
+
+    .run(function ($window, $translate) {
+        //Se detecta el lenguaje del navegador
+        var language = $window.navigator.language || $window.navigator.userLanguage;
+        language = language.split("-")[0];
+
+        //Se traduce al lenguaje predefinido en el navegador
+        if (language == 'es' || language == 'en')
+            $translate.use(language);
+    })
+
+
     .config(function ($stateProvider, $urlRouterProvider, $translateProvider) {
         $stateProvider
 
