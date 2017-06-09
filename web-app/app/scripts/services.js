@@ -89,7 +89,7 @@ angular.module('testManagerApp')
      * @name testManagerApp.factory:AuthFactory
      * @description Factory que realiza las operaciones de control de usuarios
      */
-    .factory('AuthFactory', ['$resource', '$filter', '$http', '$localStorage', '$rootScope', '$window', 'baseURL', 'ngDialog', function ($resource, $filter, $http, $localStorage, $rootScope, $window, baseURL, ngDialog) {
+    .factory('AuthFactory', ['$resource', '$filter', '$http', '$localStorage', '$rootScope', 'baseURL', 'ngDialog', function ($resource, $filter, $http, $localStorage, $rootScope, baseURL, ngDialog) {
 
         var authFac = {};
         var TOKEN_KEY = 'Token';
@@ -165,14 +165,12 @@ angular.module('testManagerApp')
             var pregMul = $filter('translate')('QUESTREGMUL');
             var cuest = {
                 title: welcomeRe,
-                image: "",
                 text: descr,
                 type: "pos",
                 cuestCloud: false,
                 author: "",
                 questions: [{
                         pregunta: pregUnica,
-                        image: "",
                         tipo: "unica",
                         r1: "1",
                         r2: "2",
@@ -182,7 +180,6 @@ angular.module('testManagerApp')
                     },
                     {
                         pregunta: pregMul,
-                        image: "",
                         tipo: "multiple",
                         r1: "A",
                         r2: "B",

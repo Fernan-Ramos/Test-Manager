@@ -614,15 +614,12 @@ angular.module('testManager.controllers', [])
 
     $scope.cuest = {
       title: "",
-      image: "img/libro.jpg",
       text: "",
       type: "",
       cuestCloud: "",
       author: "",
       questions: [{
-        title: "",
         pregunta: "",
-        image: "",
         tipo: "",
         r1: "",
         r2: "",
@@ -654,15 +651,12 @@ angular.module('testManager.controllers', [])
       //Resetea el objeto JavaScript una vez que el cuestionario ha sido creado
       $scope.cuest = {
         title: "",
-        image: "img/libro.jpg",
         text: "",
         type: "",
         cuestCloud: "",
         author: "",
         questions: [{
-          title: "",
           pregunta: "",
-          image: "",
           tipo: "",
           r1: "",
           r2: "",

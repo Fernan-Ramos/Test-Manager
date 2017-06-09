@@ -32,9 +32,6 @@ var cuestionarioSchema = new Schema({
         type: String,
         required: true,
     },
-    image: {
-        type: String,
-    },
     text: {
         type: String,
     },

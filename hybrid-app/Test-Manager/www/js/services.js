@@ -86,7 +86,7 @@ angular.module('testManager.services', ['ngResource', 'ngMaterial', 'chart.js'])
    * @name testManagerApp.factory:AuthFactory
    * @description Factory que realiza las operaciones de control de usuarios
    */
-  .factory('AuthFactory', ['$resource', '$http', '$localStorage', '$rootScope', 'baseURL', '$ionicPopup', '$ionicLoading', '$filter', function ($resource, $http, $localStorage, $rootScope, baseURL, $ionicPopup, $ionicLoading, $filter) {
+  .factory('AuthFactory', ['$resource', '$http', '$localStorage', '$rootScope', 'baseURL', '$ionicPopup', '$ionicLoading', function ($resource, $http, $localStorage, $rootScope, baseURL, $ionicPopup, $ionicLoading) {
 
     var authFac = {};
     var TOKEN_KEY = 'Token';
@@ -152,45 +152,7 @@ angular.module('testManager.services', ['ngResource', 'ngMaterial', 'chart.js'])
      * @param {Objet} loginData Objeto con las credenciales del usuario
      * @param {Boolean} register Variable que determina si es la primera vez que accede 
      */
-    authFac.login = function (loginData, register) {
-      /**
-       * Se crea un cuestionario de bienvenida
-       */
-      var welcomeRe = $filter('translate')('QUESTREGWEL');
-      var descr = $filter('translate')('QUESTREGDES');
-      var pregUnica = $filter('translate')('QUESTREGUNI');
-      var pregMul = $filter('translate')('QUESTREGMUL');
-      var cuest = {
-        title: welcomeRe,
-        image: "",
-        text: descr,
-        type: "pos",
-        cuestCloud: false,
-        author: "",
-        questions: [{
-            pregunta: pregUnica,
-            image: "",
-            tipo: "unica",
-            r1: "1",
-            r2: "2",
-            r3: "3",
-            r4: "4",
-            rcorrect: "4"
-          },
-          {
-            pregunta: pregMul,
-            image: "",
-            tipo: "multiple",
-            r1: "A",
-            r2: "B",
-            r3: "C",
-            r4: "D",
-            rcorrect: "A"
-          }
-        ],
-        tests: [],
-        stats: []
-      };
+    authFac.login = function (loginData) {
       $ionicLoading.show();
       $resource(baseURL + "users/login")
         .save(loginData,
@@ -200,8 +162,6 @@ angular.module('testManager.services', ['ngResource', 'ngMaterial', 'chart.js'])
               token: response.token
             });
             $rootScope.$broadcast('login:Successful');
-            if (register)
-              $resource(baseURL + "cuestionarios/:id").save(cuest);
             $ionicLoading.hide();
           },
           function (response) {
@@ -251,7 +211,7 @@ angular.module('testManager.services', ['ngResource', 'ngMaterial', 'chart.js'])
             authFac.login({
               username: registerData.username,
               password: registerData.password
-            }, true);
+            });
 
             $rootScope.$broadcast('registration:Successful');
           },

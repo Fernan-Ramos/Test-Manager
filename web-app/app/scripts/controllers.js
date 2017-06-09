@@ -443,7 +443,7 @@ angular.module('testManagerApp')
      * @name testManagerApp.directive:fileread
      * @scope
      * @description
-     * Directiva que permite cargar una imagen en formato base64
+     * Directiva que permite cargar un fichero en formato base64
      */
     .directive("fileread", [function () {
         return {
@@ -621,41 +621,15 @@ angular.module('testManagerApp')
             });
         };
 
-        /**
-         * @ngdoc method
-         * @name imageToDataUri
-         * @methodOf testManagerApp.controller:MakerController
-         * @description
-         * Función que redimensiona una imagen a un ancho y largo proporcionado
-         * @param {String} img imagen en formaro base64
-         * @param {String} width ancho 
-         * @param {String} height largo
-         * @returns {String} imagen redimensionada
-         */
-        function imageToDataUri(img, width, height) {
-            // create an off-screen canvas
-            var canvas = document.createElement('canvas'),
-                ctx = canvas.getContext('2d');
-            // set its dimension to target size
-            canvas.width = width;
-            canvas.height = height;
-            // draw source image into the off-screen canvas:
-            ctx.drawImage(img, 0, 0, width, height);
-            // encode image to data-uri with base64 version of compressed image
-            return canvas.toDataURL();
-        }
 
         $scope.cuest = {
             title: "",
-            image: "img/libro.jpg",
             text: "",
             type: "",
             cuestCloud: "",
             author: "",
             questions: [{
-                title: "",
                 pregunta: "",
-                image: "",
                 tipo: "",
                 r1: "",
                 r2: "",
@@ -676,22 +650,6 @@ angular.module('testManagerApp')
          * Función que guarda un cuestionario creado en el menu
          */
         $scope.submitTest = function () {
-            //Se recorre el array de preguntas del cuestionario a crear
-            for (var i = 0; i < $scope.cuest.questions.length; i++) {
-                //Si la pregunta no contiene imagen  el atributo imagen se estableces como vacío
-                if (!$scope.cuest.questions[i].image) {
-                    $scope.cuest.questions[i].image = "";
-                }
-                // Si se que contiene, se redimensiona
-                else {
-                    var imga = document.createElement('img');
-                    imga.src = $scope.cuest.questions[i].image;
-                    var newDataUri = imageToDataUri(imga, 100, 100);
-                    $scope.cuest.questions[i].image = newDataUri;
-                }
-                //Cada pregunta tiene como titulo el mismo titulo del cuestionario
-                $scope.cuest.questions[i].title = $scope.cuest.title;
-            }
             //El autor del cuestionario se obtiene del nombre de usuario
             $scope.cuest.author = AuthFactory.getUsername();
             //Se guarda el objeto cuestionario en el menu
@@ -728,15 +686,12 @@ angular.module('testManagerApp')
             //Resetea el objeto JavaScript una vez que el cuestionario ha sido creado
             $scope.cuest = {
                 title: "",
-                image: "img/libro.jpg",
                 text: "",
                 type: "",
                 cuestCloud: "",
                 author: "",
                 questions: [{
-                    title: "",
                     pregunta: "",
-                    image: "",
                     tipo: "",
                     r1: "",
                     r2: "",
