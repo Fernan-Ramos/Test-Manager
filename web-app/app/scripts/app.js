@@ -89,7 +89,7 @@ angular.module('testManagerApp', ['ngMaterial', 'ui.router', 'chart.js', 'ngReso
              * Estado testDetails, 
              */
             .state('app.testDetails', {
-                url: 'menu/:id',
+                url: 'menu/:id/:numberQuestions',
                 views: {
                     'content@': {
                         templateUrl: 'views/testDetails.html',

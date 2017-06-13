@@ -33,7 +33,7 @@ angular.module('testManagerApp')
      *  Exportar cuestionarios
      *  Eliminar cuestionarios- DELETE
      */
-    .controller('MenuController', ['$scope', '$mdDialog', 'menuFactory', function ($scope, $mdDialog, menuFactory) {
+    .controller('MenuController', ['$scope', '$mdDialog', '$state', 'menuFactory', function ($scope, $mdDialog, $state, menuFactory) {
 
         $scope.showMenu = false;
         $scope.message;
@@ -90,6 +90,63 @@ angular.module('testManagerApp')
                 a.dispatchEvent(e);
             }
         };
+
+        /**
+         * @name selectQuestions
+         * @methodOf testManagerApp.controller:MenuController
+         * @scope
+         * @description
+         * Función que permite elegir el número de preguntas de un cuestionario
+         * @param {Object} cuest cuestionario 
+         */
+        $scope.selectQuestions = function (cuest) {
+            //Se muestra un diálogo donde se permite la introducción del número de preguntas
+            $mdDialog.show({
+                clickOutsideToClose: true,
+                scope: $scope,
+                locals: {
+                    cuest: cuest
+                },
+                preserveScope: true,
+                template: '<md-dialog aria-label="List dialog">' +
+                    '  <md-dialog-content>' +
+                    '<md-content class="md-padding">' +
+                    ' <h5 class="md-title" translate="SELECTQUESTIONS1"></h5>' +
+                    '<hr>' +
+                    ' <form name="projectForm" ng-submit="saveQuestions(number)">' +
+                    '<md-input-container class="md-block">' +
+                    '<label translate="SELECTQUESTIONS2">Nº de preguntas</label>' +
+                    '<input required type="number" name="rate" ng-model="number" min="1"' +
+                    'max={{cuest.questions.length}} />' +
+                    '<div ng-messages="projectForm.rate.$error" multiple md-auto-hide="false">' +
+                    '<div ng-message="required">' +
+                    '<p translate="SELECTQUESTIONSERROR">El maximo de preguntas son </p><b>{{cuest.questions.length}}</b>' +
+                    '</div>' +
+                    '</div>' +
+                    '</md-content>' +
+                    '</md-input-container>' +
+                    '  </md-dialog-content>' +
+                    '  <md-dialog-actions>' +
+                    '    <div>' +
+                    '<md-button type="submit" class="md-raised md-primary"  ng-disabled="projectForm.$invalid" translate="DO"></md-button>' +
+                    '</div>' +
+                    '    </md-button>' +
+                    '</md-dialog-actions>' +
+                    '</md-dialog>',
+                controller: function DialogController($mdDialog, cuest) {
+                    $scope.cuest = cuest;
+                    $scope.number;
+                    $scope.saveQuestions = function (number) {
+                        var questions = angular.copy($scope.number);
+                        //Se redirige al estado testDetails con el id del cuestionario y el número de preguntas seleccionadas como parámetros
+                        $state.go('app.testDetails', {
+                            id: cuest._id,
+                            numberQuestions: questions
+                        });
+                    }
+                }
+            });
+        }
 
         /**
          * @ngdoc method
@@ -166,20 +223,37 @@ angular.module('testManagerApp')
                 function (response) {
                     $scope.showCuestionario = true;
                     $scope.cuestionario = response.cuestionarios[0];
+                    //Se guarda el número de preguntas seleccionadas para el cuestionario
+                    var numQuestions = $stateParams.numberQuestions;
+                    //Array temporal de preguntas
+                    var questionsTmp = $scope.cuestionario.questions.slice($scope.cuestionario.questions);
+                    $scope.questionsSelected = [];
+                    var quest = 0;
+                    while (quest < numQuestions) {
+                        //Se obtiene una pregunta de forma aleatoria
+                        var question = questionsTmp[Math.floor(Math.random() * questionsTmp.length)];
+                        var index = questionsTmp.indexOf(question);
+                        //Para que no haya duplicados se borra la pregunta obtenida del array temporal
+                        questionsTmp.splice(index, 1);
+                        //Se guarda la pregunta aleatoria
+                        $scope.questionsSelected.push(question);
+                        quest++;
+                    }
+
                     //Se crea un objeto que contendra la respuestas
                     $scope.answer = {};
                     //Se crea un array dentro del objeto respuesta que contendrá la respuesta a cada pregunta
                     $scope.answer.questions = [];
                     //Se añade un objeto al array $scope.answer.questions donde se guarda las respuestas correctas y el texto de la pregunta por cada pregunta del cuestionario 
-                    for (var i = 0; i < $scope.cuestionario.questions.length; i++) {
+                    for (var i = 0; i < $scope.questionsSelected.length; i++) {
                         var obj = {};
-                        obj.rcorrect = $scope.cuestionario.questions[i].rcorrect;
-                        obj.pregunta = $scope.cuestionario.questions[i].pregunta;
+                        obj.rcorrect = $scope.questionsSelected[i].rcorrect;
+                        obj.pregunta = $scope.questionsSelected[i].pregunta;
                         $scope.answer.questions.push(obj)
                     }
                     $scope.selected = [];
                     //Por cada pregunta del cuestionaro se guarda un array de respuestas
-                    for (var j = 0; j < $scope.cuestionario.questions.length; j++) {
+                    for (var j = 0; j < $scope.questionsSelected.length; j++) {
                         $scope.selected.push([]);
                     }
                     /**
@@ -282,7 +356,7 @@ angular.module('testManagerApp')
             $scope.answer.date = $filter('date')(new Date(), 'y/M/d');
             //Si la pregunta es de tipo múltiple se guarda el array de respuestas contestadas en cada pregunta.
             for (var i = 0; i < $scope.selected.length; i++) {
-                if ($scope.cuestionario.questions[i].tipo === "multiple")
+                if ($scope.questionsSelected[i].tipo === "multiple")
                     $scope.answer.questions[i].r = $scope.selected[i];
             }
 
@@ -295,14 +369,14 @@ angular.module('testManagerApp')
             //Se recorre el array de preguntas 
             for (var j = 0; j < $scope.answer.questions.length; j++) {
                 //Si la pregunta es de tipo unica y la respuesta dada corresponde con la respuesta correcta
-                if ($scope.cuestionario.questions[j].tipo === "unica" && $scope.answer.questions[j].rcorrect === $scope.answer.questions[j].r) {
+                if ($scope.questionsSelected[j].tipo === "unica" && $scope.answer.questions[j].rcorrect === $scope.answer.questions[j].r) {
                     $scope.correctas++;
                     //Determina que la respuesta es correcta
                     $scope.answer.questions[j].estado = 1;
                 }
                 //Si la pregunta es de tipo múltiple
-                else if ($scope.cuestionario.questions[j].tipo === "multiple") {
-                    respuestas.push($scope.cuestionario.questions[j].r1, $scope.cuestionario.questions[j].r2, $scope.cuestionario.questions[j].r3, $scope.cuestionario.questions[j].r4);
+                else if ($scope.questionsSelected[j].tipo === "multiple") {
+                    respuestas.push($scope.questionsSelected[j].r1, $scope.questionsSelected[j].r2, $scope.questionsSelected[j].r3, $scope.questionsSelected[j].r4);
                     calmultiple(j, respuestas, $scope.cuestionario.type);
                 } else {
                     $scope.incorrectas++;
@@ -319,7 +393,7 @@ angular.module('testManagerApp')
             //Se guarda las respuestas parcialmente correctas
             $scope.answer.parcial = $scope.parcial;
             //Se guarda la calificación obtenida
-            $scope.answer.cal = (($scope.answer.correctas + $scope.parciales + $scope.negativas) / $scope.answer.questions.length) * 100;
+            $scope.answer.cal = parseFloat($filter('number')((($scope.answer.correctas + $scope.parciales + $scope.negativas) / $scope.answer.questions.length) * 100, 2), 10);
 
             $scope.cuestionario.tests.push($scope.answer);
             //Se guarda la respuesta al cuestionario en el array de respuestas a cuestionarios

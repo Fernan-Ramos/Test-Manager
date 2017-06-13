@@ -102,5 +102,9 @@
     "BUTTON_LANG_EN": "Inglés",
     "AUTHOR": "Autor",
     "PDFTITLE1": "Gráfica de estadísticas:",
-    "PDFTITLE2": "Cuestionarios realizados:"
+    "PDFTITLE2": "Cuestionarios realizados:",
+    "DO": "Iniciar",
+    "SELECTQUESTIONS1": "Introduce el número de preguntas",
+    "SELECTQUESTIONS2": "Nº de preguntas",
+    "SELECTQUESTIONSERROR": "El maximo de preguntas son"
   }

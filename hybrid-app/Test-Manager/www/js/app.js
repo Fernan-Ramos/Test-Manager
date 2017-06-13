@@ -102,7 +102,7 @@ angular.module('testManager', ['ionic', 'ngCordova', 'testManager.controllers', 
        * Estado testDetails, 
        */
       .state('app.testDetails', {
-        url: '/menu/:id',
+        url: '/menu/:id/:numberQuestions',
         views: {
           'mainContent': {
             templateUrl: 'templates/testDetails.html',

@@ -19,7 +19,7 @@
     <div class="row row-content">
         <div class="col-xs-12" ng-if="!showMenu">
             <h3>{{message}}</h3>
-              <div layout="row" layout-sm="column" layout-align="space-around">
+            <div layout="row" layout-sm="column" layout-align="space-around">
                 <md-progress-circular md-mode="indeterminate" class="md-warn md-hue-3" md-diameter="70">
             </div>
         </div>
@@ -27,7 +27,7 @@
             <md-card>
                 <md-card-title>
                     <md-card-title-text-media class="md-media-sm">
-                        <a  ui-sref="app.testDetails({id: test._id})"><span class="md-headline card-text" >{{test.title}}</span></a>
+                        <a ng-click="selectQuestions(test)"><span class="md-headline card-text" >{{test.title}}</span></a>
                     </md-card-title-text-media>
                 </md-card-title>
                 <md-card-content>
@@ -54,10 +54,8 @@
                                     <md-icon class="fa fa-bar-chart fa-2x"></md-icon>
                                 </a>
                             </md-button>
-                            <md-button aria-label="Test" class="md-icon-button">
-                                <a ui-sref="app.testDetails({id: test._id})">
-                                    <md-icon class="fa fa-check-square-o fa-2x"></md-icon>
-                                </a>
+                            <md-button ng-click="selectQuestions(test)" aria-label="Test" class="md-icon-button">
+                                <md-icon class="fa fa-check-square-o fa-2x"></md-icon>
                             </md-button>
                         </md-fab-actions>
                     </md-toolbar>
