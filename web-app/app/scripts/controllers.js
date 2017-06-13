@@ -113,7 +113,7 @@ angular.module('testManagerApp')
                     '<md-content class="md-padding">' +
                     ' <h5 class="md-title" translate="SELECTQUESTIONS1"></h5>' +
                     '<hr>' +
-                    ' <form name="projectForm" ng-submit="saveQuestions(number)">' +
+                    ' <form name="projectForm" ng-submit="saveQuestions()">' +
                     '<md-input-container class="md-block">' +
                     '<label translate="SELECTQUESTIONS2">Nº de preguntas</label>' +
                     '<input required type="number" name="rate" ng-model="number" min="1"' +
@@ -135,8 +135,8 @@ angular.module('testManagerApp')
                     '</md-dialog>',
                 controller: function DialogController($mdDialog, cuest) {
                     $scope.cuest = cuest;
-                    $scope.number;
-                    $scope.saveQuestions = function (number) {
+                    $scope.number = "";
+                    $scope.saveQuestions = function () {
                         var questions = angular.copy($scope.number);
                         //Se redirige al estado testDetails con el id del cuestionario y el número de preguntas seleccionadas como parámetros
                         $state.go('app.testDetails', {
@@ -798,7 +798,7 @@ angular.module('testManagerApp')
                     //Se guarda el nuevo cuestionario en el array de cuestionarios
                     menuFactory.save(data).$promise.then(
                         //success
-                        function (value) {
+                        function () {
                             $mdDialog.show({
                                 clickOutsideToClose: true,
                                 scope: $scope,
@@ -828,7 +828,7 @@ angular.module('testManagerApp')
                             });
                         },
                         //error
-                        function (error) {
+                        function () {
                             $mdDialog.show({
                                 clickOutsideToClose: true,
                                 scope: $scope,
