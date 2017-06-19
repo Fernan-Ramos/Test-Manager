@@ -73,7 +73,7 @@ gulp.task('ngdocs', [], function () {
 
       return gulp.src(['app/scripts/**/*.js'])
             .pipe(ngdocs.process(options))
-            .pipe(gulp.dest('./docs'))
+            .pipe(gulp.dest('./docsAngular'))
             .on('error', function (err) {
                   console.log('Error from ngdocs: ', err);
             });
@@ -81,7 +81,7 @@ gulp.task('ngdocs', [], function () {
 
 gulp.task('connect_ngdocs', function () {
       connect.server({
-            root: 'docs',
+            root: 'docsAngular',
             livereload: false,
             fallback: 'docs/index.html',
             port: 8083
