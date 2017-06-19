@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: services.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: services.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+    Test-Manager
+    Copyright (c) 2016 - 2017 Fernán Ramos Sáiz
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see &lt;http://www.gnu.org/licenses/>.
+
+ */
+
+/**
+ * @author Fernán Ramos Saiz
+ * @version 1.0
+ * @description Fichero que almacena los servicios que permiten la comunicación con el servidor Back-End
+ */
+'use strict';
+angular.module('testManagerApp')
+    /**
+     * Constante que almacena la dirección donde se encuentra el servidor Node.js
+     */
+    .constant("baseURL", "http://localhost:3000/")
+
+    /**
+     * @ngdoc service
+     * @name testManagerApp.factory:menuFactory
+     * @description Factory que obtiene del servidor la ruta cuestionarios
+     */
+    .factory('menuFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
+
+        return $resource(baseURL + "cuestionarios/:id", null, {
+            'update': {
+                method: 'PUT'
+            }
+        });
+
+    }])
+    /**
+     * @ngdoc service
+     * @name testManagerApp.factory:cloudFactory
+     * @description Factory que obtiene del servidor la ruta cuestionarios/cloud -->
+     *              Cuestionario públicos
+     */
+    .factory('cloudFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
+
+        return $resource(baseURL + "cuestionarios/cloud", null, {
+            'update': {
+                method: 'PUT'
+            }
+        });
+
+    }])
+
+
+    /**
+     * @ngdoc service
+     * @name testManagerApp.factory:$localStorage
+     * @description Factory que definde una serie de funciones para guardar información de forma local
+     */
+    .factory('$localStorage', ['$window', function ($window) {
+        return {
+            store: function (key, value) {
+                $window.localStorage[key] = value;
+            },
+            get: function (key, defaultValue) {
+                return $window.localStorage[key] || defaultValue;
+            },
+            remove: function (key) {
+                $window.localStorage.removeItem(key);
+            },
+            storeObject: function (key, value) {
+                $window.localStorage[key] = JSON.stringify(value);
+            },
+            getObject: function (key, defaultValue) {
+                return JSON.parse($window.localStorage[key] || defaultValue);
+            }
+        }
+    }])
+
+    /**
+     * @ngdoc service
+     * @name testManagerApp.factory:AuthFactory
+     * @description Factory que realiza las operaciones de control de usuarios
+     */
+    .factory('AuthFactory', ['$resource', '$filter', '$http', '$localStorage', '$rootScope', 'baseURL', 'ngDialog', function ($resource, $filter, $http, $localStorage, $rootScope, baseURL, ngDialog) {
+
+        var authFac = {};
+        var TOKEN_KEY = 'Token';
+        var isAuthenticated = false;
+        var username = '';
+        var authToken = undefined;
+
+        /**
+         * @ngdoc method
+         * @name loadUserCredentials
+         * @methodOf testManagerApp.factory:AuthFactory
+         * @description
+         * Función que carga el objeto de credenciales para un usuario
+         */
+        function loadUserCredentials() {
+            var credentials = $localStorage.getObject(TOKEN_KEY, '{}');
+            if (credentials.username != undefined) {
+                useCredentials(credentials);
+            }
+        }
+        /**
+         * @ngdoc method
+         * @name storeUserCredentials
+         * @methodOf testManagerApp.factory:AuthFactory
+         * @description Función que guarda las credenciales de un usuario
+         * @param {Object} credentials Objeto de credenciales a guardar
+         */
+        function storeUserCredentials(credentials) {
+            $localStorage.storeObject(TOKEN_KEY, credentials);
+            useCredentials(credentials);
+        }
+        /**
+         * @ngdoc method
+         * @name useCredentials
+         * @methodOf testManagerApp.factory:AuthFactory
+         * @description Función que 
+         * @param {any} credentials Credenciales a usar
+         */
+        function useCredentials(credentials) {
+            isAuthenticated = true;
+            username = credentials.username;
+            authToken = credentials.token;
+            $http.defaults.headers.common['x-access-token'] = authToken;
+        }
+        /**
+         * @ngdoc method
+         * @name destroyUserCredentials
+         * @methodOf testManagerApp.factory:AuthFactory
+         * @description Función que borra las credenciales almacenadas localmente al salir de la aplicación 
+         */
+        function destroyUserCredentials() {
+            authToken = undefined;
+            username = '';
+            isAuthenticated = false;
+            $http.defaults.headers.common['x-access-token'] = authToken;
+            $localStorage.remove(TOKEN_KEY);
+        }
+        /**
+         * @ngdoc method
+         * @name login
+         * @methodOf testManagerApp.factory:AuthFactory
+         * @description Función que realiza el login de la aplicación
+         * @param {Objet} loginData Objeto con las credenciales del usuario
+         * @param {Boolean} register Variable que determina si es la primera vez que accede 
+         */
+        authFac.login = function (loginData, register) {
+            /**
+             * Se crea un cuestionario de bienvenida
+             */
+            var welcomeRe = $filter('translate')('QUESTREGWEL');
+            var descr = $filter('translate')('QUESTREGDES');
+            var pregUnica = $filter('translate')('QUESTREGUNI');
+            var pregMul = $filter('translate')('QUESTREGMUL');
+            var cuest = {
+                title: welcomeRe,
+                text: descr,
+                type: "pos",
+                cuestCloud: false,
+                author: "",
+                questions: [{
+                        pregunta: pregUnica,
+                        tipo: "unica",
+                        r1: "1",
+                        r2: "2",
+                        r3: "3",
+                        r4: "4",
+                        rcorrect: "4"
+                    },
+                    {
+                        pregunta: pregMul,
+                        tipo: "multiple",
+                        r1: "A",
+                        r2: "B",
+                        r3: "C",
+                        r4: "D",
+                        rcorrect: "A"
+                    }
+                ],
+                tests: [],
+                stats: []
+            };
+            $resource(baseURL + "users/login")
+                .save(loginData,
+                    function (response) {
+                        storeUserCredentials({
+                            username: loginData.username,
+                            token: response.token
+                        });
+                        $rootScope.$broadcast('login:Successful');
+                        if (register)
+                            $resource(baseURL + "cuestionarios/:id").save(cuest);
+                    },
+                    function (response) {
+                        isAuthenticated = false;
+
+                        var message = '&lt;div class="ngdialog-message">' +
+                            '&lt;div>&lt;h3 translate>{{\'NOLOGIN\'}}&lt;/h3>&lt;/div>' +
+                            '&lt;div>&lt;p>' + response.data.err.message + '&lt;/p>&lt;p>' +
+                            response.data.err.name + '&lt;/p>&lt;/div>' +
+                            '&lt;div class="ngdialog-buttons">' +
+                            '&lt;button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=confirm("OK")>OK&lt;/button>' +
+                            '&lt;/div>';
+
+
+                        ngDialog.openConfirm({
+                            template: message,
+                            plain: 'true'
+                        });
+                    }
+
+                );
+
+        };
+        /**
+         * @ngdoc method
+         * @name logout
+         * @methodOf testManagerApp.factory:AuthFactory
+         * @description Función que realiza el logout de la aplicación
+         */
+        authFac.logout = function () {
+            $resource(baseURL + "users/logout").get(function () { /** */ });
+            destroyUserCredentials();
+        };
+
+        /**
+         * @ngdoc method
+         * @name register
+         * @methodOf testManagerApp.factory:AuthFactory
+         * @description Función que realiza el logout de la aplicación
+         * @param {Object} registerData Objeto de credenciales obtenidos del registro del usuario
+         */
+        authFac.register = function (registerData) {
+
+            $resource(baseURL + "users/register")
+                .save(registerData,
+                    function () {
+                        authFac.login({
+                            username: registerData.username,
+                            password: registerData.password
+                        }, true);
+                        if (registerData.rememberMe) {
+                            $localStorage.storeObject('userinfo', {
+                                username: registerData.username,
+                                password: registerData.password
+                            });
+                        }
+
+                        $rootScope.$broadcast('registration:Successful');
+                    },
+                    function (response) {
+
+                        var message = '&lt;div class="ngdialog-message">' +
+                            '&lt;div>&lt;h3 translate>{{\'NOREGISTER\'}}&lt;/h3>&lt;/div>' +
+                            '&lt;div>&lt;p>' + response.data.err.message +
+                            '&lt;/p>&lt;p>' + response.data.err.name + '&lt;/p>&lt;/div>';
+
+
+                        ngDialog.openConfirm({
+                            template: message,
+                            plain: 'true'
+                        });
+
+                    }
+
+                );
+        };
+        /**
+         * @ngdoc method
+         * @name isAuthenticated
+         * @methodOf testManagerApp.factory:AuthFactory
+         * @description Función que realiza el logout de la aplicación
+         * @returns {Boolean} Booleano que indica si el usuarioestá identificado
+         */
+        authFac.isAuthenticated = function () {
+            return isAuthenticated;
+        };
+        /**
+         * @ngdoc method
+         * @name getUsername
+         * @methodOf testManagerApp.factory:AuthFactory
+         * @description Función que devuelve el nombre de usuario
+         * @returns {String} nombre del usuario
+         */
+        authFac.getUsername = function () {
+            return username;
+        };
+
+        loadUserCredentials();
+
+        return authFac;
+
+    }]);</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addtoMenu">addtoMenu</a></li><li><a href="global.html#calEstado">calEstado</a></li><li><a href="global.html#calmultiple">calmultiple</a></li><li><a href="global.html#changeLanguage">changeLanguage</a></li><li><a href="global.html#convertCanvasToImage">convertCanvasToImage</a></li><li><a href="global.html#destroyUserCredentials">destroyUserCredentials</a></li><li><a href="global.html#dialogo">dialogo</a></li><li><a href="global.html#doLogin">doLogin</a></li><li><a href="global.html#doRegister">doRegister</a></li><li><a href="global.html#exists">exists</a></li><li><a href="global.html#exportCuest">exportCuest</a></li><li><a href="global.html#exportPDF">exportPDF</a></li><li><a href="global.html#filter">filter</a></li><li><a href="global.html#getNumber">getNumber</a></li><li><a href="global.html#getSelectedQuest">getSelectedQuest</a></li><li><a href="global.html#getUsername">getUsername</a></li><li><a href="global.html#import">import</a></li><li><a href="global.html#isAuthenticated">isAuthenticated</a></li><li><a href="global.html#loadUserCredentials">loadUserCredentials</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logOut">logOut</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#openRegister">openRegister</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#removeCuest">removeCuest</a></li><li><a href="global.html#selectQuestions">selectQuestions</a></li><li><a href="global.html#storeUserCredentials">storeUserCredentials</a></li><li><a href="global.html#submitAnswer">submitAnswer</a></li><li><a href="global.html#submitTest">submitTest</a></li><li><a href="global.html#toggle">toggle</a></li><li><a href="global.html#useCredentials">useCredentials</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Jun 19 2017 10:57:53 GMT+0200 (Hora de verano romance)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
