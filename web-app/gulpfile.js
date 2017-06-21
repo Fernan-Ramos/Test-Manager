@@ -30,7 +30,7 @@ gulp.task('clean', function () {
 
 // Default task
 gulp.task('default', ['clean'], function () {
-      gulp.start('usemin', 'imagemin', 'copyfonts', 'ngdocs', 'connect_ngdocs');
+      gulp.start('usemin', 'imagemin', 'copyfonts', 'ngdocs', 'connect_ngdocs', 'copytraductions');
 });
 
 gulp.task('usemin', ['jshint'], function () {
@@ -65,6 +65,12 @@ gulp.task('copyfonts', ['clean'], function () {
             .pipe(gulp.dest('./dist/fonts'));
 });
 
+
+
+gulp.task('copytraductions', function () {
+      return gulp.src('app/traductions/*.json')
+            .pipe(gulp.dest('dist/traductions'));
+});
 
 gulp.task('ngdocs', [], function () {
       var options = {
