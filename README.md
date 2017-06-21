@@ -1,8 +1,8 @@
 # Test-Manager
 Test-Manager es una plataforma desarrollada para la preparación de pruebas tipo test.
 
-![poster](https://user-images.githubusercontent.com/24545361/27376437-6cb49fce-5672-11e7-89c4-15ffaf291034.jpg)
 
+![poster](https://user-images.githubusercontent.com/24545361/27397489-c3cb3a36-56b6-11e7-841f-f216889ba79a.jpg)
 ### Soporte
 - Aplicación Híbrida Móvil disponible para dispositivos Android e iOS
 - Aplicación web disponible en el siguiente enlace https://test-managerr.herokuapp.com/
