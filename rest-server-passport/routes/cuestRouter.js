@@ -123,11 +123,8 @@ cuestRouter.route('/')
         }, function (err) {
             if (err)
                 return next(err);
-            Cuestionarios.findOne({
-                'postedBy': req.decoded._id
-            }, function (err, cuest) {
-                res.json(cuest);
-            });
+            res.json(cuest);
+
         });
     });
 

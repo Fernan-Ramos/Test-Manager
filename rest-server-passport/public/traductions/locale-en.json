@@ -60,6 +60,10 @@
     "CREATE": "create",
     "MAKERTAB2": "Import",
     "IMPORTITLE": "Import a quiz",
+    "IMPORTSUCCESS1": "Quiz added successfully!",
+    "IMPORTSUCCESS2": "You can see the quiz added in the menu",
+    "IMPORTERROR1": "Quiz not added!",
+    "IMPORTERROR2": "The file added doesn't have the structure of a Test-Manager quiz",
     "IMPORTALERT": "The file must be in JSON format",
     "IMPORTBUTTON": "Import",
     "FILENOTVALID": "Invalid file",
@@ -98,5 +102,9 @@
     "BUTTON_LANG_EN": "English",
     "AUTHOR": "Author",
     "PDFTITLE1": "Graph of statistics:",
-    "PDFTITLE2": "Completed quizzes:"
+    "PDFTITLE2": "Completed quizzes:",
+    "DO": "Start",
+    "SELECTQUESTIONS1": "Enter the number of questions",
+    "SELECTQUESTIONS2": "Nº of questions",
+    "SELECTQUESTIONSERROR": "The maximum of questions are"
 }

@@ -1,3 +1,20 @@
+<!-- 
+    Test-Manager
+    Copyright (c) 2016 - 2017 Fernán Ramos Sáiz
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+ -->
 <div class="container">
     <div class="row row-content">
         <div>
@@ -58,11 +75,6 @@
                                                     class="help-block">{{'NOQUESTION'}}</span>
                                                 <div class="form-group">
                                                     <hr>
-                                                    <label translate for="image" class="col-sm-2 control-label">{{'IMAGE'}} </label>
-                                                    <div class="col-sm-10">
-                                                        <input type="file" fileread="cuest.questions[$index].image"><br>
-                                                        <hr>
-                                                    </div>
                                                     <label translate for="answer" class="col-sm-2 control-label">{{'ANSWER'}} 1</label>
                                                     <div class="col-sm-10">
                                                         <input type="text" class="form-control" id="answer" name="answer" placeholder="{{'ANSWERPLACE' | translate}}" ng-model="cuest.questions[$index].r1"
@@ -129,7 +141,6 @@
                                                         <span class="md-subhead">{{ 'QUESTION' | translate}} {{ $index+1 }}</span>
                                                     </md-card-header-text>
                                                 </md-card-header>
-                                                <img class="md-card-image" ng-src="{{cuest.questions[$index].image}}" alt="">
                                                 <md-card-title class="md-title-padding">
                                                     <md-card-title-text>
                                                         <span class="md-subhead"><strong>{{cuest.questions[$index].pregunta}}</strong></span>
