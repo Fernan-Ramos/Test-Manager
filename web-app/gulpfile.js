@@ -80,9 +80,7 @@ gulp.task('ngdocs', [], function () {
       return gulp.src(['app/scripts/**/*.js'])
             .pipe(ngdocs.process(options))
             .pipe(gulp.dest('./docsAngular'))
-            .on('error', function (err) {
-                  console.log('Error from ngdocs: ', err);
-            });
+
 });
 
 gulp.task('connect_ngdocs', function () {
